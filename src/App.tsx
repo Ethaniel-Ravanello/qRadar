@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { INITIAL_SQUADS } from './data/officeData';
-import type { Squad, Employee } from './types';
+import type { Squad, Employee, GraphicMode } from './types';
 import { OfficeScene } from './components/canvas/OfficeScene';
 import { Navbar } from './components/ui/Navbar';
 import { MemberDrawer } from './components/ui/MemberDrawer';
@@ -43,19 +43,40 @@ const playSoundEffect = (type: 'click' | 'resolve' | 'alert') => {
       osc.start();
       osc.stop(ctx.currentTime + 0.2);
     }
-  } catch (err) {
+  } catch {
     // AudioContext blocked or not supported
   }
 };
 
 export const App: React.FC = () => {
-  const [squads, setSquads] = useState<Squad[]>(INITIAL_SQUADS);
+  const [squads, setSquads] = useState<Squad[]>(() => INITIAL_SQUADS);
   const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
-  const [selectedSquad, setSelectedSquad] = useState<Squad | null>(INITIAL_SQUADS[0]);
+  const [selectedSquad, setSelectedSquad] = useState<Squad>(() => INITIAL_SQUADS[0]);
   const [modalSquad, setModalSquad] = useState<Squad | null>(null);
   const [filterMode, setFilterMode] = useState<'ALL' | 'BLOCKERS' | 'IDLE'>('ALL');
   const [isLiveApi, setIsLiveApi] = useState<boolean>(false);
   const [soundEnabled, setSoundEnabled] = useState<boolean>(true);
+
+  // Synchronize squads and selectedSquad during render if stale from HMR/state preservation
+  if (
+    squads.length !== INITIAL_SQUADS.length ||
+    squads[0]?.id !== INITIAL_SQUADS[0]?.id ||
+    !INITIAL_SQUADS.some((s) => s.id === selectedSquad.id)
+  ) {
+    setSquads(INITIAL_SQUADS);
+    setSelectedSquad(INITIAL_SQUADS[0]);
+  }
+
+  // --- GRAPHIC QUALITY OPTION (PERFORMANCE VS QUALITY) ---
+  const [graphicMode, setGraphicMode] = useState<GraphicMode>(() => {
+    return (localStorage.getItem('qradar_graphic_mode') as GraphicMode) || 'quality';
+  });
+
+  const handleGraphicModeChange = (mode: GraphicMode) => {
+    setGraphicMode(mode);
+    localStorage.setItem('qradar_graphic_mode', mode);
+    triggerSound('click');
+  };
 
   // --- ECO MODE & AFK DETECTION (30 SECONDS & TAB OUT) ---
   const [isAsleep, setIsAsleep] = useState<boolean>(false);
@@ -77,33 +98,27 @@ export const App: React.FC = () => {
   }, [resetAfkTimer]);
 
   useEffect(() => {
-    // Start initial 30s timer
     resetAfkTimer();
 
-    // 1. User activity listener (mouse, key, scroll, touch)
     const onUserActivity = () => {
       if (!isAsleep) {
         resetAfkTimer();
       }
     };
 
-    // 2. Tab out / switch window detection
     const handleVisibilityChange = () => {
       if (document.hidden) {
-        // Tab switched out or browser minimized -> Immediately pause 3D to cut resources!
         setIsAsleep(true);
         if (afkTimerRef.current) clearTimeout(afkTimerRef.current);
       }
     };
 
     const handleWindowBlur = () => {
-      // User Alt+Tabbed or clicked another app
       setIsAsleep(true);
       if (afkTimerRef.current) clearTimeout(afkTimerRef.current);
     };
 
     const handleWindowFocus = () => {
-      // When returning to window, reset timer
       resetAfkTimer();
     };
 
@@ -132,29 +147,40 @@ export const App: React.FC = () => {
 
   // Select employee from 3D scene
   const handleSelectEmployee = (emp: Employee) => {
+    const empSquad = squads.find((s) => s.members.some((m) => m.id === emp.id)) || selectedSquad;
+    setSelectedSquad(empSquad);
     setSelectedEmployee(emp);
     triggerSound(emp.isBlocker ? 'alert' : 'click');
   };
 
+  // Select squad (from Dropdown or 3D banner)
+  const handleSelectSquad = (squad: Squad) => {
+    setSelectedSquad(squad);
+    setSelectedEmployee(null);
+    triggerSound('click');
+  };
+
   // Select squad banner from 3D scene -> open detailed approval modal
   const handleSelectSquadBanner = (squad: Squad) => {
+    setSelectedSquad(squad);
     setModalSquad(squad);
     triggerSound('click');
   };
 
-  // Pod Jump Navigation from Navbar
+  // Pod Jump Navigation relative to active squad's zone (depan-belakang along Z)
   const handleSelectPodPreset = (pod: string | null) => {
     setSelectedEmployee(null);
+    const [cx, , cz] = selectedSquad.zoneCenter;
     if (!pod) {
-      setSelectedSquad({ ...squads[0], zoneCenter: [1.0, 0, 0] });
+      setSelectedSquad({ ...selectedSquad, zoneCenter: [cx, 0, cz] });
     } else if (pod === 'BE') {
-      setSelectedSquad({ ...squads[0], zoneCenter: [5.0, 0, -0.9] });
+      setSelectedSquad({ ...selectedSquad, zoneCenter: [cx + 5.0, 0, cz - 0.9] });
     } else if (pod === 'QA') {
-      setSelectedSquad({ ...squads[0], zoneCenter: [5.0, 0, 0.9] });
+      setSelectedSquad({ ...selectedSquad, zoneCenter: [cx + 5.0, 0, cz + 0.9] });
     } else if (pod === 'FE') {
-      setSelectedSquad({ ...squads[0], zoneCenter: [-4.9, 0, 0.9] });
+      setSelectedSquad({ ...selectedSquad, zoneCenter: [cx - 4.9, 0, cz + 0.9] });
     } else if (pod === 'LEAD') {
-      setSelectedSquad({ ...squads[0], zoneCenter: [-4.9, 0, -0.9] });
+      setSelectedSquad({ ...selectedSquad, zoneCenter: [cx - 4.9, 0, cz - 0.9] });
     }
     triggerSound('click');
   };
@@ -230,6 +256,10 @@ export const App: React.FC = () => {
             setModalSquad(updatedSquad);
           }
 
+          if (selectedSquad.id === squadId) {
+            setSelectedSquad(updatedSquad);
+          }
+
           return updatedSquad;
         }
         return squad;
@@ -244,7 +274,7 @@ export const App: React.FC = () => {
   };
 
   const handleResetView = () => {
-    setSelectedSquad({ ...squads[0], zoneCenter: [0, 0, 0] });
+    setSelectedSquad(INITIAL_SQUADS[0]);
     setSelectedEmployee(null);
     setModalSquad(null);
     triggerSound('click');
@@ -255,19 +285,25 @@ export const App: React.FC = () => {
     triggerSound('click');
   };
 
-  const currentSquad = squads[0];
+  const activeEmployeeSquad = selectedEmployee
+    ? squads.find((s) => s.members.some((m) => m.id === selectedEmployee.id)) || selectedSquad
+    : selectedSquad;
 
   return (
     <main className="w-screen h-screen relative overflow-hidden bg-[#e5dfd3] font-sans select-none">
       {/* Top Navigation & KPI Radar */}
       <Navbar
         squads={squads}
+        activeSquad={selectedSquad}
+        onSelectSquad={handleSelectSquad}
         filterMode={filterMode}
         onFilterChange={setFilterMode}
         onSelectPodPreset={handleSelectPodPreset}
-        onOpenSquadModal={() => setModalSquad(currentSquad)}
+        onOpenSquadModal={() => setModalSquad(selectedSquad)}
         isLiveApi={isLiveApi}
         onToggleLiveApi={handleToggleLiveApi}
+        graphicMode={graphicMode}
+        onGraphicModeChange={handleGraphicModeChange}
       />
 
       {/* 3D WebGL Canvas with frameloop eco mode */}
@@ -280,12 +316,13 @@ export const App: React.FC = () => {
         onClearSelection={handleClearSelection}
         filterMode={filterMode}
         isAsleep={isAsleep}
+        graphicMode={graphicMode}
       />
 
-      {/* Slide-out Employee Detail Drawer (Jira, Bitbucket, Blocker) */}
+      {/* Slide-out Employee Detail Drawer (Jira, Bitbucket, Blocker) with smooth animation & z-50 */}
       <MemberDrawer
         employee={selectedEmployee}
-        squad={currentSquad}
+        squad={activeEmployeeSquad}
         onClose={() => setSelectedEmployee(null)}
         onResolveBlocker={handleResolveBlocker}
       />
@@ -297,7 +334,7 @@ export const App: React.FC = () => {
         onApproveStep={handleApproveStep}
       />
 
-      {/* Bottom Controls & Legend (Includes Sleep Now quick action button) */}
+      {/* Bottom Controls & Legend */}
       <BottomControls
         onResetView={handleResetView}
         soundEnabled={soundEnabled}
@@ -305,7 +342,7 @@ export const App: React.FC = () => {
       />
 
       {/* Quick Eco Mode Sleep Button at Bottom-Right */}
-      <div className="absolute bottom-4 right-28 z-20 pointer-events-auto">
+      <div className="absolute bottom-4 right-28 z-30 pointer-events-auto">
         <button
           onClick={() => setIsAsleep(true)}
           className="px-3 py-2 rounded-2xl bg-slate-900/90 hover:bg-slate-800 text-slate-300 hover:text-amber-300 border border-slate-700/80 shadow-2xl text-xs font-semibold flex items-center gap-1.5 transition backdrop-blur-md"

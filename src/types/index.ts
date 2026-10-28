@@ -1,4 +1,5 @@
 export type Role = 'FE' | 'BE' | 'QA' | 'SL' | 'SM';
+export type GraphicMode = 'performance' | 'quality';
 
 export interface JiraTicket {
   key: string;

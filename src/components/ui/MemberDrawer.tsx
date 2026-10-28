@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   X,
   AlertTriangle,
@@ -27,7 +27,15 @@ export const MemberDrawer: React.FC<MemberDrawerProps> = ({
   onClose,
   onResolveBlocker,
 }) => {
-  if (!employee) return null;
+  // Retain the last employee data during slide-out exit animation
+  const [cachedEmployee, setCachedEmployee] = useState<Employee | null>(employee);
+
+  if (employee && employee !== cachedEmployee) {
+    setCachedEmployee(employee);
+  }
+
+  const isOpen = Boolean(employee);
+  const displayEmployee = employee || cachedEmployee;
 
   const getRoleBadge = (role: string) => {
     switch (role) {
@@ -58,33 +66,44 @@ export const MemberDrawer: React.FC<MemberDrawerProps> = ({
   };
 
   return (
-    <aside className="fixed top-20 right-4 bottom-6 w-96 max-w-[calc(100vw-2rem)] z-40 bg-slate-900/95 backdrop-blur-xl border border-slate-700/80 rounded-3xl shadow-2xl flex flex-col overflow-hidden animate-in slide-in-from-right duration-300">
-      {/* Header */}
+    <aside
+      style={{
+        transform: isOpen ? 'translateX(0)' : 'translateX(calc(100% + 2rem))',
+        opacity: isOpen ? 1 : 0,
+        pointerEvents: isOpen ? 'auto' : 'none',
+        transition: 'transform 360ms cubic-bezier(0.16, 1, 0.3, 1), opacity 260ms ease-out',
+        willChange: 'transform, opacity',
+      }}
+      className="fixed top-20 right-4 bottom-6 w-96 max-w-[calc(100vw-2rem)] z-50 bg-slate-900/95 backdrop-blur-2xl border border-slate-700/80 rounded-3xl shadow-2xl flex flex-col overflow-hidden"
+    >
+      {displayEmployee && (
+        <>
+          {/* Header */}
       <div className="p-5 border-b border-slate-800 flex items-start justify-between relative bg-gradient-to-b from-slate-800/60 to-transparent">
         <div className="flex items-center gap-3">
           {/* Avatar Color Orb */}
           <div
-            className="w-12 h-12 rounded-2xl flex items-center justify-center font-bold text-white text-lg shadow-lg border-2 border-white/20"
-            style={{ backgroundColor: employee.avatarColor }}
+            className="w-12 h-12 rounded-2xl flex items-center justify-center font-bold text-white text-lg shadow-lg border-2 border-white/20 transform transition-transform duration-300 hover:scale-105"
+            style={{ backgroundColor: displayEmployee.avatarColor }}
           >
-            {employee.role}
+            {displayEmployee.role}
           </div>
           <div>
             <div className="flex items-center gap-2">
               <h2 className="text-base font-bold text-white leading-tight">
-                {employee.name}
+                {displayEmployee.name}
               </h2>
             </div>
             <div className="flex items-center gap-2 mt-0.5">
               <span className="text-xs font-mono text-sky-400 bg-sky-950/60 px-2 py-0.5 rounded-md border border-sky-800/60 font-semibold">
-                PN {employee.pn}
+                PN {displayEmployee.pn}
               </span>
               <span
                 className={`text-[10px] font-bold px-2 py-0.5 rounded-md border ${getRoleBadge(
-                  employee.role
+                  displayEmployee.role
                 )}`}
               >
-                {employee.role === 'SL' ? 'Squad Lead' : `${employee.role} Engineer`}
+                {displayEmployee.role === 'SL' ? 'Squad Lead' : `${displayEmployee.role} Engineer`}
               </span>
             </div>
           </div>
@@ -94,6 +113,7 @@ export const MemberDrawer: React.FC<MemberDrawerProps> = ({
         <button
           onClick={onClose}
           className="p-1.5 rounded-xl bg-slate-800/80 text-slate-400 hover:text-white hover:bg-slate-700 transition"
+          title="Close Drawer"
         >
           <X className="w-4 h-4" />
         </button>
@@ -103,32 +123,34 @@ export const MemberDrawer: React.FC<MemberDrawerProps> = ({
       {squad && (
         <div className="px-5 py-2.5 bg-slate-800/40 border-b border-slate-800 flex items-center justify-between text-xs">
           <span className="text-slate-400 font-medium">Squad:</span>
-          <span className="font-semibold text-slate-200">{squad.name}</span>
+          <span className="font-semibold text-slate-200 truncate max-w-[220px]" title={squad.name}>
+            {squad.name}
+          </span>
         </div>
       )}
 
       {/* Scrollable Content Body */}
       <div className="flex-1 overflow-y-auto p-5 space-y-4">
         {/* Blocker Alert Banner */}
-        {employee.isBlocker ? (
+        {displayEmployee.isBlocker ? (
           <div className="p-3.5 rounded-2xl bg-red-950/70 border border-red-500/70 text-red-200 space-y-2 shadow-lg">
             <div className="flex items-center gap-2 text-red-400 font-bold text-xs uppercase tracking-wider">
               <AlertTriangle className="w-4 h-4" />
               <span>ACTIVE BLOCKER REPORTED</span>
             </div>
             <p className="text-xs font-medium text-red-100 bg-red-900/40 p-2.5 rounded-xl border border-red-800/50">
-              "{employee.speechBubble}"
+              "{displayEmployee.speechBubble}"
             </p>
             <div className="flex items-center gap-2 pt-1">
               <button
-                onClick={() => onResolveBlocker(employee.id)}
+                onClick={() => onResolveBlocker(displayEmployee.id)}
                 className="flex-1 py-1.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs flex items-center justify-center gap-1.5 transition shadow"
               >
                 <CheckCircle className="w-3.5 h-3.5" />
                 <span>Resolve Blocker</span>
               </button>
               <button
-                onClick={() => alert(`Mengirim pesan Slack/Teams ke ${employee.name} (PN ${employee.pn})...`)}
+                onClick={() => alert(`Mengirim pesan Slack/Teams ke ${displayEmployee.name} (PN ${displayEmployee.pn})...`)}
                 className="py-1.5 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs flex items-center gap-1.5 transition border border-slate-700"
               >
                 <Send className="w-3.5 h-3.5 text-sky-400" />
@@ -143,7 +165,7 @@ export const MemberDrawer: React.FC<MemberDrawerProps> = ({
               <span className="text-slate-400 block text-[10px] uppercase font-bold tracking-wider">
                 Current Status:
               </span>
-              <p className="text-slate-200 mt-0.5">"{employee.speechBubble}"</p>
+              <p className="text-slate-200 mt-0.5">"{displayEmployee.speechBubble}"</p>
             </div>
           </div>
         )}
@@ -158,13 +180,13 @@ export const MemberDrawer: React.FC<MemberDrawerProps> = ({
             <span className="text-[10px] text-slate-400 font-mono">
               Total SP:{' '}
               <strong className="text-sky-300">
-                {employee.jiraTickets.reduce((acc, t) => acc + t.storyPoints, 0)}
+                {displayEmployee.jiraTickets.reduce((acc, t) => acc + t.storyPoints, 0)}
               </strong>
             </span>
           </div>
 
           <div className="space-y-2">
-            {employee.jiraTickets.map((ticket) => (
+            {displayEmployee.jiraTickets.map((ticket) => (
               <div
                 key={ticket.key}
                 className="p-3 rounded-xl bg-slate-800/80 border border-slate-700/70 hover:border-slate-500 transition space-y-1.5"
@@ -222,18 +244,18 @@ export const MemberDrawer: React.FC<MemberDrawerProps> = ({
             <div className="flex items-center justify-between">
               <span className="text-slate-400">Repository:</span>
               <span className="font-mono font-semibold text-slate-200">
-                {employee.bitbucket.repo}
+                {displayEmployee.bitbucket.repo}
               </span>
             </div>
 
             <div className="flex items-center justify-between">
               <span className="text-slate-400">Active Branch:</span>
               <span className="font-mono text-sky-400 bg-slate-900 px-2 py-0.5 rounded border border-slate-700">
-                {employee.bitbucket.branch}
+                {displayEmployee.bitbucket.branch}
               </span>
             </div>
 
-            {employee.bitbucket.activePR ? (
+            {displayEmployee.bitbucket.activePR ? (
               <div className="pt-1.5 border-t border-slate-700/60">
                 <span className="text-slate-400 block text-[10px] uppercase font-bold tracking-wider mb-1">
                   Active Pull Request:
@@ -242,16 +264,16 @@ export const MemberDrawer: React.FC<MemberDrawerProps> = ({
                   <GitPullRequest className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
                   <div className="flex-1 min-w-0">
                     <p className="font-medium text-slate-200 truncate">
-                      {employee.bitbucket.activePR}
+                      {displayEmployee.bitbucket.activePR}
                     </p>
                     <span
                       className={`inline-block mt-1 text-[9px] font-bold px-1.5 py-0.2 rounded ${
-                        employee.bitbucket.prStatus === 'MERGED'
+                        displayEmployee.bitbucket.prStatus === 'MERGED'
                           ? 'bg-purple-500/20 text-purple-300 border border-purple-500/40'
                           : 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
                       }`}
                     >
-                      {employee.bitbucket.prStatus}
+                      {displayEmployee.bitbucket.prStatus}
                     </span>
                   </div>
                 </div>
@@ -266,7 +288,7 @@ export const MemberDrawer: React.FC<MemberDrawerProps> = ({
                 <span>SonarQube Gate:</span>
               </div>
               <span className="font-mono font-bold text-emerald-300 bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-800">
-                {employee.bitbucket.sonarScore}% PASS
+                {displayEmployee.bitbucket.sonarScore}% PASS
               </span>
             </div>
 
@@ -275,11 +297,13 @@ export const MemberDrawer: React.FC<MemberDrawerProps> = ({
                 <Clock className="w-3 h-3 text-slate-500" />
                 Last commit:
               </span>
-              <span>{employee.bitbucket.lastCommit}</span>
+              <span>{displayEmployee.bitbucket.lastCommit}</span>
             </div>
           </div>
         </div>
       </div>
+        </>
+      )}
     </aside>
   );
 };

@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, AdaptiveDpr, AdaptiveEvents } from '@react-three/drei';
 import * as THREE from 'three';
-import type { Squad, Employee } from '../../types';
+import type { Squad, Employee, GraphicMode } from '../../types';
 import { OfficeFloor } from './OfficeFloor';
 import { DeskUnit } from './DeskUnit';
 import { AvatarCharacter } from './AvatarCharacter';
@@ -16,6 +16,7 @@ interface OfficeSceneProps {
   onClearSelection: () => void;
   filterMode: 'ALL' | 'BLOCKERS' | 'IDLE';
   isAsleep?: boolean;
+  graphicMode?: GraphicMode;
 }
 
 export const OfficeScene: React.FC<OfficeSceneProps> = ({
@@ -27,6 +28,7 @@ export const OfficeScene: React.FC<OfficeSceneProps> = ({
   onClearSelection,
   filterMode,
   isAsleep = false,
+  graphicMode = 'quality',
 }) => {
   const controlsRef = useRef<any>(null);
 
@@ -41,21 +43,24 @@ export const OfficeScene: React.FC<OfficeSceneProps> = ({
     }
   }, [selectedEmployee, selectedSquad]);
 
+  const isPerformance = graphicMode === 'performance';
+
   return (
     <div className="w-full h-full relative bg-[#e2e8f0]">
       <Canvas
+        key={graphicMode} // Recreates canvas cleanly when switching performance vs quality
         frameloop={isAsleep ? 'never' : 'always'}
         performance={{ min: 0.5 }}
-        dpr={[1, 1.2]}
+        dpr={isPerformance ? [0.75, 1.0] : [1.0, 1.5]}
         gl={{
-          powerPreference: 'high-performance',
-          precision: 'mediump', // 16-bit precision: 2x faster fragment shader math on Intel/AMD GPUs
-          antialias: false,     // Eliminates multisample renderbuffer overhead
+          powerPreference: isPerformance ? 'low-power' : 'high-performance',
+          precision: isPerformance ? 'mediump' : 'highp',
+          antialias: !isPerformance,
           stencil: false,
           depth: true,
         }}
-        shadows={{ type: THREE.BasicShadowMap }} // Ultra-fast lightweight shadow sampling
-        camera={{ position: [1.0, 14, 16], fov: 40, near: 0.1, far: 80 }}
+        shadows={isPerformance ? false : { type: THREE.PCFSoftShadowMap }}
+        camera={{ position: [2.0, 19, 24], fov: 44, near: 0.1, far: 150 }}
         onPointerMissed={(e) => {
           if (e.target === (e.currentTarget as any).querySelector('canvas')) {
             onClearSelection();
@@ -63,51 +68,51 @@ export const OfficeScene: React.FC<OfficeSceneProps> = ({
         }}
       >
         {/* Adaptive Dynamic Performance Helpers */}
-        <AdaptiveDpr pixelated />
+        <AdaptiveDpr pixelated={isPerformance} />
         <AdaptiveEvents />
 
-        {/* Modern Bright Office Lighting */}
-        <ambientLight intensity={1.2} color="#ffffff" />
+        {/* Ambient Office Lighting */}
+        <ambientLight intensity={isPerformance ? 1.4 : 1.2} color="#ffffff" />
 
-        {/* Natural Daylight Coming from the RIGHT WINDOWS */}
+        {/* Directional Sun/Window Light from Right Windows */}
         <directionalLight
-          position={[16, 15, 2]}
-          intensity={1.4}
+          position={[16, 20, 4]}
+          intensity={isPerformance ? 1.0 : 1.4}
           color="#fffbeb"
-          castShadow
-          shadow-mapSize-width={512}
-          shadow-mapSize-height={512}
-          shadow-camera-far={40}
+          castShadow={!isPerformance}
+          shadow-mapSize-width={isPerformance ? 256 : 1024}
+          shadow-mapSize-height={isPerformance ? 256 : 1024}
+          shadow-camera-far={60}
           shadow-camera-left={-14}
           shadow-camera-right={14}
-          shadow-camera-top={14}
-          shadow-camera-bottom={-14}
-          shadow-bias={-0.001}
+          shadow-camera-top={20}
+          shadow-camera-bottom={-20}
+          shadow-bias={-0.0005}
         />
 
         {/* Soft Warm Fill Light */}
-        <directionalLight position={[-10, 12, -5]} intensity={0.5} color="#fef3c7" />
+        <directionalLight position={[-14, 16, -6]} intensity={0.5} color="#fef3c7" />
 
         {/* Orbit Controls with bounded angles */}
         <OrbitControls
           ref={controlsRef}
-          target={[1.0, 0, 0]}
+          target={[selectedSquad ? selectedSquad.zoneCenter[0] : 1.0, 0, selectedSquad ? selectedSquad.zoneCenter[2] : 0]}
           makeDefault
           enableDamping
           dampingFactor={0.08}
           maxPolarAngle={Math.PI / 2.2}
-          minDistance={5}
-          maxDistance={35}
+          minDistance={4}
+          maxDistance={50}
         />
 
-        {/* Real Office Floor Blueprint from BRI Photo */}
+        {/* Real Office Floor Blueprint from BRI Photo for all squads */}
         <OfficeFloor
           squads={squads}
           onSelectSquad={onSelectSquad}
           selectedSquadId={selectedSquad?.id || null}
         />
 
-        {/* Render Desks and Avatars for Squad QCash */}
+        {/* Render Desks and Avatars for all Squads */}
         {squads.map((squad) =>
           squad.members.map((member) => {
             // Check filter

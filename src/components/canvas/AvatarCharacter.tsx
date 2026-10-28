@@ -206,7 +206,7 @@ export const AvatarCharacter: React.FC<AvatarCharacterProps> = ({
           position={[0, 1.55, 0]}
           center
           distanceFactor={14}
-          zIndexRange={[100, 0]}
+          zIndexRange={[15, 0]}
           style={{ pointerEvents: 'auto' }}
         >
           <div
