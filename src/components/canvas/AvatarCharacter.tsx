@@ -56,7 +56,7 @@ export const AvatarCharacter: React.FC<AvatarCharacterProps> = ({
   };
 
   // Performance win: Only mount heavy DOM <Html> when actually needed (Blocker, Hovered, or Selected)
-  const shouldRenderHtml = employee.isBlocker || hovered || isSelected;
+  const shouldRenderHtml = hovered || isSelected;
 
   return (
     <group
@@ -194,8 +194,8 @@ export const AvatarCharacter: React.FC<AvatarCharacterProps> = ({
       {!shouldRenderHtml && (
         <group position={[0, 1.45, 0]}>
           <mesh>
-            <boxGeometry args={[0.12, 0.06, 0.06]} />
-            <meshBasicMaterial color={employee.avatarColor} />
+            <boxGeometry args={employee.isBlocker ? [0.15, 0.15, 0.15] : [0.12, 0.06, 0.06]} />
+            <meshBasicMaterial color={employee.isBlocker ? '#ef4444' : employee.avatarColor} />
           </mesh>
         </group>
       )}

@@ -103,7 +103,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {/* Squad Switcher Dropdown */}
           {isSquadDropdownOpen && (
-            <div className="absolute top-full left-0 mt-2 w-80 bg-slate-900/95 backdrop-blur-xl border border-slate-700 rounded-2xl shadow-2xl p-2 z-50 space-y-1 animate-in fade-in zoom-in-95 duration-150">
+            <div className="absolute top-full left-0 mt-2 w-84 max-h-[75vh] overflow-y-auto bg-slate-900/95 backdrop-blur-xl border border-slate-700 rounded-2xl shadow-2xl p-2 z-50 space-y-1 animate-in fade-in zoom-in-95 duration-150">
               <div className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400 border-b border-slate-800">
                 PILIH SQUAD AKTIF
               </div>

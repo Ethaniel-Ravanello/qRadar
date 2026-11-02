@@ -60,7 +60,7 @@ export const OfficeScene: React.FC<OfficeSceneProps> = ({
           depth: true,
         }}
         shadows={isPerformance ? false : { type: THREE.PCFSoftShadowMap }}
-        camera={{ position: [2.0, 19, 24], fov: 44, near: 0.1, far: 150 }}
+        camera={{ position: [2.0, 26, 36], fov: 46, near: 0.1, far: 200 }}
         onPointerMissed={(e) => {
           if (e.target === (e.currentTarget as any).querySelector('canvas')) {
             onClearSelection();
@@ -76,17 +76,17 @@ export const OfficeScene: React.FC<OfficeSceneProps> = ({
 
         {/* Directional Sun/Window Light from Right Windows */}
         <directionalLight
-          position={[16, 20, 4]}
+          position={[18, 26, 0]}
           intensity={isPerformance ? 1.0 : 1.4}
           color="#fffbeb"
           castShadow={!isPerformance}
           shadow-mapSize-width={isPerformance ? 256 : 1024}
           shadow-mapSize-height={isPerformance ? 256 : 1024}
-          shadow-camera-far={60}
-          shadow-camera-left={-14}
-          shadow-camera-right={14}
-          shadow-camera-top={20}
-          shadow-camera-bottom={-20}
+          shadow-camera-far={80}
+          shadow-camera-left={-16}
+          shadow-camera-right={16}
+          shadow-camera-top={28}
+          shadow-camera-bottom={-28}
           shadow-bias={-0.0005}
         />
 
@@ -101,8 +101,8 @@ export const OfficeScene: React.FC<OfficeSceneProps> = ({
           enableDamping
           dampingFactor={0.08}
           maxPolarAngle={Math.PI / 2.2}
-          minDistance={4}
-          maxDistance={50}
+          minDistance={3}
+          maxDistance={85}
         />
 
         {/* Real Office Floor Blueprint from BRI Photo for all squads */}

@@ -172,7 +172,7 @@ export const App: React.FC = () => {
     setSelectedEmployee(null);
     const [cx, , cz] = selectedSquad.zoneCenter;
     if (!pod) {
-      setSelectedSquad({ ...selectedSquad, zoneCenter: [cx, 0, cz] });
+      setSelectedSquad({ ...selectedSquad, zoneCenter: [1.0, 0, 0] });
     } else if (pod === 'BE') {
       setSelectedSquad({ ...selectedSquad, zoneCenter: [cx + 5.0, 0, cz - 0.9] });
     } else if (pod === 'QA') {
