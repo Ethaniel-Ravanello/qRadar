@@ -3,6 +3,8 @@ import { INITIAL_SQUADS } from './data/officeData';
 import type { Squad, Employee, GraphicMode } from './types';
 import { OfficeScene } from './components/canvas/OfficeScene';
 import { Navbar } from './components/ui/Navbar';
+import { LeftToolbar } from './components/ui/LeftToolbar';
+import { PlaybookSidebar } from './components/ui/PlaybookSidebar';
 import { MemberDrawer } from './components/ui/MemberDrawer';
 import { SquadModal } from './components/ui/SquadModal';
 import { BottomControls } from './components/ui/BottomControls';
@@ -54,8 +56,8 @@ export const App: React.FC = () => {
   const [selectedSquad, setSelectedSquad] = useState<Squad>(() => INITIAL_SQUADS[0]);
   const [modalSquad, setModalSquad] = useState<Squad | null>(null);
   const [filterMode, setFilterMode] = useState<'ALL' | 'BLOCKERS' | 'IDLE'>('ALL');
-  const [isLiveApi, setIsLiveApi] = useState<boolean>(false);
   const [soundEnabled, setSoundEnabled] = useState<boolean>(true);
+  const [isPlaybookOpen, setIsPlaybookOpen] = useState<boolean>(true);
 
   // Synchronize squads and selectedSquad during render if stale from HMR/state preservation
   if (
@@ -81,12 +83,19 @@ export const App: React.FC = () => {
   // --- ECO MODE & AFK DETECTION (30 SECONDS & TAB OUT) ---
   const [isAsleep, setIsAsleep] = useState<boolean>(false);
   const afkTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const isAsleepRef = useRef<boolean>(false);
+
+  // Keep a ref in sync so the listener effect can read the latest value
+  // without needing isAsleep in its dependency array (which would otherwise
+  // tear down and re-add every window listener on each sleep/wake).
+  useEffect(() => {
+    isAsleepRef.current = isAsleep;
+  }, [isAsleep]);
 
   const resetAfkTimer = useCallback(() => {
     if (afkTimerRef.current) {
       clearTimeout(afkTimerRef.current);
     }
-    // Set 30 seconds timer for AFK
     afkTimerRef.current = setTimeout(() => {
       setIsAsleep(true);
     }, 30000);
@@ -101,7 +110,7 @@ export const App: React.FC = () => {
     resetAfkTimer();
 
     const onUserActivity = () => {
-      if (!isAsleep) {
+      if (!isAsleepRef.current) {
         resetAfkTimer();
       }
     };
@@ -135,7 +144,7 @@ export const App: React.FC = () => {
       window.removeEventListener('focus', handleWindowFocus);
       if (afkTimerRef.current) clearTimeout(afkTimerRef.current);
     };
-  }, [isAsleep, resetAfkTimer]);
+  }, [resetAfkTimer]);
 
   // Helper sound wrapper
   const triggerSound = useCallback(
@@ -145,45 +154,47 @@ export const App: React.FC = () => {
     [soundEnabled]
   );
 
-  // Select employee from 3D scene
-  const handleSelectEmployee = (emp: Employee) => {
-    const empSquad = squads.find((s) => s.members.some((m) => m.id === emp.id)) || selectedSquad;
-    setSelectedSquad(empSquad);
-    setSelectedEmployee(emp);
-    triggerSound(emp.isBlocker ? 'alert' : 'click');
-  };
+  // Select employee from 3D scene or UI
+  const handleSelectEmployee = useCallback(
+    (emp: Employee) => {
+      setSelectedSquad((prevSquad) => {
+        const empSquad = squads.find((s) => s.members.some((m) => m.id === emp.id)) || prevSquad;
+        return empSquad;
+      });
+      setSelectedEmployee(emp);
+      triggerSound(emp.isBlocker ? 'alert' : 'click');
+    },
+    [squads, triggerSound]
+  );
 
-  // Select squad (from Dropdown or 3D banner)
-  const handleSelectSquad = (squad: Squad) => {
-    setSelectedSquad(squad);
-    setSelectedEmployee(null);
-    triggerSound('click');
-  };
+  const handleSelectEmployeeById = useCallback(
+    (empId: string) => {
+      const emp = selectedSquad.members.find((m) => m.id === empId);
+      if (emp) {
+        handleSelectEmployee(emp);
+      }
+    },
+    [selectedSquad, handleSelectEmployee]
+  );
 
-  // Select squad banner from 3D scene -> open detailed approval modal
-  const handleSelectSquadBanner = (squad: Squad) => {
-    setSelectedSquad(squad);
-    setModalSquad(squad);
-    triggerSound('click');
-  };
+  // Select squad
+  const handleSelectSquad = useCallback(
+    (squad: Squad) => {
+      setSelectedSquad(squad);
+      setSelectedEmployee(null);
+      triggerSound('click');
+    },
+    [triggerSound]
+  );
 
-  // Pod Jump Navigation relative to active squad's zone (depan-belakang along Z)
-  const handleSelectPodPreset = (pod: string | null) => {
-    setSelectedEmployee(null);
-    const [cx, , cz] = selectedSquad.zoneCenter;
-    if (!pod) {
-      setSelectedSquad({ ...selectedSquad, zoneCenter: [1.0, 0, 0] });
-    } else if (pod === 'BE') {
-      setSelectedSquad({ ...selectedSquad, zoneCenter: [cx + 5.0, 0, cz - 0.9] });
-    } else if (pod === 'QA') {
-      setSelectedSquad({ ...selectedSquad, zoneCenter: [cx + 5.0, 0, cz + 0.9] });
-    } else if (pod === 'FE') {
-      setSelectedSquad({ ...selectedSquad, zoneCenter: [cx - 4.9, 0, cz + 0.9] });
-    } else if (pod === 'LEAD') {
-      setSelectedSquad({ ...selectedSquad, zoneCenter: [cx - 4.9, 0, cz - 0.9] });
-    }
-    triggerSound('click');
-  };
+  const handleSelectSquadBanner = useCallback(
+    (squad: Squad) => {
+      setSelectedSquad(squad);
+      setModalSquad(squad);
+      triggerSound('click');
+    },
+    [triggerSound]
+  );
 
   // Resolve Blocker
   const handleResolveBlocker = (empId: string) => {
@@ -204,7 +215,6 @@ export const App: React.FC = () => {
       }))
     );
 
-    // Update selected employee view
     if (selectedEmployee && selectedEmployee.id === empId) {
       setSelectedEmployee((prev) =>
         prev
@@ -269,9 +279,9 @@ export const App: React.FC = () => {
     triggerSound('click');
   };
 
-  const handleClearSelection = () => {
+  const handleClearSelection = useCallback(() => {
     setSelectedEmployee(null);
-  };
+  }, []);
 
   const handleResetView = () => {
     setSelectedSquad(INITIAL_SQUADS[0]);
@@ -280,46 +290,56 @@ export const App: React.FC = () => {
     triggerSound('click');
   };
 
-  const handleToggleLiveApi = () => {
-    setIsLiveApi((prev) => !prev);
-    triggerSound('click');
-  };
-
   const activeEmployeeSquad = selectedEmployee
     ? squads.find((s) => s.members.some((m) => m.id === selectedEmployee.id)) || selectedSquad
     : selectedSquad;
 
   return (
-    <main className="w-screen h-screen relative overflow-hidden bg-[#e5dfd3] font-sans select-none">
-      {/* Top Navigation & KPI Radar */}
+    <main className="w-screen h-screen relative overflow-hidden bg-[#07090e] font-sans select-none">
+      {/* Top Header: Golden Monospace HQ Title & Squad Pills (Hermes & Slytherin) */}
       <Navbar
         squads={squads}
         activeSquad={selectedSquad}
         onSelectSquad={handleSelectSquad}
-        filterMode={filterMode}
-        onFilterChange={setFilterMode}
-        onSelectPodPreset={handleSelectPodPreset}
-        onOpenSquadModal={() => setModalSquad(selectedSquad)}
-        isLiveApi={isLiveApi}
-        onToggleLiveApi={handleToggleLiveApi}
         graphicMode={graphicMode}
         onGraphicModeChange={handleGraphicModeChange}
       />
 
-      {/* 3D WebGL Canvas with frameloop eco mode */}
-      <OfficeScene
-        squads={squads}
-        selectedEmployee={selectedEmployee}
-        selectedSquad={selectedSquad}
-        onSelectEmployee={handleSelectEmployee}
-        onSelectSquad={handleSelectSquadBanner}
-        onClearSelection={handleClearSelection}
+      {/* Left Vertical Toolbar (Matching Reference Image) */}
+      <LeftToolbar
+        onResetView={handleResetView}
         filterMode={filterMode}
-        isAsleep={isAsleep}
-        graphicMode={graphicMode}
+        onFilterChange={setFilterMode}
+        soundEnabled={soundEnabled}
+        onToggleSound={() => setSoundEnabled((prev) => !prev)}
+        onOpenPlaybooks={() => setIsPlaybookOpen(true)}
       />
 
-      {/* Slide-out Employee Detail Drawer (Jira, Bitbucket, Blocker) with smooth animation & z-50 */}
+      {/* Right Headquarters Command & Playbooks Panel (Matching Reference Image) */}
+      <PlaybookSidebar
+        squad={selectedSquad}
+        onOpenSquadModal={() => setModalSquad(selectedSquad)}
+        onSelectEmployeeById={handleSelectEmployeeById}
+        isOpen={isPlaybookOpen}
+        onToggleOpen={() => setIsPlaybookOpen((prev) => !prev)}
+      />
+
+      {/* 3D WebGL Canvas: Isometric Headquarters Room */}
+      <div className="w-full h-full">
+        <OfficeScene
+          squads={squads}
+          selectedEmployee={selectedEmployee}
+          selectedSquad={selectedSquad}
+          onSelectEmployee={handleSelectEmployee}
+          onSelectSquad={handleSelectSquadBanner}
+          onClearSelection={handleClearSelection}
+          filterMode={filterMode}
+          isAsleep={isAsleep}
+          graphicMode={graphicMode}
+        />
+      </div>
+
+      {/* Slide-out Employee Detail Drawer (Jira, Bitbucket, Blocker) */}
       <MemberDrawer
         employee={selectedEmployee}
         squad={activeEmployeeSquad}
@@ -334,24 +354,13 @@ export const App: React.FC = () => {
         onApproveStep={handleApproveStep}
       />
 
-      {/* Bottom Controls & Legend */}
+      {/* Bottom Minimalist Status Bar */}
       <BottomControls
         onResetView={handleResetView}
         soundEnabled={soundEnabled}
         onToggleSound={() => setSoundEnabled((prev) => !prev)}
+        onOpenSquadModal={() => setModalSquad(selectedSquad)}
       />
-
-      {/* Quick Eco Mode Sleep Button at Bottom-Right */}
-      <div className="absolute bottom-4 right-28 z-30 pointer-events-auto">
-        <button
-          onClick={() => setIsAsleep(true)}
-          className="px-3 py-2 rounded-2xl bg-slate-900/90 hover:bg-slate-800 text-slate-300 hover:text-amber-300 border border-slate-700/80 shadow-2xl text-xs font-semibold flex items-center gap-1.5 transition backdrop-blur-md"
-          title="Pause 3D Render & Save Battery/GPU"
-        >
-          <span>💤</span>
-          <span className="hidden sm:inline">Sleep Mode</span>
-        </button>
-      </div>
 
       {/* Eco Mode Frosted Blur Overlay when Asleep */}
       <EcoModeOverlay isAsleep={isAsleep} onWakeUp={handleWakeUp} />

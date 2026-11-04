@@ -22,6 +22,8 @@ export interface Employee {
   id: string;
   pn: string;
   name: string;
+  shortName?: string;
+  isStanding?: boolean;
   role: Role;
   avatarColor: string;
   deskPosition: [number, number, number];
@@ -68,4 +70,13 @@ export interface Squad {
   zoneColor: string;
   metrics: SquadMetrics;
   members: Employee[];
+}
+
+export interface Playbook {
+  id: string;
+  title: string;
+  schedule: string;
+  description: string;
+  status: 'active' | 'ready' | 'running';
+  tag: string;
 }

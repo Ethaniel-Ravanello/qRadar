@@ -1,4 +1,4 @@
-import type { Squad } from '../types';
+import type { Squad, Playbook } from '../types';
 
 export const INITIAL_SQUADS: Squad[] = [
   {
@@ -7,9 +7,9 @@ export const INITIAL_SQUADS: Squad[] = [
     "alias": "Hermes",
     "leadPN": "PN 90185980 (Reza Pratama)",
     "sprint": "Sprint 28 (Day 7/10)",
-    "sprintGoal": "Fast Checkout QRIS Cross-Border & Latency Callback Settlement <80ms",
+    "sprintGoal": "Fast Checkout QRIS Cross-Border & Settlement Latency <80ms",
     "zoneCenter": [
-      1,
+      10,
       0,
       18.9
     ],
@@ -37,15 +37,17 @@ export const INITIAL_SQUADS: Squad[] = [
     },
     "members": [
       {
-        "id": "hermes-sl",
-        "pn": "90185980",
+        "id": "squad-hermes-in-1",
+        "pn": "901010",
         "name": "Reza Pratama",
+        "shortName": "Reza",
+        "isStanding": false,
         "role": "SL",
         "avatarColor": "#f59e0b",
         "deskPosition": [
-          -6,
+          4.8,
           0,
-          18
+          18.49
         ],
         "rotationY": 3.141592653589793,
         "status": "active",
@@ -53,39 +55,34 @@ export const INITIAL_SQUADS: Squad[] = [
         "isBlocker": false,
         "jiraTickets": [
           {
-            "key": "HRM-1100",
-            "title": "Sprint Retrospective & RFC Deployment Review",
-            "status": "In Progress",
-            "storyPoints": 3,
-            "priority": "High"
-          },
-          {
-            "key": "HRM-1092",
-            "title": "Secman Vulnerability Assessment Tracking",
+            "key": "HER-101",
+            "title": "Task: Sprint 28 on-track! Target RFC deployment wee",
             "status": "In Progress",
             "storyPoints": 5,
-            "priority": "Highest"
+            "priority": "High"
           }
         ],
         "bitbucket": {
-          "repo": "hermes-orchestrator",
-          "branch": "release/v2.8.0",
-          "activePR": "PR #142: Release candidate v2.8.0",
-          "prStatus": "OPEN",
-          "lastCommit": "30 mins ago by rpratama",
+          "repo": "squad-hermes-service",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "1 hour ago",
           "sonarScore": 94
         }
       },
       {
-        "id": "hermes-sm",
-        "pn": "90131102",
+        "id": "squad-hermes-in-2",
+        "pn": "901011",
         "name": "Andi Wijaya",
+        "shortName": "Andi",
+        "isStanding": false,
         "role": "SM",
         "avatarColor": "#8b5cf6",
         "deskPosition": [
-          -3.8,
+          6.4,
           0,
-          18
+          18.49
         ],
         "rotationY": 3.141592653589793,
         "status": "active",
@@ -93,98 +90,104 @@ export const INITIAL_SQUADS: Squad[] = [
         "isBlocker": false,
         "jiraTickets": [
           {
-            "key": "HRM-1110",
-            "title": "BRD Cross-border QRIS Thailand Settlement",
-            "status": "Done",
+            "key": "HER-102",
+            "title": "Task: User story sprint 29 backlog grooming sudah s",
+            "status": "In Progress",
             "storyPoints": 5,
             "priority": "High"
           }
         ],
         "bitbucket": {
-          "repo": "hermes-product-docs",
+          "repo": "squad-hermes-service",
           "branch": "main",
           "activePR": null,
           "prStatus": null,
-          "lastCommit": "Yesterday by awijaya",
-          "sonarScore": 98
+          "lastCommit": "1 hour ago",
+          "sonarScore": 94
         }
       },
       {
-        "id": "hermes-fe1",
-        "pn": "90192831",
-        "name": "Nadia Salsabila",
-        "role": "FE",
-        "avatarColor": "#ec4899",
+        "id": "squad-hermes-in-3",
+        "pn": "901012",
+        "name": "Dewi Anggraini",
+        "shortName": "Dewi",
+        "isStanding": false,
+        "role": "SM",
+        "avatarColor": "#10b981",
         "deskPosition": [
-          -6,
+          4.8,
           0,
-          19.8
+          19.31
         ],
         "rotationY": 0,
         "status": "active",
-        "speechBubble": "🎨 Merchant Soundbox Audio Notification integration ready.",
+        "speechBubble": "📋 RFC CAB release governance checklist & deployment plan ready.",
         "isBlocker": false,
         "jiraTickets": [
           {
-            "key": "HRM-1095",
-            "title": "Merchant QRIS Dynamic Amount Keypad UI",
-            "status": "In Review",
+            "key": "HER-103",
+            "title": "Task: 📋 RFC CAB release governance checklist & dep",
+            "status": "In Progress",
             "storyPoints": 5,
             "priority": "High"
           }
         ],
         "bitbucket": {
-          "repo": "hermes-merchant-web",
-          "branch": "feat/soundbox-audio-sync",
-          "activePR": "PR #88: Add audio playback feedback",
-          "prStatus": "OPEN",
-          "lastCommit": "2 hours ago by nsalsa",
-          "sonarScore": 95
+          "repo": "squad-hermes-service",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "1 hour ago",
+          "sonarScore": 94
         }
       },
       {
-        "id": "hermes-fe2",
-        "pn": "90188201",
-        "name": "Kevin Sanjaya",
+        "id": "squad-hermes-in-4",
+        "pn": "901013",
+        "name": "Alisha Zahra",
+        "shortName": "Alisha",
+        "isStanding": false,
         "role": "FE",
-        "avatarColor": "#db2777",
+        "avatarColor": "#a855f7",
         "deskPosition": [
-          -3.8,
+          6.4,
           0,
-          19.8
+          19.31
         ],
         "rotationY": 0,
         "status": "active",
-        "speechBubble": "✨ QRIS Scanner Camera auto-focus & dark mode UI tested.",
+        "speechBubble": "🎨 Design token system & merchant dynamic keypad UI v2.8 ready.",
         "isBlocker": false,
         "jiraTickets": [
           {
-            "key": "HRM-1098",
-            "title": "Dynamic QR Code Generator SVG & Canvas Render",
-            "status": "Done",
+            "key": "HER-104",
+            "title": "Task: 🎨 Design token system & merchant dynamic key",
+            "status": "In Progress",
             "storyPoints": 5,
             "priority": "High"
           }
         ],
         "bitbucket": {
-          "repo": "hermes-customer-app",
-          "branch": "fix/camera-permission-modal",
-          "activePR": "PR #131: Android 14 camera check",
-          "prStatus": "OPEN",
-          "lastCommit": "3 hours ago by ksanjaya",
-          "sonarScore": 91
+          "repo": "squad-hermes-service",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "1 hour ago",
+          "sonarScore": 94
         }
       },
       {
-        "id": "hermes-be1",
-        "pn": "90144120",
+        "id": "squad-hermes-out-1",
+        "pn": "901020",
         "name": "Dimas Ardiansyah",
+        "shortName": "Dimas",
+        "isStanding": false,
         "role": "BE",
         "avatarColor": "#3b82f6",
         "deskPosition": [
-          3,
+          8.8,
           0,
-          18
+          18.49
         ],
         "rotationY": 3.141592653589793,
         "status": "blocked",
@@ -192,32 +195,34 @@ export const INITIAL_SQUADS: Squad[] = [
         "isBlocker": true,
         "jiraTickets": [
           {
-            "key": "HRM-1088",
-            "title": "Adapter Sandbox Switcher Settlement",
+            "key": "HER-201",
+            "title": "Task: ⚠️ Blocker: Menunggu response API Switcher Mo",
             "status": "In Progress",
-            "storyPoints": 8,
+            "storyPoints": 5,
             "priority": "Highest"
           }
         ],
         "bitbucket": {
-          "repo": "hermes-payment-gateway",
-          "branch": "feat/switcher-sandbox",
-          "activePR": "PR #209: Support dynamic settlement response",
-          "prStatus": "OPEN",
-          "lastCommit": "1 hour ago by dimas_a",
-          "sonarScore": 88
+          "repo": "squad-hermes-core",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
         }
       },
       {
-        "id": "hermes-be2",
-        "pn": "90152331",
+        "id": "squad-hermes-out-2",
+        "pn": "901021",
         "name": "Rian Hidayat",
+        "shortName": "Rian",
+        "isStanding": false,
         "role": "BE",
         "avatarColor": "#2563eb",
         "deskPosition": [
-          5.1,
+          10.4,
           0,
-          18
+          18.49
         ],
         "rotationY": 3.141592653589793,
         "status": "active",
@@ -225,65 +230,209 @@ export const INITIAL_SQUADS: Squad[] = [
         "isBlocker": false,
         "jiraTickets": [
           {
-            "key": "HRM-1090",
-            "title": "Kafka Consumer Tuning for High-Volume Peak",
-            "status": "In Review",
-            "storyPoints": 5,
-            "priority": "High"
-          }
-        ],
-        "bitbucket": {
-          "repo": "hermes-webhook-worker",
-          "branch": "perf/kafka-consumer-tuning",
-          "activePR": "PR #97: Batch commit partition Kafka",
-          "prStatus": "OPEN",
-          "lastCommit": "45 mins ago by rhidayat",
-          "sonarScore": 92
-        }
-      },
-      {
-        "id": "hermes-qa1",
-        "pn": "90177219",
-        "name": "Budi Santoso",
-        "role": "QA",
-        "avatarColor": "#10b981",
-        "deskPosition": [
-          3,
-          0,
-          19.8
-        ],
-        "rotationY": 0,
-        "status": "testing",
-        "speechBubble": "🧪 Running automated regression 120 test cases on Payment API.",
-        "isBlocker": false,
-        "jiraTickets": [
-          {
-            "key": "HRM-1102",
-            "title": "Automation Test Suite: Regression Payment API",
+            "key": "HER-202",
+            "title": "Task: 🚀 Webhook callback retry latency tembus 45ms",
             "status": "In Progress",
             "storyPoints": 5,
             "priority": "High"
           }
         ],
         "bitbucket": {
-          "repo": "hermes-automation-tests",
-          "branch": "test/sprint-28-suite",
+          "repo": "squad-hermes-core",
+          "branch": "main",
           "activePR": null,
           "prStatus": null,
-          "lastCommit": "4 hours ago by budi_s",
+          "lastCommit": "30 mins ago",
           "sonarScore": 92
         }
       },
       {
-        "id": "hermes-qa2",
-        "pn": "90165412",
+        "id": "squad-hermes-out-3",
+        "pn": "901022",
+        "name": "Bayu Samudra",
+        "shortName": "Bayu",
+        "isStanding": false,
+        "role": "BE",
+        "avatarColor": "#0284c7",
+        "deskPosition": [
+          12,
+          0,
+          18.49
+        ],
+        "rotationY": 3.141592653589793,
+        "status": "active",
+        "speechBubble": "⚡ Redis cluster replica sync latency normal <15ms.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "HER-203",
+            "title": "Task: ⚡ Redis cluster replica sync latency normal <",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-hermes-core",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
+        }
+      },
+      {
+        "id": "squad-hermes-out-4",
+        "pn": "901023",
+        "name": "Fahmi Nugraha",
+        "shortName": "Fahmi",
+        "isStanding": false,
+        "role": "BE",
+        "avatarColor": "#0369a1",
+        "deskPosition": [
+          13.6,
+          0,
+          18.49
+        ],
+        "rotationY": 3.141592653589793,
+        "status": "active",
+        "speechBubble": "☸️ K8s pod autoscaler qcash-api scaled to 12 replicas ready for peak.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "HER-204",
+            "title": "Task: ☸️ K8s pod autoscaler qcash-api scaled to 12 ",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-hermes-core",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
+        }
+      },
+      {
+        "id": "squad-hermes-out-5",
+        "pn": "901024",
+        "name": "Nadia Salsabila",
+        "shortName": "Nadia",
+        "isStanding": false,
+        "role": "FE",
+        "avatarColor": "#ec4899",
+        "deskPosition": [
+          8.8,
+          0,
+          19.31
+        ],
+        "rotationY": 0,
+        "status": "active",
+        "speechBubble": "🎨 Merchant Soundbox Audio Notification integration ready.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "HER-205",
+            "title": "Task: 🎨 Merchant Soundbox Audio Notification integ",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-hermes-core",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
+        }
+      },
+      {
+        "id": "squad-hermes-out-6",
+        "pn": "901025",
+        "name": "Kevin Sanjaya",
+        "shortName": "Kevin",
+        "isStanding": false,
+        "role": "FE",
+        "avatarColor": "#06b6d4",
+        "deskPosition": [
+          10.4,
+          0,
+          19.31
+        ],
+        "rotationY": 0,
+        "status": "active",
+        "speechBubble": "✨ QRIS Scanner Camera auto-focus & dark mode UI tested.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "HER-206",
+            "title": "Task: ✨ QRIS Scanner Camera auto-focus & dark mode ",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-hermes-core",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
+        }
+      },
+      {
+        "id": "squad-hermes-out-7",
+        "pn": "901026",
+        "name": "Budi Santoso",
+        "shortName": "Budi",
+        "isStanding": false,
+        "role": "QA",
+        "avatarColor": "#10b981",
+        "deskPosition": [
+          12,
+          0,
+          19.31
+        ],
+        "rotationY": 0,
+        "status": "active",
+        "speechBubble": "🧪 Running automated regression 120 test cases on Payment API.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "HER-207",
+            "title": "Task: 🧪 Running automated regression 120 test case",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-hermes-core",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
+        }
+      },
+      {
+        "id": "squad-hermes-out-8",
+        "pn": "901027",
         "name": "Siti Rahma",
+        "shortName": "Siti",
+        "isStanding": false,
         "role": "QA",
         "avatarColor": "#059669",
         "deskPosition": [
-          5.1,
+          13.6,
           0,
-          19.8
+          19.31
         ],
         "rotationY": 0,
         "status": "blocked",
@@ -291,336 +440,35 @@ export const INITIAL_SQUADS: Squad[] = [
         "isBlocker": true,
         "jiraTickets": [
           {
-            "key": "HRM-1108",
-            "title": "BUG P1: High-value transaction timeout > 5000ms",
+            "key": "HER-208",
+            "title": "Task: ⚠️ Defect P1: Callback timeout saat transaksi",
             "status": "In Progress",
-            "storyPoints": 8,
+            "storyPoints": 5,
             "priority": "Highest"
           }
         ],
         "bitbucket": {
-          "repo": "hermes-perf-k6",
-          "branch": "fix/high-value-timeout-test",
-          "activePR": null,
-          "prStatus": null,
-          "lastCommit": "1 hour ago by srahma",
-          "sonarScore": 89
-        }
-      }
-    ]
-  },
-  {
-    "id": "squad-red",
-    "name": "Row 2: Squad Red (Risk, Fraud & Security)",
-    "alias": "Red",
-    "leadPN": "PN 90172031 (Bambang Soediro)",
-    "sprint": "Sprint 34 (Day 6/10)",
-    "sprintGoal": "Real-time AI Fraud Scoring Engine & Biometric Anti-Spoofing Detection",
-    "zoneCenter": [
-      1,
-      0,
-      14.7
-    ],
-    "zoneColor": "#ef4444",
-    "metrics": {
-      "totalStoryPoints": 85,
-      "completedStoryPoints": 68,
-      "defects": {
-        "p1": 1,
-        "p2": 1,
-        "p3": 2
-      },
-      "approvals": {
-        "brd": true,
-        "sitSignOff": true,
-        "uatSignOff": true,
-        "secmanSignOff": true,
-        "rfcDeployment": false
-      },
-      "pipeline": {
-        "stage": "SECMAN",
-        "health": "green",
-        "sonarCoverage": 96.2
-      }
-    },
-    "members": [
-      {
-        "id": "red-sl",
-        "pn": "90172031",
-        "name": "Bambang Soediro",
-        "role": "SL",
-        "avatarColor": "#f59e0b",
-        "deskPosition": [
-          -6,
-          0,
-          13.8
-        ],
-        "rotationY": 3.141592653589793,
-        "status": "active",
-        "speechBubble": "Fraud model XGBoost v4.1 berhasil lolos pengujian offline.",
-        "isBlocker": false,
-        "jiraTickets": [
-          {
-            "key": "RED-801",
-            "title": "Model Risk Management (MRM) Sign-Off Presentation",
-            "status": "Done",
-            "storyPoints": 5,
-            "priority": "High"
-          }
-        ],
-        "bitbucket": {
-          "repo": "red-fraud-engine",
-          "branch": "release/v4.1.0",
-          "activePR": "PR #310: XGBoost v4.1 inference pipeline",
-          "prStatus": "OPEN",
-          "lastCommit": "1 hour ago by bsoediro",
-          "sonarScore": 96
-        }
-      },
-      {
-        "id": "red-sm",
-        "pn": "90143890",
-        "name": "Indah Kusuma",
-        "role": "SM",
-        "avatarColor": "#8b5cf6",
-        "deskPosition": [
-          -3.8,
-          0,
-          13.8
-        ],
-        "rotationY": 3.141592653589793,
-        "status": "active",
-        "speechBubble": "Review kepatuhan regulasi OJK POJK 24/2023 selesai.",
-        "isBlocker": false,
-        "jiraTickets": [
-          {
-            "key": "RED-815",
-            "title": "OJK Compliance Matrix Gap Analysis",
-            "status": "Done",
-            "storyPoints": 3,
-            "priority": "Medium"
-          }
-        ],
-        "bitbucket": {
-          "repo": "red-compliance-docs",
+          "repo": "squad-hermes-core",
           "branch": "main",
           "activePR": null,
           "prStatus": null,
-          "lastCommit": "3 hours ago by ikusuma",
-          "sonarScore": 99
-        }
-      },
-      {
-        "id": "red-fe1",
-        "pn": "90199120",
-        "name": "Dewi Lestari",
-        "role": "FE",
-        "avatarColor": "#ec4899",
-        "deskPosition": [
-          -6,
-          0,
-          15.6
-        ],
-        "rotationY": 0,
-        "status": "active",
-        "speechBubble": "Dashboard Fraud Analyst alert feed dengan WebSocket sudah live.",
-        "isBlocker": false,
-        "jiraTickets": [
-          {
-            "key": "RED-820",
-            "title": "Real-time WebSocket Live Alert Feed UI",
-            "status": "In Review",
-            "storyPoints": 5,
-            "priority": "High"
-          }
-        ],
-        "bitbucket": {
-          "repo": "red-analyst-portal",
-          "branch": "feat/live-alert-websocket",
-          "activePR": "PR #74: WebSocket alert bell",
-          "prStatus": "OPEN",
-          "lastCommit": "2 hours ago by dlestari",
-          "sonarScore": 94
-        }
-      },
-      {
-        "id": "red-fe2",
-        "pn": "90184431",
-        "name": "Fandi Ahmad",
-        "role": "FE",
-        "avatarColor": "#db2777",
-        "deskPosition": [
-          -3.8,
-          0,
-          15.6
-        ],
-        "rotationY": 0,
-        "status": "active",
-        "speechBubble": "Visualisasi Geo-Mapping IP Suspicious Transactions selesai.",
-        "isBlocker": false,
-        "jiraTickets": [
-          {
-            "key": "RED-825",
-            "title": "Interactive Mapbox IP Geolocation Cluster",
-            "status": "Done",
-            "storyPoints": 5,
-            "priority": "Medium"
-          }
-        ],
-        "bitbucket": {
-          "repo": "red-analyst-portal",
-          "branch": "feat/mapbox-cluster",
-          "activePR": null,
-          "prStatus": null,
-          "lastCommit": "Yesterday by fahmad",
-          "sonarScore": 93
-        }
-      },
-      {
-        "id": "red-be1",
-        "pn": "90151120",
-        "name": "Agus Prasetyo",
-        "role": "BE",
-        "avatarColor": "#3b82f6",
-        "deskPosition": [
-          3,
-          0,
-          13.8
-        ],
-        "rotationY": 3.141592653589793,
-        "status": "active",
-        "speechBubble": "Flink real-time rule engine throughput tembus 12.000 TPS.",
-        "isBlocker": false,
-        "jiraTickets": [
-          {
-            "key": "RED-830",
-            "title": "Apache Flink Stateful Stream Optimization",
-            "status": "In Progress",
-            "storyPoints": 8,
-            "priority": "Highest"
-          }
-        ],
-        "bitbucket": {
-          "repo": "red-stream-processor",
-          "branch": "perf/flink-tuning",
-          "activePR": "PR #108: RocksDB state backend tune",
-          "prStatus": "OPEN",
-          "lastCommit": "40 mins ago by aprasetyo",
-          "sonarScore": 95
-        }
-      },
-      {
-        "id": "red-be2",
-        "pn": "90163301",
-        "name": "Gilang Ramadhan",
-        "role": "BE",
-        "avatarColor": "#2563eb",
-        "deskPosition": [
-          5.1,
-          0,
-          13.8
-        ],
-        "rotationY": 3.141592653589793,
-        "status": "blocked",
-        "speechBubble": "⚠️ Blocker: Redis cluster cache memory spike >95% di staging SIT.",
-        "isBlocker": true,
-        "jiraTickets": [
-          {
-            "key": "RED-834",
-            "title": "BUG: Redis OOM eviction loop during heavy stress",
-            "status": "In Progress",
-            "storyPoints": 8,
-            "priority": "Highest"
-          }
-        ],
-        "bitbucket": {
-          "repo": "red-cache-layer",
-          "branch": "fix/redis-memory-leak",
-          "activePR": "PR #52: Add key TTL on device fingerprints",
-          "prStatus": "OPEN",
-          "lastCommit": "20 mins ago by gramadhan",
-          "sonarScore": 87
-        }
-      },
-      {
-        "id": "red-qa1",
-        "pn": "90175542",
-        "name": "Lestari Handayani",
-        "role": "QA",
-        "avatarColor": "#10b981",
-        "deskPosition": [
-          3,
-          0,
-          15.6
-        ],
-        "rotationY": 0,
-        "status": "testing",
-        "speechBubble": "Penetration testing payload SQL injection & XSS bypass safe.",
-        "isBlocker": false,
-        "jiraTickets": [
-          {
-            "key": "RED-840",
-            "title": "Dynamic Application Security Testing (DAST)",
-            "status": "In Progress",
-            "storyPoints": 5,
-            "priority": "High"
-          }
-        ],
-        "bitbucket": {
-          "repo": "red-security-tests",
-          "branch": "sec/owasp-top-10",
-          "activePR": null,
-          "prStatus": null,
-          "lastCommit": "3 hours ago by lhandayani",
-          "sonarScore": 98
-        }
-      },
-      {
-        "id": "red-qa2",
-        "pn": "90146670",
-        "name": "Rudi Hermawan",
-        "role": "QA",
-        "avatarColor": "#059669",
-        "deskPosition": [
-          5.1,
-          0,
-          15.6
-        ],
-        "rotationY": 0,
-        "status": "active",
-        "speechBubble": "Scenario testing synthetic device spoofing 100% terdeteksi AI.",
-        "isBlocker": false,
-        "jiraTickets": [
-          {
-            "key": "RED-845",
-            "title": "Biometric Anti-Spoofing Scenario Benchmark",
-            "status": "Done",
-            "storyPoints": 5,
-            "priority": "High"
-          }
-        ],
-        "bitbucket": {
-          "repo": "red-security-tests",
-          "branch": "test/biometric-suite",
-          "activePR": null,
-          "prStatus": null,
-          "lastCommit": "Yesterday by rhermawan",
-          "sonarScore": 94
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
         }
       }
     ]
   },
   {
     "id": "squad-slytherin",
-    "name": "Row 3: Squad Slytherin (Core Ledger & Wealth)",
+    "name": "Row 2: Squad Slytherin (Multi-Currency & Vault)",
     "alias": "Slytherin",
     "leadPN": "PN 90164890 (Citra Dewi)",
     "sprint": "Sprint 19 (Day 5/10)",
     "sprintGoal": "Multi-Currency High-Yield Ledger & Vault HSM Key Rotation Compliance",
     "zoneCenter": [
-      1,
+      10,
       0,
-      10.5
+      14.7
     ],
     "zoneColor": "#10b981",
     "metrics": {
@@ -646,15 +494,17 @@ export const INITIAL_SQUADS: Squad[] = [
     },
     "members": [
       {
-        "id": "slytherin-sl",
-        "pn": "90164890",
+        "id": "squad-slytherin-in-1",
+        "pn": "901110",
         "name": "Citra Dewi",
+        "shortName": "Citra",
+        "isStanding": false,
         "role": "SL",
         "avatarColor": "#f59e0b",
         "deskPosition": [
-          -6,
+          4.8,
           0,
-          9.6
+          14.29
         ],
         "rotationY": 3.141592653589793,
         "status": "active",
@@ -662,275 +512,1343 @@ export const INITIAL_SQUADS: Squad[] = [
         "isBlocker": false,
         "jiraTickets": [
           {
-            "key": "SLY-1090",
-            "title": "Multi-Currency Vault Architecture Compliance",
+            "key": "SLY-101",
+            "title": "Task: Audit arsitektur Multi-Currency Ledger bersam",
             "status": "In Progress",
-            "storyPoints": 8,
-            "priority": "Highest"
+            "storyPoints": 5,
+            "priority": "High"
           }
         ],
         "bitbucket": {
-          "repo": "slytherin-ledger-core",
-          "branch": "release/v1.9.0",
-          "activePR": "PR #112: Core ledger release candidate",
-          "prStatus": "OPEN",
-          "lastCommit": "1 hour ago by cdewi",
-          "sonarScore": 97
-        }
-      },
-      {
-        "id": "slytherin-sm",
-        "pn": "90138902",
-        "name": "Bagus Setiawan",
-        "role": "SM",
-        "avatarColor": "#8b5cf6",
-        "deskPosition": [
-          -3.8,
-          0,
-          9.6
-        ],
-        "rotationY": 3.141592653589793,
-        "status": "active",
-        "speechBubble": "Daily standup done! Target SIT sign-off lusa tercapai.",
-        "isBlocker": false,
-        "jiraTickets": [
-          {
-            "key": "SLY-1102",
-            "title": "Sprint 19 Retrospective Action Items Tracking",
-            "status": "In Progress",
-            "storyPoints": 3,
-            "priority": "Medium"
-          }
-        ],
-        "bitbucket": {
-          "repo": "slytherin-docs",
+          "repo": "squad-slytherin-service",
           "branch": "main",
           "activePR": null,
           "prStatus": null,
-          "lastCommit": "4 hours ago by bsetiawan",
-          "sonarScore": 96
-        }
-      },
-      {
-        "id": "slytherin-fe1",
-        "pn": "90197721",
-        "name": "Maya Anggraini",
-        "role": "FE",
-        "avatarColor": "#ec4899",
-        "deskPosition": [
-          -6,
-          0,
-          11.4
-        ],
-        "rotationY": 0,
-        "status": "active",
-        "speechBubble": "Chart portofolio saldo mutasi multi-currency di BRImo selesai.",
-        "isBlocker": false,
-        "jiraTickets": [
-          {
-            "key": "SLY-1108",
-            "title": "Multi-currency Balance Card & Chart Component",
-            "status": "Done",
-            "storyPoints": 5,
-            "priority": "High"
-          }
-        ],
-        "bitbucket": {
-          "repo": "slytherin-wealth-ui",
-          "branch": "feat/balance-card",
-          "activePR": null,
-          "prStatus": null,
-          "lastCommit": "Yesterday by manggraini",
-          "sonarScore": 95
-        }
-      },
-      {
-        "id": "slytherin-fe2",
-        "pn": "90186640",
-        "name": "Alif Pratama",
-        "role": "FE",
-        "avatarColor": "#db2777",
-        "deskPosition": [
-          -3.8,
-          0,
-          11.4
-        ],
-        "rotationY": 0,
-        "status": "active",
-        "speechBubble": "Modal konfirmasi konversi valas & real-time rate ticker ready.",
-        "isBlocker": false,
-        "jiraTickets": [
-          {
-            "key": "SLY-1115",
-            "title": "Real-time FX Rate Live Ticker Feed",
-            "status": "In Review",
-            "storyPoints": 5,
-            "priority": "High"
-          }
-        ],
-        "bitbucket": {
-          "repo": "slytherin-wealth-ui",
-          "branch": "feat/fx-live-ticker",
-          "activePR": "PR #45: FX ticker polling integration",
-          "prStatus": "OPEN",
-          "lastCommit": "2 hours ago by apratama",
-          "sonarScore": 92
-        }
-      },
-      {
-        "id": "slytherin-be1",
-        "pn": "90159930",
-        "name": "Satria Wicaksono",
-        "role": "BE",
-        "avatarColor": "#3b82f6",
-        "deskPosition": [
-          3,
-          0,
-          9.6
-        ],
-        "rotationY": 3.141592653589793,
-        "status": "active",
-        "speechBubble": "Double-entry bookkeeping engine ACID guarantee 100% verified.",
-        "isBlocker": false,
-        "jiraTickets": [
-          {
-            "key": "SLY-1120",
-            "title": "ACID Double-Entry Posting Isolation Level Fix",
-            "status": "Done",
-            "storyPoints": 8,
-            "priority": "Highest"
-          }
-        ],
-        "bitbucket": {
-          "repo": "slytherin-ledger-core",
-          "branch": "perf/acid-isolation",
-          "activePR": null,
-          "prStatus": null,
-          "lastCommit": "3 hours ago by swicaksono",
-          "sonarScore": 98
-        }
-      },
-      {
-        "id": "slytherin-be2",
-        "pn": "90148812",
-        "name": "Arif Budiman",
-        "role": "BE",
-        "avatarColor": "#2563eb",
-        "deskPosition": [
-          5.1,
-          0,
-          9.6
-        ],
-        "rotationY": 3.141592653589793,
-        "status": "active",
-        "speechBubble": "Thales Luna HSM key rotation batch worker running lancar.",
-        "isBlocker": false,
-        "jiraTickets": [
-          {
-            "key": "SLY-1125",
-            "title": "HSM Vault Automated Key Rotation Worker",
-            "status": "In Progress",
-            "storyPoints": 5,
-            "priority": "High"
-          }
-        ],
-        "bitbucket": {
-          "repo": "slytherin-hsm-vault",
-          "branch": "feat/auto-rotation",
-          "activePR": "PR #38: HSM PKCS#11 driver update",
-          "prStatus": "OPEN",
-          "lastCommit": "1 hour ago by abudiman",
-          "sonarScore": 93
-        }
-      },
-      {
-        "id": "slytherin-qa1",
-        "pn": "90173321",
-        "name": "Putri Amelia",
-        "role": "QA",
-        "avatarColor": "#10b981",
-        "deskPosition": [
-          3,
-          0,
-          11.4
-        ],
-        "rotationY": 0,
-        "status": "testing",
-        "speechBubble": "Testing negative balance injection scenario dicegah ledger.",
-        "isBlocker": false,
-        "jiraTickets": [
-          {
-            "key": "SLY-1130",
-            "title": "Negative Balance Edge Cases Test Suite",
-            "status": "In Progress",
-            "storyPoints": 5,
-            "priority": "High"
-          }
-        ],
-        "bitbucket": {
-          "repo": "slytherin-test-automation",
-          "branch": "test/negative-balance",
-          "activePR": null,
-          "prStatus": null,
-          "lastCommit": "5 hours ago by pamelia",
+          "lastCommit": "1 hour ago",
           "sonarScore": 94
         }
       },
       {
-        "id": "slytherin-qa2",
-        "pn": "90132210",
-        "name": "Danang Saputra",
-        "role": "QA",
-        "avatarColor": "#059669",
+        "id": "squad-slytherin-in-2",
+        "pn": "901111",
+        "name": "Bagus Setiawan",
+        "shortName": "Bagus",
+        "isStanding": false,
+        "role": "SM",
+        "avatarColor": "#8b5cf6",
         "deskPosition": [
-          5.1,
+          6.4,
           0,
-          11.4
+          14.29
         ],
-        "rotationY": 0,
-        "status": "idle",
-        "speechBubble": "☕ Regression batch settlement selesai, standby review tiket Jira.",
+        "rotationY": 3.141592653589793,
+        "status": "active",
+        "speechBubble": "Backlog grooming compliance HSM rotation sprint 20 selesai.",
         "isBlocker": false,
         "jiraTickets": [
           {
-            "key": "SLY-1135",
-            "title": "EOD Settlement Automation Checklist",
-            "status": "Done",
-            "storyPoints": 3,
-            "priority": "Medium"
+            "key": "SLY-102",
+            "title": "Task: Backlog grooming compliance HSM rotation spri",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
           }
         ],
         "bitbucket": {
-          "repo": "slytherin-test-automation",
+          "repo": "squad-slytherin-service",
           "branch": "main",
           "activePR": null,
           "prStatus": null,
-          "lastCommit": "Yesterday by dsaputra",
-          "sonarScore": 95
+          "lastCommit": "1 hour ago",
+          "sonarScore": 94
+        }
+      },
+      {
+        "id": "squad-slytherin-in-3",
+        "pn": "901112",
+        "name": "Taufik Hidayat",
+        "shortName": "Taufik",
+        "isStanding": false,
+        "role": "BE",
+        "avatarColor": "#0284c7",
+        "deskPosition": [
+          4.8,
+          0,
+          15.11
+        ],
+        "rotationY": 0,
+        "status": "active",
+        "speechBubble": "PCI-DSS Level 1 compliance audit trail logging configured.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "SLY-103",
+            "title": "Task: PCI-DSS Level 1 compliance audit trail loggin",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-slytherin-service",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "1 hour ago",
+          "sonarScore": 94
+        }
+      },
+      {
+        "id": "squad-slytherin-in-4",
+        "pn": "901113",
+        "name": "Dedy Mizwar",
+        "shortName": "Dedy",
+        "isStanding": false,
+        "role": "BE",
+        "avatarColor": "#1d4ed8",
+        "deskPosition": [
+          6.4,
+          0,
+          15.11
+        ],
+        "rotationY": 0,
+        "status": "active",
+        "speechBubble": "Standby sync ledger batch end-of-day.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "SLY-104",
+            "title": "Task: Standby sync ledger batch end-of-day.",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-slytherin-service",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "1 hour ago",
+          "sonarScore": 94
+        }
+      },
+      {
+        "id": "squad-slytherin-out-1",
+        "pn": "901120",
+        "name": "Satria Wicaksono",
+        "shortName": "Satria",
+        "isStanding": false,
+        "role": "BE",
+        "avatarColor": "#3b82f6",
+        "deskPosition": [
+          8.8,
+          0,
+          14.29
+        ],
+        "rotationY": 3.141592653589793,
+        "status": "active",
+        "speechBubble": "Vault transit key encryption decryption latency <20ms.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "SLY-201",
+            "title": "Task: Vault transit key encryption decryption laten",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-slytherin-core",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
+        }
+      },
+      {
+        "id": "squad-slytherin-out-2",
+        "pn": "901121",
+        "name": "Arif Budiman",
+        "shortName": "Arif",
+        "isStanding": false,
+        "role": "BE",
+        "avatarColor": "#2563eb",
+        "deskPosition": [
+          10.4,
+          0,
+          14.29
+        ],
+        "rotationY": 3.141592653589793,
+        "status": "active",
+        "speechBubble": "Database sharding ledger partition table siap.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "SLY-202",
+            "title": "Task: Database sharding ledger partition table siap",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-slytherin-core",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
+        }
+      },
+      {
+        "id": "squad-slytherin-out-3",
+        "pn": "901122",
+        "name": "Ilham Saputra",
+        "shortName": "Ilham",
+        "isStanding": false,
+        "role": "BE",
+        "avatarColor": "#0369a1",
+        "deskPosition": [
+          12,
+          0,
+          14.29
+        ],
+        "rotationY": 3.141592653589793,
+        "status": "active",
+        "speechBubble": "HSM Thales PayShield key rotation automated cron script running.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "SLY-203",
+            "title": "Task: HSM Thales PayShield key rotation automated c",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-slytherin-core",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
+        }
+      },
+      {
+        "id": "squad-slytherin-out-4",
+        "pn": "901123",
+        "name": "Hendra Gunawan",
+        "shortName": "Hendra",
+        "isStanding": false,
+        "role": "BE",
+        "avatarColor": "#1e40af",
+        "deskPosition": [
+          13.6,
+          0,
+          14.29
+        ],
+        "rotationY": 3.141592653589793,
+        "status": "active",
+        "speechBubble": "Multi-region replica failover test passed.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "SLY-204",
+            "title": "Task: Multi-region replica failover test passed.",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-slytherin-core",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
+        }
+      },
+      {
+        "id": "squad-slytherin-out-5",
+        "pn": "901124",
+        "name": "Maya Anggraini",
+        "shortName": "Maya",
+        "isStanding": false,
+        "role": "FE",
+        "avatarColor": "#ec4899",
+        "deskPosition": [
+          8.8,
+          0,
+          15.11
+        ],
+        "rotationY": 0,
+        "status": "active",
+        "speechBubble": "Multi-currency balance card UI render normal.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "SLY-205",
+            "title": "Task: Multi-currency balance card UI render normal.",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-slytherin-core",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
+        }
+      },
+      {
+        "id": "squad-slytherin-out-6",
+        "pn": "901125",
+        "name": "Alif Pratama",
+        "shortName": "Alif",
+        "isStanding": false,
+        "role": "FE",
+        "avatarColor": "#06b6d4",
+        "deskPosition": [
+          10.4,
+          0,
+          15.11
+        ],
+        "rotationY": 0,
+        "status": "active",
+        "speechBubble": "Currency exchange calculator keypad fix.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "SLY-206",
+            "title": "Task: Currency exchange calculator keypad fix.",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-slytherin-core",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
+        }
+      },
+      {
+        "id": "squad-slytherin-out-7",
+        "pn": "901126",
+        "name": "Putri Amelia",
+        "shortName": "Putri",
+        "isStanding": false,
+        "role": "QA",
+        "avatarColor": "#10b981",
+        "deskPosition": [
+          12,
+          0,
+          15.11
+        ],
+        "rotationY": 0,
+        "status": "active",
+        "speechBubble": "Test suite 100,000 cases currency conversion passed.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "SLY-207",
+            "title": "Task: Test suite 100,000 cases currency conversion ",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-slytherin-core",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
+        }
+      },
+      {
+        "id": "squad-slytherin-out-8",
+        "pn": "901127",
+        "name": "Danang Saputra",
+        "shortName": "Danang",
+        "isStanding": false,
+        "role": "QA",
+        "avatarColor": "#059669",
+        "deskPosition": [
+          13.6,
+          0,
+          15.11
+        ],
+        "rotationY": 0,
+        "status": "blocked",
+        "speechBubble": "⚠️ Defect P2: Multi-currency rounding precision mismatch on EUR/IDR.",
+        "isBlocker": true,
+        "jiraTickets": [
+          {
+            "key": "SLY-208",
+            "title": "Task: ⚠️ Defect P2: Multi-currency rounding precisi",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "Highest"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-slytherin-core",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
+        }
+      }
+    ]
+  },
+  {
+    "id": "squad-red",
+    "name": "Row 3: Squad Red (Risk, Fraud & Security)",
+    "alias": "Red",
+    "leadPN": "PN 90112344 (Bambang Soediro)",
+    "sprint": "Sprint 14 (Day 3/10)",
+    "sprintGoal": "Real-Time Fraud Detection Engine & Suspicious Pattern Blocking",
+    "zoneCenter": [
+      10,
+      0,
+      10.5
+    ],
+    "zoneColor": "#ef4444",
+    "metrics": {
+      "totalStoryPoints": 65,
+      "completedStoryPoints": 30,
+      "defects": {
+        "p1": 1,
+        "p2": 1,
+        "p3": 2
+      },
+      "approvals": {
+        "brd": true,
+        "sitSignOff": true,
+        "uatSignOff": false,
+        "secmanSignOff": false,
+        "rfcDeployment": false
+      },
+      "pipeline": {
+        "stage": "DEV",
+        "health": "yellow",
+        "sonarCoverage": 91.2
+      }
+    },
+    "members": [
+      {
+        "id": "squad-red-in-1",
+        "pn": "901210",
+        "name": "Bambang Soediro",
+        "shortName": "Bambang",
+        "isStanding": false,
+        "role": "SL",
+        "avatarColor": "#f59e0b",
+        "deskPosition": [
+          4.8,
+          0,
+          10.09
+        ],
+        "rotationY": 3.141592653589793,
+        "status": "active",
+        "speechBubble": "Risk model scoring tuning for QRIS suspicious velocity.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "RED-101",
+            "title": "Task: Risk model scoring tuning for QRIS suspicious",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-red-service",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "1 hour ago",
+          "sonarScore": 94
+        }
+      },
+      {
+        "id": "squad-red-in-2",
+        "pn": "901211",
+        "name": "Indah Kusuma",
+        "shortName": "Indah",
+        "isStanding": false,
+        "role": "SM",
+        "avatarColor": "#8b5cf6",
+        "deskPosition": [
+          6.4,
+          0,
+          10.09
+        ],
+        "rotationY": 3.141592653589793,
+        "status": "active",
+        "speechBubble": "Sprint review with Risk Governance team scheduled.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "RED-102",
+            "title": "Task: Sprint review with Risk Governance team sched",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-red-service",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "1 hour ago",
+          "sonarScore": 94
+        }
+      },
+      {
+        "id": "squad-red-in-3",
+        "pn": "901212",
+        "name": "Riko Pratama",
+        "shortName": "Riko",
+        "isStanding": false,
+        "role": "BE",
+        "avatarColor": "#b91c1c",
+        "deskPosition": [
+          4.8,
+          0,
+          10.91
+        ],
+        "rotationY": 0,
+        "status": "active",
+        "speechBubble": "ML feature store integration for fraud classification.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "RED-103",
+            "title": "Task: ML feature store integration for fraud classi",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-red-service",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "1 hour ago",
+          "sonarScore": 94
+        }
+      },
+      {
+        "id": "squad-red-in-4",
+        "pn": "901213",
+        "name": "Sari Melati",
+        "shortName": "Sari",
+        "isStanding": false,
+        "role": "FE",
+        "avatarColor": "#f43f5e",
+        "deskPosition": [
+          6.4,
+          0,
+          10.91
+        ],
+        "rotationY": 0,
+        "status": "active",
+        "speechBubble": "Real-time blacklist management UI component.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "RED-104",
+            "title": "Task: Real-time blacklist management UI component.",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-red-service",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "1 hour ago",
+          "sonarScore": 94
+        }
+      },
+      {
+        "id": "squad-red-out-1",
+        "pn": "901220",
+        "name": "Agus Prasetyo",
+        "shortName": "Agus",
+        "isStanding": false,
+        "role": "BE",
+        "avatarColor": "#3b82f6",
+        "deskPosition": [
+          8.8,
+          0,
+          10.09
+        ],
+        "rotationY": 3.141592653589793,
+        "status": "active",
+        "speechBubble": "Rule engine Drools migration to Go microservice.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "RED-201",
+            "title": "Task: Rule engine Drools migration to Go microservi",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-red-core",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
+        }
+      },
+      {
+        "id": "squad-red-out-2",
+        "pn": "901221",
+        "name": "Gilang Ramadhan",
+        "shortName": "Gilang",
+        "isStanding": false,
+        "role": "BE",
+        "avatarColor": "#2563eb",
+        "deskPosition": [
+          10.4,
+          0,
+          10.09
+        ],
+        "rotationY": 3.141592653589793,
+        "status": "blocked",
+        "speechBubble": "⚠️ Blocker: Connection pool timeout to Fraud DB.",
+        "isBlocker": true,
+        "jiraTickets": [
+          {
+            "key": "RED-202",
+            "title": "Task: ⚠️ Blocker: Connection pool timeout to Fraud ",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "Highest"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-red-core",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
+        }
+      },
+      {
+        "id": "squad-red-out-3",
+        "pn": "901222",
+        "name": "Erik Sandi",
+        "shortName": "Erik",
+        "isStanding": false,
+        "role": "BE",
+        "avatarColor": "#0284c7",
+        "deskPosition": [
+          12,
+          0,
+          10.09
+        ],
+        "rotationY": 3.141592653589793,
+        "status": "active",
+        "speechBubble": "Kafka partition consumer for high-velocity payment.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "RED-203",
+            "title": "Task: Kafka partition consumer for high-velocity pa",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-red-core",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
+        }
+      },
+      {
+        "id": "squad-red-out-4",
+        "pn": "901223",
+        "name": "Wawan Setiawan",
+        "shortName": "Wawan",
+        "isStanding": false,
+        "role": "BE",
+        "avatarColor": "#0369a1",
+        "deskPosition": [
+          13.6,
+          0,
+          10.09
+        ],
+        "rotationY": 3.141592653589793,
+        "status": "active",
+        "speechBubble": "Zero-trust IAM token verification middleware.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "RED-204",
+            "title": "Task: Zero-trust IAM token verification middleware.",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-red-core",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
+        }
+      },
+      {
+        "id": "squad-red-out-5",
+        "pn": "901224",
+        "name": "Dewi Lestari",
+        "shortName": "Dewi",
+        "isStanding": false,
+        "role": "FE",
+        "avatarColor": "#ec4899",
+        "deskPosition": [
+          8.8,
+          0,
+          10.91
+        ],
+        "rotationY": 0,
+        "status": "active",
+        "speechBubble": "Fraud alerts dashboard realtime WebSocket integration.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "RED-205",
+            "title": "Task: Fraud alerts dashboard realtime WebSocket int",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-red-core",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
+        }
+      },
+      {
+        "id": "squad-red-out-6",
+        "pn": "901225",
+        "name": "Fandi Ahmad",
+        "shortName": "Fandi",
+        "isStanding": false,
+        "role": "FE",
+        "avatarColor": "#06b6d4",
+        "deskPosition": [
+          10.4,
+          0,
+          10.91
+        ],
+        "rotationY": 0,
+        "status": "active",
+        "speechBubble": "Transaction replay timeline UI component ready.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "RED-206",
+            "title": "Task: Transaction replay timeline UI component read",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-red-core",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
+        }
+      },
+      {
+        "id": "squad-red-out-7",
+        "pn": "901226",
+        "name": "Lestari Handayani",
+        "shortName": "Lestari",
+        "isStanding": false,
+        "role": "QA",
+        "avatarColor": "#10b981",
+        "deskPosition": [
+          12,
+          0,
+          10.91
+        ],
+        "rotationY": 0,
+        "status": "active",
+        "speechBubble": "Load testing fraud rule engine with 15k TPS.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "RED-207",
+            "title": "Task: Load testing fraud rule engine with 15k TPS.",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-red-core",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
+        }
+      },
+      {
+        "id": "squad-red-out-8",
+        "pn": "901227",
+        "name": "Rudi Hermawan",
+        "shortName": "Rudi",
+        "isStanding": false,
+        "role": "QA",
+        "avatarColor": "#059669",
+        "deskPosition": [
+          13.6,
+          0,
+          10.91
+        ],
+        "rotationY": 0,
+        "status": "active",
+        "speechBubble": "Defect verification on duplicate card check.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "RED-208",
+            "title": "Task: Defect verification on duplicate card check.",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-red-core",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
         }
       }
     ]
   },
   {
     "id": "squad-pegasus",
-    "name": "Row 4: Squad Pegasus (QRIS Soundbox & IoT)",
+    "name": "Row 4: Squad Pegasus (Merchant Soundbox & IoT)",
     "alias": "Pegasus",
-    "leadPN": "PN 90145220 (Hendro Nugroho)",
-    "sprint": "Sprint 22 (Day 4/10)",
-    "sprintGoal": "MQTT Voice Playback Optimization & Soundbox Dynamic Firmware v3.2",
+    "leadPN": "PN 90145678 (Hendro Nugroho)",
+    "sprint": "Sprint 22 (Day 8/10)",
+    "sprintGoal": "Merchant QRIS Soundbox & POS Terminal IoT Bluetooth Sync",
     "zoneCenter": [
-      1,
+      10,
       0,
       6.3
     ],
     "zoneColor": "#8b5cf6",
     "metrics": {
-      "totalStoryPoints": 68,
-      "completedStoryPoints": 44,
+      "totalStoryPoints": 70,
+      "completedStoryPoints": 58,
+      "defects": {
+        "p1": 0,
+        "p2": 1,
+        "p3": 1
+      },
+      "approvals": {
+        "brd": true,
+        "sitSignOff": true,
+        "uatSignOff": true,
+        "secmanSignOff": false,
+        "rfcDeployment": false
+      },
+      "pipeline": {
+        "stage": "UAT",
+        "health": "green",
+        "sonarCoverage": 93.8
+      }
+    },
+    "members": [
+      {
+        "id": "squad-pegasus-in-1",
+        "pn": "901310",
+        "name": "Hendro Nugroho",
+        "shortName": "Hendro",
+        "isStanding": false,
+        "role": "SL",
+        "avatarColor": "#f59e0b",
+        "deskPosition": [
+          4.8,
+          0,
+          5.89
+        ],
+        "rotationY": 3.141592653589793,
+        "status": "active",
+        "speechBubble": "Pilot rollout 500 soundbox unit di merchant DKI.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "PEG-101",
+            "title": "Task: Pilot rollout 500 soundbox unit di merchant D",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-pegasus-service",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "1 hour ago",
+          "sonarScore": 94
+        }
+      },
+      {
+        "id": "squad-pegasus-in-2",
+        "pn": "901311",
+        "name": "Ratna Juwita",
+        "shortName": "Ratna",
+        "isStanding": false,
+        "role": "SM",
+        "avatarColor": "#8b5cf6",
+        "deskPosition": [
+          6.4,
+          0,
+          5.89
+        ],
+        "rotationY": 3.141592653589793,
+        "status": "active",
+        "speechBubble": "UAT sign-off document from Retail Banking received.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "PEG-102",
+            "title": "Task: UAT sign-off document from Retail Banking rec",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-pegasus-service",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "1 hour ago",
+          "sonarScore": 94
+        }
+      },
+      {
+        "id": "squad-pegasus-in-3",
+        "pn": "901312",
+        "name": "Adit Nugroho",
+        "shortName": "Adit",
+        "isStanding": false,
+        "role": "BE",
+        "avatarColor": "#7c3aed",
+        "deskPosition": [
+          4.8,
+          0,
+          6.71
+        ],
+        "rotationY": 0,
+        "status": "active",
+        "speechBubble": "Soundbox audio synthesis cache layer ready.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "PEG-103",
+            "title": "Task: Soundbox audio synthesis cache layer ready.",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-pegasus-service",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "1 hour ago",
+          "sonarScore": 94
+        }
+      },
+      {
+        "id": "squad-pegasus-in-4",
+        "pn": "901313",
+        "name": "Mega Bintang",
+        "shortName": "Mega",
+        "isStanding": false,
+        "role": "FE",
+        "avatarColor": "#c084fc",
+        "deskPosition": [
+          6.4,
+          0,
+          6.71
+        ],
+        "rotationY": 0,
+        "status": "active",
+        "speechBubble": "Device firmware management dashboard.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "PEG-104",
+            "title": "Task: Device firmware management dashboard.",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-pegasus-service",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "1 hour ago",
+          "sonarScore": 94
+        }
+      },
+      {
+        "id": "squad-pegasus-out-1",
+        "pn": "901320",
+        "name": "Iqbal Maulana",
+        "shortName": "Iqbal",
+        "isStanding": false,
+        "role": "BE",
+        "avatarColor": "#3b82f6",
+        "deskPosition": [
+          8.8,
+          0,
+          5.89
+        ],
+        "rotationY": 3.141592653589793,
+        "status": "active",
+        "speechBubble": "MQTT broker clustering for 1M IoT devices ready.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "PEG-201",
+            "title": "Task: MQTT broker clustering for 1M IoT devices rea",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-pegasus-core",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
+        }
+      },
+      {
+        "id": "squad-pegasus-out-2",
+        "pn": "901321",
+        "name": "Gita Savitri",
+        "shortName": "Gita",
+        "isStanding": false,
+        "role": "BE",
+        "avatarColor": "#2563eb",
+        "deskPosition": [
+          10.4,
+          0,
+          5.89
+        ],
+        "rotationY": 3.141592653589793,
+        "status": "active",
+        "speechBubble": "Firmware OTA update encryption verification.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "PEG-202",
+            "title": "Task: Firmware OTA update encryption verification.",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-pegasus-core",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
+        }
+      },
+      {
+        "id": "squad-pegasus-out-3",
+        "pn": "901322",
+        "name": "Arya Putra",
+        "shortName": "Arya",
+        "isStanding": false,
+        "role": "BE",
+        "avatarColor": "#0284c7",
+        "deskPosition": [
+          12,
+          0,
+          5.89
+        ],
+        "rotationY": 3.141592653589793,
+        "status": "active",
+        "speechBubble": "POS hardware serial driver integration.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "PEG-203",
+            "title": "Task: POS hardware serial driver integration.",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-pegasus-core",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
+        }
+      },
+      {
+        "id": "squad-pegasus-out-4",
+        "pn": "901323",
+        "name": "Dodi Hidayat",
+        "shortName": "Dodi",
+        "isStanding": false,
+        "role": "BE",
+        "avatarColor": "#0369a1",
+        "deskPosition": [
+          13.6,
+          0,
+          5.89
+        ],
+        "rotationY": 3.141592653589793,
+        "status": "active",
+        "speechBubble": "Telemetry streaming buffer tuning.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "PEG-204",
+            "title": "Task: Telemetry streaming buffer tuning.",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-pegasus-core",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
+        }
+      },
+      {
+        "id": "squad-pegasus-out-5",
+        "pn": "901324",
+        "name": "Bayu Wibowo",
+        "shortName": "Bayu",
+        "isStanding": false,
+        "role": "FE",
+        "avatarColor": "#ec4899",
+        "deskPosition": [
+          8.8,
+          0,
+          6.71
+        ],
+        "rotationY": 0,
+        "status": "active",
+        "speechBubble": "Merchant terminal status live telemetry widget.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "PEG-205",
+            "title": "Task: Merchant terminal status live telemetry widge",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-pegasus-core",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
+        }
+      },
+      {
+        "id": "squad-pegasus-out-6",
+        "pn": "901325",
+        "name": "Tari Permata",
+        "shortName": "Tari",
+        "isStanding": false,
+        "role": "FE",
+        "avatarColor": "#06b6d4",
+        "deskPosition": [
+          10.4,
+          0,
+          6.71
+        ],
+        "rotationY": 0,
+        "status": "active",
+        "speechBubble": "Soundbox voice prompt audio selector UI.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "PEG-206",
+            "title": "Task: Soundbox voice prompt audio selector UI.",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-pegasus-core",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
+        }
+      },
+      {
+        "id": "squad-pegasus-out-7",
+        "pn": "901326",
+        "name": "Wahyu Hidayat",
+        "shortName": "Wahyu",
+        "isStanding": false,
+        "role": "QA",
+        "avatarColor": "#10b981",
+        "deskPosition": [
+          12,
+          0,
+          6.71
+        ],
+        "rotationY": 0,
+        "status": "active",
+        "speechBubble": "Automated battery consumption stress test running.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "PEG-207",
+            "title": "Task: Automated battery consumption stress test run",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-pegasus-core",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
+        }
+      },
+      {
+        "id": "squad-pegasus-out-8",
+        "pn": "901327",
+        "name": "Dian Pratiwi",
+        "shortName": "Dian",
+        "isStanding": false,
+        "role": "QA",
+        "avatarColor": "#059669",
+        "deskPosition": [
+          13.6,
+          0,
+          6.71
+        ],
+        "rotationY": 0,
+        "status": "active",
+        "speechBubble": "Bluetooth LE reconnect automated test passed.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "PEG-208",
+            "title": "Task: Bluetooth LE reconnect automated test passed.",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-pegasus-core",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
+        }
+      }
+    ]
+  },
+  {
+    "id": "squad-athena",
+    "name": "Row 5: Squad Athena (Cross-Border Gateway)",
+    "alias": "Athena",
+    "leadPN": "PN 90178901 (Vina Panduwinata)",
+    "sprint": "Sprint 31 (Day 4/10)",
+    "sprintGoal": "QRIS CPM Cross-Border Singapore & Malaysia Gateway Integration",
+    "zoneCenter": [
+      10,
+      0,
+      2.1
+    ],
+    "zoneColor": "#f59e0b",
+    "metrics": {
+      "totalStoryPoints": 75,
+      "completedStoryPoints": 42,
       "defects": {
         "p1": 1,
-        "p2": 2,
-        "p3": 0
+        "p2": 0,
+        "p3": 2
       },
       "approvals": {
         "brd": true,
@@ -942,296 +1860,452 @@ export const INITIAL_SQUADS: Squad[] = [
       "pipeline": {
         "stage": "SIT",
         "health": "yellow",
-        "sonarCoverage": 91.8
+        "sonarCoverage": 95
       }
     },
     "members": [
       {
-        "id": "pegasus-sl",
-        "pn": "90145220",
-        "name": "Hendro Nugroho",
+        "id": "squad-athena-in-1",
+        "pn": "901410",
+        "name": "Vina Panduwinata",
+        "shortName": "Vina",
+        "isStanding": false,
         "role": "SL",
         "avatarColor": "#f59e0b",
         "deskPosition": [
-          -6,
+          4.8,
           0,
-          5.4
+          1.69
         ],
         "rotationY": 3.141592653589793,
         "status": "active",
-        "speechBubble": "Rollout 50.000 Soundbox ke merchant Pasar Senen siap dieksekusi.",
+        "speechBubble": "Cross-border payment switcher PayNet Malaysia testing.",
         "isBlocker": false,
         "jiraTickets": [
           {
-            "key": "PEG-401",
-            "title": "Soundbox Firmware v3.2 OTA Deployment Plan",
+            "key": "ATH-101",
+            "title": "Task: Cross-border payment switcher PayNet Malaysia",
             "status": "In Progress",
             "storyPoints": 5,
             "priority": "High"
           }
         ],
         "bitbucket": {
-          "repo": "pegasus-iot-gateway",
-          "branch": "release/v3.2.0",
-          "activePR": "PR #89: MQTT broker clustering",
-          "prStatus": "OPEN",
-          "lastCommit": "1 hour ago by hnugroho",
-          "sonarScore": 92
-        }
-      },
-      {
-        "id": "pegasus-sm",
-        "pn": "90155112",
-        "name": "Ratna Juwita",
-        "role": "SM",
-        "avatarColor": "#8b5cf6",
-        "deskPosition": [
-          -3.8,
-          0,
-          5.4
-        ],
-        "rotationY": 3.141592653589793,
-        "status": "active",
-        "speechBubble": "Sertifikasi Postel & SDPPI Kominfo untuk modul 4G LTE rampung.",
-        "isBlocker": false,
-        "jiraTickets": [
-          {
-            "key": "PEG-405",
-            "title": "Kominfo SDPPI Certification Clearance",
-            "status": "Done",
-            "storyPoints": 3,
-            "priority": "Medium"
-          }
-        ],
-        "bitbucket": {
-          "repo": "pegasus-compliance",
+          "repo": "squad-athena-service",
           "branch": "main",
           "activePR": null,
           "prStatus": null,
-          "lastCommit": "Yesterday by rjuwita",
-          "sonarScore": 99
-        }
-      },
-      {
-        "id": "pegasus-fe1",
-        "pn": "90188443",
-        "name": "Bayu Wibowo",
-        "role": "FE",
-        "avatarColor": "#ec4899",
-        "deskPosition": [
-          -6,
-          0,
-          7.2
-        ],
-        "rotationY": 0,
-        "status": "active",
-        "speechBubble": "Web portal monitoring status baterai & sinyal Soundbox merchant live.",
-        "isBlocker": false,
-        "jiraTickets": [
-          {
-            "key": "PEG-410",
-            "title": "Merchant Device Telemetry Dashboard",
-            "status": "In Review",
-            "storyPoints": 5,
-            "priority": "High"
-          }
-        ],
-        "bitbucket": {
-          "repo": "pegasus-device-manager",
-          "branch": "feat/battery-health-widget",
-          "activePR": "PR #42: Real-time RSSI signal",
-          "prStatus": "OPEN",
-          "lastCommit": "2 hours ago by bwibowo",
+          "lastCommit": "1 hour ago",
           "sonarScore": 94
         }
       },
       {
-        "id": "pegasus-fe2",
-        "pn": "90199211",
-        "name": "Tari Permata",
-        "role": "FE",
-        "avatarColor": "#db2777",
+        "id": "squad-athena-in-2",
+        "pn": "901411",
+        "name": "Yoga Pratama",
+        "shortName": "Yoga",
+        "isStanding": false,
+        "role": "SM",
+        "avatarColor": "#8b5cf6",
         "deskPosition": [
-          -3.8,
+          6.4,
           0,
-          7.2
+          1.69
         ],
-        "rotationY": 0,
+        "rotationY": 3.141592653589793,
         "status": "active",
-        "speechBubble": "Audio sound wave generator & volume setting remote UI tested.",
+        "speechBubble": "Cross-border settlement currency conversion SLA agreed.",
         "isBlocker": false,
         "jiraTickets": [
           {
-            "key": "PEG-415",
-            "title": "Remote Volume Adjustment Slider Component",
-            "status": "Done",
-            "storyPoints": 3,
-            "priority": "Medium"
+            "key": "ATH-102",
+            "title": "Task: Cross-border settlement currency conversion S",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
           }
         ],
         "bitbucket": {
-          "repo": "pegasus-device-manager",
-          "branch": "feat/volume-slider",
+          "repo": "squad-athena-service",
+          "branch": "main",
           "activePR": null,
           "prStatus": null,
-          "lastCommit": "Yesterday by tpermata",
-          "sonarScore": 90
+          "lastCommit": "1 hour ago",
+          "sonarScore": 94
         }
       },
       {
-        "id": "pegasus-be1",
-        "pn": "90166220",
-        "name": "Iqbal Maulana",
+        "id": "squad-athena-in-3",
+        "pn": "901412",
+        "name": "Bimo Sakti",
+        "shortName": "Bimo",
+        "isStanding": false,
+        "role": "BE",
+        "avatarColor": "#d97706",
+        "deskPosition": [
+          4.8,
+          0,
+          2.51
+        ],
+        "rotationY": 0,
+        "status": "active",
+        "speechBubble": "Real-time FX rate sync with Bank of Thailand.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "ATH-103",
+            "title": "Task: Real-time FX rate sync with Bank of Thailand.",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-athena-service",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "1 hour ago",
+          "sonarScore": 94
+        }
+      },
+      {
+        "id": "squad-athena-in-4",
+        "pn": "901413",
+        "name": "Clara Shinta",
+        "shortName": "Clara",
+        "isStanding": false,
+        "role": "FE",
+        "avatarColor": "#fbbf24",
+        "deskPosition": [
+          6.4,
+          0,
+          2.51
+        ],
+        "rotationY": 0,
+        "status": "active",
+        "speechBubble": "Cross-border currency selector bottom sheet UI.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "ATH-104",
+            "title": "Task: Cross-border currency selector bottom sheet U",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-athena-service",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "1 hour ago",
+          "sonarScore": 94
+        }
+      },
+      {
+        "id": "squad-athena-out-1",
+        "pn": "901420",
+        "name": "Farhan Maulana",
+        "shortName": "Farhan",
+        "isStanding": false,
         "role": "BE",
         "avatarColor": "#3b82f6",
         "deskPosition": [
-          3,
+          8.8,
           0,
-          5.4
+          1.69
         ],
         "rotationY": 3.141592653589793,
-        "status": "active",
-        "speechBubble": "EMQX broker cluster throughput 40.000 concurrent MQTT connections.",
-        "isBlocker": false,
-        "jiraTickets": [
-          {
-            "key": "PEG-420",
-            "title": "EMQX Enterprise MQTT Cluster Tuning",
-            "status": "In Progress",
-            "storyPoints": 8,
-            "priority": "Highest"
-          }
-        ],
-        "bitbucket": {
-          "repo": "pegasus-mqtt-broker",
-          "branch": "perf/emqx-cluster",
-          "activePR": "PR #122: Optimize keepalive timeout",
-          "prStatus": "OPEN",
-          "lastCommit": "30 mins ago by imaulana",
-          "sonarScore": 95
-        }
-      },
-      {
-        "id": "pegasus-be2",
-        "pn": "90177332",
-        "name": "Gita Savitri",
-        "role": "BE",
-        "avatarColor": "#2563eb",
-        "deskPosition": [
-          5.1,
-          0,
-          5.4
-        ],
-        "rotationY": 3.141592653589793,
-        "status": "active",
-        "speechBubble": "Dynamic text-to-speech bahasa daerah (Jawa, Sunda, Minang) selesai.",
-        "isBlocker": false,
-        "jiraTickets": [
-          {
-            "key": "PEG-425",
-            "title": "Regional Language TTS Audio Synthesizer",
-            "status": "In Review",
-            "storyPoints": 5,
-            "priority": "High"
-          }
-        ],
-        "bitbucket": {
-          "repo": "pegasus-audio-engine",
-          "branch": "feat/regional-tts",
-          "activePR": "PR #67: Add Javanese voice model",
-          "prStatus": "OPEN",
-          "lastCommit": "3 hours ago by gsavitri",
-          "sonarScore": 93
-        }
-      },
-      {
-        "id": "pegasus-qa1",
-        "pn": "90144331",
-        "name": "Wahyu Hidayat",
-        "role": "QA",
-        "avatarColor": "#10b981",
-        "deskPosition": [
-          3,
-          0,
-          7.2
-        ],
-        "rotationY": 0,
-        "status": "testing",
-        "speechBubble": "Testing soundbox audio latency di jaringan 2G/EDGE marginal.",
-        "isBlocker": false,
-        "jiraTickets": [
-          {
-            "key": "PEG-430",
-            "title": "Network Bandwidth Throttling 2G/EDGE Stress Test",
-            "status": "In Progress",
-            "storyPoints": 5,
-            "priority": "High"
-          }
-        ],
-        "bitbucket": {
-          "repo": "pegasus-iot-tests",
-          "branch": "test/edge-network",
-          "activePR": null,
-          "prStatus": null,
-          "lastCommit": "4 hours ago by whidayat",
-          "sonarScore": 91
-        }
-      },
-      {
-        "id": "pegasus-qa2",
-        "pn": "90133221",
-        "name": "Dian Pratiwi",
-        "role": "QA",
-        "avatarColor": "#059669",
-        "deskPosition": [
-          5.1,
-          0,
-          7.2
-        ],
-        "rotationY": 0,
         "status": "blocked",
-        "speechBubble": "⚠️ Defect P1: Audio notifikasi double play saat sinyal merchant flapping.",
+        "speechBubble": "⚠️ Blocker: Network timeout to NETS Singapore sandbox.",
         "isBlocker": true,
         "jiraTickets": [
           {
-            "key": "PEG-435",
-            "title": "BUG P1: MQTT QoS 1 Duplicate Message Audio Replay",
+            "key": "ATH-201",
+            "title": "Task: ⚠️ Blocker: Network timeout to NETS Singapore",
             "status": "In Progress",
-            "storyPoints": 8,
+            "storyPoints": 5,
             "priority": "Highest"
           }
         ],
         "bitbucket": {
-          "repo": "pegasus-iot-tests",
-          "branch": "fix/deduplication-test",
+          "repo": "squad-athena-core",
+          "branch": "main",
           "activePR": null,
           "prStatus": null,
-          "lastCommit": "1 hour ago by dpratiwi",
-          "sonarScore": 88
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
+        }
+      },
+      {
+        "id": "squad-athena-out-2",
+        "pn": "901421",
+        "name": "Taufik Hidayat",
+        "shortName": "Taufik",
+        "isStanding": false,
+        "role": "BE",
+        "avatarColor": "#2563eb",
+        "deskPosition": [
+          10.4,
+          0,
+          1.69
+        ],
+        "rotationY": 3.141592653589793,
+        "status": "active",
+        "speechBubble": "Dynamic currency conversion ISO8583 adapter ready.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "ATH-202",
+            "title": "Task: Dynamic currency conversion ISO8583 adapter r",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-athena-core",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
+        }
+      },
+      {
+        "id": "squad-athena-out-3",
+        "pn": "901422",
+        "name": "Kevin Anggara",
+        "shortName": "Kevin",
+        "isStanding": false,
+        "role": "BE",
+        "avatarColor": "#0284c7",
+        "deskPosition": [
+          12,
+          0,
+          1.69
+        ],
+        "rotationY": 3.141592653589793,
+        "status": "active",
+        "speechBubble": "Payload signature validation using HSM keys.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "ATH-203",
+            "title": "Task: Payload signature validation using HSM keys.",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-athena-core",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
+        }
+      },
+      {
+        "id": "squad-athena-out-4",
+        "pn": "901423",
+        "name": "Fikri Haikal",
+        "shortName": "Fikri",
+        "isStanding": false,
+        "role": "BE",
+        "avatarColor": "#0369a1",
+        "deskPosition": [
+          13.6,
+          0,
+          1.69
+        ],
+        "rotationY": 3.141592653589793,
+        "status": "active",
+        "speechBubble": "Automated settlement retry mechanism.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "ATH-204",
+            "title": "Task: Automated settlement retry mechanism.",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-athena-core",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
+        }
+      },
+      {
+        "id": "squad-athena-out-5",
+        "pn": "901424",
+        "name": "Siska Wahyuni",
+        "shortName": "Siska",
+        "isStanding": false,
+        "role": "FE",
+        "avatarColor": "#ec4899",
+        "deskPosition": [
+          8.8,
+          0,
+          2.51
+        ],
+        "rotationY": 0,
+        "status": "active",
+        "speechBubble": "Tourist payment voucher & receipt localized.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "ATH-205",
+            "title": "Task: Tourist payment voucher & receipt localized.",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-athena-core",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
+        }
+      },
+      {
+        "id": "squad-athena-out-6",
+        "pn": "901425",
+        "name": "Aditya Nugraha",
+        "shortName": "Aditya",
+        "isStanding": false,
+        "role": "FE",
+        "avatarColor": "#06b6d4",
+        "deskPosition": [
+          10.4,
+          0,
+          2.51
+        ],
+        "rotationY": 0,
+        "status": "active",
+        "speechBubble": "Multi-language scanner prompt Indonesian & English.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "ATH-206",
+            "title": "Task: Multi-language scanner prompt Indonesian & En",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-athena-core",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
+        }
+      },
+      {
+        "id": "squad-athena-out-7",
+        "pn": "901426",
+        "name": "Anisa Rahmawati",
+        "shortName": "Anisa",
+        "isStanding": false,
+        "role": "QA",
+        "avatarColor": "#10b981",
+        "deskPosition": [
+          12,
+          0,
+          2.51
+        ],
+        "rotationY": 0,
+        "status": "active",
+        "speechBubble": "Integration suite CPM ISO20022 message test.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "ATH-207",
+            "title": "Task: Integration suite CPM ISO20022 message test.",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-athena-core",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
+        }
+      },
+      {
+        "id": "squad-athena-out-8",
+        "pn": "901427",
+        "name": "Rizky Fadilah",
+        "shortName": "Rizky",
+        "isStanding": false,
+        "role": "QA",
+        "avatarColor": "#059669",
+        "deskPosition": [
+          13.6,
+          0,
+          2.51
+        ],
+        "rotationY": 0,
+        "status": "active",
+        "speechBubble": "Exchange rate drift tolerance test verified.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "ATH-208",
+            "title": "Task: Exchange rate drift tolerance test verified.",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-athena-core",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
         }
       }
     ]
   },
   {
-    "id": "squad-athena",
-    "name": "Row 5: Squad Athena (Merchant Portal & Onboarding)",
-    "alias": "Athena",
-    "leadPN": "PN 90188912 (Vina Panduwinata)",
-    "sprint": "Sprint 15 (Day 8/10)",
-    "sprintGoal": "Instant Merchant KYC Verification & QRIS Multi-Outlet Hierarchy Portal",
+    "id": "squad-titan",
+    "name": "Row 6: Squad Titan (Settlement & Core Reconciliation)",
+    "alias": "Titan",
+    "leadPN": "PN 90123456 (Gunawan Wibisono)",
+    "sprint": "Sprint 16 (Day 6/10)",
+    "sprintGoal": "High-Volume Settlement Engine & Core Banking Reconciliation",
     "zoneCenter": [
-      1,
+      10,
       0,
-      2.1
+      -2.1
     ],
-    "zoneColor": "#f59e0b",
+    "zoneColor": "#6366f1",
     "metrics": {
-      "totalStoryPoints": 75,
-      "completedStoryPoints": 65,
+      "totalStoryPoints": 85,
+      "completedStoryPoints": 68,
       "defects": {
         "p1": 0,
         "p2": 1,
-        "p3": 2
+        "p3": 0
       },
       "approvals": {
         "brd": true,
@@ -1241,298 +2315,771 @@ export const INITIAL_SQUADS: Squad[] = [
         "rfcDeployment": false
       },
       "pipeline": {
-        "stage": "PROD_READY",
+        "stage": "SECMAN",
         "health": "green",
-        "sonarCoverage": 95.3
+        "sonarCoverage": 96.2
       }
     },
     "members": [
       {
-        "id": "athena-sl",
-        "pn": "90188912",
-        "name": "Vina Panduwinata",
+        "id": "squad-titan-in-1",
+        "pn": "901510",
+        "name": "Gunawan Wibisono",
+        "shortName": "Gunawan",
+        "isStanding": false,
         "role": "SL",
         "avatarColor": "#f59e0b",
         "deskPosition": [
-          -6,
+          4.8,
           0,
-          1.2
+          -2.51
         ],
         "rotationY": 3.141592653589793,
         "status": "active",
-        "speechBubble": "Merchant onboarding SLA turun dari 3 hari menjadi 15 menit instan!",
+        "speechBubble": "Secman sign-off achieved! Ready for CAB RFC.",
         "isBlocker": false,
         "jiraTickets": [
           {
-            "key": "ATH-301",
-            "title": "Instant KYC Merchant SLA Target Optimization",
-            "status": "Done",
+            "key": "TIT-101",
+            "title": "Task: Secman sign-off achieved! Ready for CAB RFC.",
+            "status": "In Progress",
             "storyPoints": 5,
-            "priority": "Highest"
-          }
-        ],
-        "bitbucket": {
-          "repo": "athena-merchant-core",
-          "branch": "release/v1.5.0",
-          "activePR": "PR #150: Instant merchant approval pipeline",
-          "prStatus": "OPEN",
-          "lastCommit": "2 hours ago by vpandu",
-          "sonarScore": 96
-        }
-      },
-      {
-        "id": "athena-sm",
-        "pn": "90166440",
-        "name": "Yoga Pratama",
-        "role": "SM",
-        "avatarColor": "#8b5cf6",
-        "deskPosition": [
-          -3.8,
-          0,
-          1.2
-        ],
-        "rotationY": 3.141592653589793,
-        "status": "active",
-        "speechBubble": "User acceptance test bersama tim Divisi Bisnis Mikro BRI selesai.",
-        "isBlocker": false,
-        "jiraTickets": [
-          {
-            "key": "ATH-305",
-            "title": "UAT Sign-off Signatures Micro Business Dept",
-            "status": "Done",
-            "storyPoints": 3,
             "priority": "High"
           }
         ],
         "bitbucket": {
-          "repo": "athena-product",
+          "repo": "squad-titan-service",
           "branch": "main",
           "activePR": null,
           "prStatus": null,
-          "lastCommit": "Yesterday by ypratama",
-          "sonarScore": 98
-        }
-      },
-      {
-        "id": "athena-fe1",
-        "pn": "90199332",
-        "name": "Siska Wahyuni",
-        "role": "FE",
-        "avatarColor": "#ec4899",
-        "deskPosition": [
-          -6,
-          0,
-          3
-        ],
-        "rotationY": 0,
-        "status": "active",
-        "speechBubble": "Form registrasi QRIS Merchant dengan auto-fill Dukcapil & NPWP lancar.",
-        "isBlocker": false,
-        "jiraTickets": [
-          {
-            "key": "ATH-310",
-            "title": "Auto-fill KTP OCR & Dukcapil Form Validation",
-            "status": "Done",
-            "storyPoints": 5,
-            "priority": "High"
-          }
-        ],
-        "bitbucket": {
-          "repo": "athena-portal-web",
-          "branch": "feat/ocr-autofill",
-          "activePR": null,
-          "prStatus": null,
-          "lastCommit": "3 hours ago by swahyuni",
+          "lastCommit": "1 hour ago",
           "sonarScore": 94
         }
       },
       {
-        "id": "athena-fe2",
-        "pn": "90177443",
-        "name": "Aditya Nugraha",
-        "role": "FE",
-        "avatarColor": "#db2777",
+        "id": "squad-titan-in-2",
+        "pn": "901511",
+        "name": "Mira Santika",
+        "shortName": "Mira",
+        "isStanding": false,
+        "role": "SM",
+        "avatarColor": "#8b5cf6",
         "deskPosition": [
-          -3.8,
+          6.4,
           0,
-          3
-        ],
-        "rotationY": 0,
-        "status": "active",
-        "speechBubble": "Hierarki multi-outlet cabang & kasir permissions role matrix siap.",
-        "isBlocker": false,
-        "jiraTickets": [
-          {
-            "key": "ATH-315",
-            "title": "Multi-outlet Branch & Cashier RBAC Grid",
-            "status": "In Review",
-            "storyPoints": 5,
-            "priority": "High"
-          }
-        ],
-        "bitbucket": {
-          "repo": "athena-portal-web",
-          "branch": "feat/rbac-outlets",
-          "activePR": "PR #92: Treeview multi-outlet structure",
-          "prStatus": "OPEN",
-          "lastCommit": "1 hour ago by anugraha",
-          "sonarScore": 93
-        }
-      },
-      {
-        "id": "athena-be1",
-        "pn": "90155221",
-        "name": "Farhan Maulana",
-        "role": "BE",
-        "avatarColor": "#3b82f6",
-        "deskPosition": [
-          3,
-          0,
-          1.2
+          -2.51
         ],
         "rotationY": 3.141592653589793,
         "status": "active",
-        "speechBubble": "Integrasi API Dukcapil & Ditjen Pajak NPWP latency <200ms.",
+        "speechBubble": "RFC CAB package documentation prepared.",
         "isBlocker": false,
         "jiraTickets": [
           {
-            "key": "ATH-320",
-            "title": "Government API Gateway Connector (Dukcapil)",
-            "status": "Done",
-            "storyPoints": 8,
-            "priority": "Highest"
-          }
-        ],
-        "bitbucket": {
-          "repo": "athena-kyc-service",
-          "branch": "feat/dukcapil-connector",
-          "activePR": null,
-          "prStatus": null,
-          "lastCommit": "Yesterday by fmaulana",
-          "sonarScore": 95
-        }
-      },
-      {
-        "id": "athena-be2",
-        "pn": "90144119",
-        "name": "Taufik Hidayat",
-        "role": "BE",
-        "avatarColor": "#2563eb",
-        "deskPosition": [
-          5.1,
-          0,
-          1.2
-        ],
-        "rotationY": 3.141592653589793,
-        "status": "active",
-        "speechBubble": "Dynamic PDF Generator sertifikat QRIS Merchant siap dicetak otomatis.",
-        "isBlocker": false,
-        "jiraTickets": [
-          {
-            "key": "ATH-325",
-            "title": "Instant QRIS Certificate PDF Generation Service",
-            "status": "In Progress",
-            "storyPoints": 5,
-            "priority": "Medium"
-          }
-        ],
-        "bitbucket": {
-          "repo": "athena-pdf-worker",
-          "branch": "feat/pdf-template-v2",
-          "activePR": "PR #34: Vector QR watermark",
-          "prStatus": "OPEN",
-          "lastCommit": "2 hours ago by thidayat",
-          "sonarScore": 91
-        }
-      },
-      {
-        "id": "athena-qa1",
-        "pn": "90166334",
-        "name": "Anisa Rahmawati",
-        "role": "QA",
-        "avatarColor": "#10b981",
-        "deskPosition": [
-          3,
-          0,
-          3
-        ],
-        "rotationY": 0,
-        "status": "testing",
-        "speechBubble": "E2E Cypress test 80 user flows registrasi merchant passed 100%.",
-        "isBlocker": false,
-        "jiraTickets": [
-          {
-            "key": "ATH-330",
-            "title": "E2E Cypress Regression Suite Merchant Onboarding",
+            "key": "TIT-102",
+            "title": "Task: RFC CAB package documentation prepared.",
             "status": "In Progress",
             "storyPoints": 5,
             "priority": "High"
           }
         ],
         "bitbucket": {
-          "repo": "athena-e2e-tests",
-          "branch": "cypress/sprint-15",
-          "activePR": null,
-          "prStatus": null,
-          "lastCommit": "4 hours ago by arahma",
-          "sonarScore": 96
-        }
-      },
-      {
-        "id": "athena-qa2",
-        "pn": "90188220",
-        "name": "Rizky Fadilah",
-        "role": "QA",
-        "avatarColor": "#059669",
-        "deskPosition": [
-          5.1,
-          0,
-          3
-        ],
-        "rotationY": 0,
-        "status": "idle",
-        "speechBubble": "☕ Verifikasi dokumen UAT selesai, siap untuk RFC deployment.",
-        "isBlocker": false,
-        "jiraTickets": [
-          {
-            "key": "ATH-335",
-            "title": "RFC CAB Deployment Checklist Verification",
-            "status": "Done",
-            "storyPoints": 3,
-            "priority": "High"
-          }
-        ],
-        "bitbucket": {
-          "repo": "athena-e2e-tests",
+          "repo": "squad-titan-service",
           "branch": "main",
           "activePR": null,
           "prStatus": null,
-          "lastCommit": "Yesterday by rfadilah",
-          "sonarScore": 97
+          "lastCommit": "1 hour ago",
+          "sonarScore": 94
+        }
+      },
+      {
+        "id": "squad-titan-in-3",
+        "pn": "901512",
+        "name": "Agung Laksono",
+        "shortName": "Agung",
+        "isStanding": false,
+        "role": "BE",
+        "avatarColor": "#4f46e5",
+        "deskPosition": [
+          4.8,
+          0,
+          -1.69
+        ],
+        "rotationY": 0,
+        "status": "active",
+        "speechBubble": "GL account balancing cron daemon optimized.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "TIT-103",
+            "title": "Task: GL account balancing cron daemon optimized.",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-titan-service",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "1 hour ago",
+          "sonarScore": 94
+        }
+      },
+      {
+        "id": "squad-titan-in-4",
+        "pn": "901513",
+        "name": "Nita Safitri",
+        "shortName": "Nita",
+        "isStanding": false,
+        "role": "FE",
+        "avatarColor": "#818cf8",
+        "deskPosition": [
+          6.4,
+          0,
+          -1.69
+        ],
+        "rotationY": 0,
+        "status": "active",
+        "speechBubble": "Financial summary export to Excel & BI Datafeed.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "TIT-104",
+            "title": "Task: Financial summary export to Excel & BI Datafe",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-titan-service",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "1 hour ago",
+          "sonarScore": 94
+        }
+      },
+      {
+        "id": "squad-titan-out-1",
+        "pn": "901520",
+        "name": "Prasetyo Utomo",
+        "shortName": "Prasetyo",
+        "isStanding": false,
+        "role": "BE",
+        "avatarColor": "#3b82f6",
+        "deskPosition": [
+          8.8,
+          0,
+          -2.51
+        ],
+        "rotationY": 3.141592653589793,
+        "status": "active",
+        "speechBubble": "Batch settlement processing 10M records in 4 mins.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "TIT-201",
+            "title": "Task: Batch settlement processing 10M records in 4 ",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-titan-core",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
+        }
+      },
+      {
+        "id": "squad-titan-out-2",
+        "pn": "901521",
+        "name": "Eko Prasetyo",
+        "shortName": "Eko",
+        "isStanding": false,
+        "role": "BE",
+        "avatarColor": "#2563eb",
+        "deskPosition": [
+          10.4,
+          0,
+          -2.51
+        ],
+        "rotationY": 3.141592653589793,
+        "status": "active",
+        "speechBubble": "EOD reconciliation diff analyzer optimized.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "TIT-202",
+            "title": "Task: EOD reconciliation diff analyzer optimized.",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-titan-core",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
+        }
+      },
+      {
+        "id": "squad-titan-out-3",
+        "pn": "901522",
+        "name": "Bambang Kusuma",
+        "shortName": "Bambang",
+        "isStanding": false,
+        "role": "BE",
+        "avatarColor": "#0284c7",
+        "deskPosition": [
+          12,
+          0,
+          -2.51
+        ],
+        "rotationY": 3.141592653589793,
+        "status": "active",
+        "speechBubble": "Distributed lock manager Redis Redlock tuned.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "TIT-203",
+            "title": "Task: Distributed lock manager Redis Redlock tuned.",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-titan-core",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
+        }
+      },
+      {
+        "id": "squad-titan-out-4",
+        "pn": "901523",
+        "name": "Rahmat Hidayat",
+        "shortName": "Rahmat",
+        "isStanding": false,
+        "role": "BE",
+        "avatarColor": "#0369a1",
+        "deskPosition": [
+          13.6,
+          0,
+          -2.51
+        ],
+        "rotationY": 3.141592653589793,
+        "status": "active",
+        "speechBubble": "Discrepancy auto-repair script benchmarked.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "TIT-204",
+            "title": "Task: Discrepancy auto-repair script benchmarked.",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-titan-core",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
+        }
+      },
+      {
+        "id": "squad-titan-out-5",
+        "pn": "901524",
+        "name": "Joko Susilo",
+        "shortName": "Joko",
+        "isStanding": false,
+        "role": "FE",
+        "avatarColor": "#ec4899",
+        "deskPosition": [
+          8.8,
+          0,
+          -1.69
+        ],
+        "rotationY": 0,
+        "status": "active",
+        "speechBubble": "Settlement dashboard high-volume data grid virtualized.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "TIT-205",
+            "title": "Task: Settlement dashboard high-volume data grid vi",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-titan-core",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
+        }
+      },
+      {
+        "id": "squad-titan-out-6",
+        "pn": "901525",
+        "name": "Mega Utami",
+        "shortName": "Mega",
+        "isStanding": false,
+        "role": "FE",
+        "avatarColor": "#06b6d4",
+        "deskPosition": [
+          10.4,
+          0,
+          -1.69
+        ],
+        "rotationY": 0,
+        "status": "active",
+        "speechBubble": "Recon variance report PDF & CSV export.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "TIT-206",
+            "title": "Task: Recon variance report PDF & CSV export.",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-titan-core",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
+        }
+      },
+      {
+        "id": "squad-titan-out-7",
+        "pn": "901526",
+        "name": "Sri Wahyuni",
+        "shortName": "Sri",
+        "isStanding": false,
+        "role": "QA",
+        "avatarColor": "#10b981",
+        "deskPosition": [
+          12,
+          0,
+          -1.69
+        ],
+        "rotationY": 0,
+        "status": "active",
+        "speechBubble": "Performance test 25,000 TPS benchmark passed.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "TIT-207",
+            "title": "Task: Performance test 25,000 TPS benchmark passed.",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-titan-core",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
+        }
+      },
+      {
+        "id": "squad-titan-out-8",
+        "pn": "901527",
+        "name": "Doni Pratama",
+        "shortName": "Doni",
+        "isStanding": false,
+        "role": "QA",
+        "avatarColor": "#059669",
+        "deskPosition": [
+          13.6,
+          0,
+          -1.69
+        ],
+        "rotationY": 0,
+        "status": "active",
+        "speechBubble": "Automated reconciliation discrepancy detector.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "TIT-208",
+            "title": "Task: Automated reconciliation discrepancy detector",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-titan-core",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
         }
       }
     ]
   },
   {
-    "id": "squad-titan",
-    "name": "Row 6: Squad Titan (Batch Settlement & EOD Reconcile)",
-    "alias": "Titan",
-    "leadPN": "PN 90155778 (Gunawan Wibisono)",
-    "sprint": "Sprint 31 (Day 6/10)",
-    "sprintGoal": "End-of-Day Clearing Acceleration & BigQuery Partition Reconciliation",
+    "id": "squad-apollo",
+    "name": "Row 7: Squad Apollo (Merchant Cash Advance)",
+    "alias": "Apollo",
+    "leadPN": "PN 90156789 (Dedi Mulyadi)",
+    "sprint": "Sprint 24 (Day 9/10)",
+    "sprintGoal": "Merchant Cash Advance & Lending Underwriting Engine",
     "zoneCenter": [
-      1,
+      11.2,
       0,
-      -2.1
+      -6.3
     ],
-    "zoneColor": "#6366f1",
+    "zoneColor": "#ec4899",
     "metrics": {
-      "totalStoryPoints": 88,
-      "completedStoryPoints": 52,
+      "totalStoryPoints": 68,
+      "completedStoryPoints": 60,
       "defects": {
-        "p1": 1,
-        "p2": 3,
+        "p1": 0,
+        "p2": 0,
         "p3": 1
+      },
+      "approvals": {
+        "brd": true,
+        "sitSignOff": true,
+        "uatSignOff": true,
+        "secmanSignOff": false,
+        "rfcDeployment": false
+      },
+      "pipeline": {
+        "stage": "UAT",
+        "health": "green",
+        "sonarCoverage": 93.1
+      }
+    },
+    "members": [
+      {
+        "id": "squad-apollo-out-1",
+        "pn": "901620",
+        "name": "Dedi Mulyadi",
+        "shortName": "Dedi",
+        "isStanding": false,
+        "role": "SL",
+        "avatarColor": "#f59e0b",
+        "deskPosition": [
+          8.8,
+          0,
+          -6.71
+        ],
+        "rotationY": 3.141592653589793,
+        "status": "active",
+        "speechBubble": "Underwriting algorithm accuracy 98.4% verified.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "APO-201",
+            "title": "Task: Underwriting algorithm accuracy 98.4% verifie",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-apollo-core",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
+        }
+      },
+      {
+        "id": "squad-apollo-out-2",
+        "pn": "901621",
+        "name": "Fitri Handayani",
+        "shortName": "Fitri",
+        "isStanding": false,
+        "role": "SM",
+        "avatarColor": "#8b5cf6",
+        "deskPosition": [
+          10.4,
+          0,
+          -6.71
+        ],
+        "rotationY": 3.141592653589793,
+        "status": "active",
+        "speechBubble": "Sprint 24 retrospective scheduled tomorrow.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "APO-202",
+            "title": "Task: Sprint 24 retrospective scheduled tomorrow.",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-apollo-core",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
+        }
+      },
+      {
+        "id": "squad-apollo-out-3",
+        "pn": "901622",
+        "name": "Yusuf Habibi",
+        "shortName": "Yusuf",
+        "isStanding": false,
+        "role": "BE",
+        "avatarColor": "#3b82f6",
+        "deskPosition": [
+          12,
+          0,
+          -6.71
+        ],
+        "rotationY": 3.141592653589793,
+        "status": "active",
+        "speechBubble": "Instant disbursement API integration ready.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "APO-203",
+            "title": "Task: Instant disbursement API integration ready.",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-apollo-core",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
+        }
+      },
+      {
+        "id": "squad-apollo-out-4",
+        "pn": "901623",
+        "name": "Doni Firmansyah",
+        "shortName": "Doni",
+        "isStanding": false,
+        "role": "BE",
+        "avatarColor": "#2563eb",
+        "deskPosition": [
+          13.6,
+          0,
+          -6.71
+        ],
+        "rotationY": 3.141592653589793,
+        "status": "active",
+        "speechBubble": "Credit scoring engine Kafka pipeline optimized.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "APO-204",
+            "title": "Task: Credit scoring engine Kafka pipeline optimize",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-apollo-core",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
+        }
+      },
+      {
+        "id": "squad-apollo-out-5",
+        "pn": "901624",
+        "name": "Hana Safitri",
+        "shortName": "Hana",
+        "isStanding": false,
+        "role": "FE",
+        "avatarColor": "#ec4899",
+        "deskPosition": [
+          8.8,
+          0,
+          -5.89
+        ],
+        "rotationY": 0,
+        "status": "active",
+        "speechBubble": "Merchant loan offer modal & tenor slider UI ready.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "APO-205",
+            "title": "Task: Merchant loan offer modal & tenor slider UI r",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-apollo-core",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
+        }
+      },
+      {
+        "id": "squad-apollo-out-6",
+        "pn": "901625",
+        "name": "Surya Kencana",
+        "shortName": "Surya",
+        "isStanding": false,
+        "role": "FE",
+        "avatarColor": "#06b6d4",
+        "deskPosition": [
+          10.4,
+          0,
+          -5.89
+        ],
+        "rotationY": 0,
+        "status": "active",
+        "speechBubble": "Digital signature & e-KTP verification component.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "APO-206",
+            "title": "Task: Digital signature & e-KTP verification compon",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-apollo-core",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
+        }
+      },
+      {
+        "id": "squad-apollo-out-7",
+        "pn": "901626",
+        "name": "Lia Kartika",
+        "shortName": "Lia",
+        "isStanding": false,
+        "role": "QA",
+        "avatarColor": "#10b981",
+        "deskPosition": [
+          12,
+          0,
+          -5.89
+        ],
+        "rotationY": 0,
+        "status": "active",
+        "speechBubble": "E2E automated disbursement test suite passed.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "APO-207",
+            "title": "Task: E2E automated disbursement test suite passed.",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-apollo-core",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
+        }
+      },
+      {
+        "id": "squad-apollo-out-8",
+        "pn": "901627",
+        "name": "Fajar Ramadhan",
+        "shortName": "Fajar",
+        "isStanding": false,
+        "role": "QA",
+        "avatarColor": "#059669",
+        "deskPosition": [
+          13.6,
+          0,
+          -5.89
+        ],
+        "rotationY": 0,
+        "status": "active",
+        "speechBubble": "Repayment calculation precision verified.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "APO-208",
+            "title": "Task: Repayment calculation precision verified.",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-apollo-core",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
+        }
+      }
+    ]
+  },
+  {
+    "id": "squad-vulcan",
+    "name": "Row 8: Squad Vulcan (Disaster Recovery & CDC)",
+    "alias": "Vulcan",
+    "leadPN": "PN 90167890 (Aris Munandar)",
+    "sprint": "Sprint 18 (Day 2/10)",
+    "sprintGoal": "Disaster Recovery Warm Standby & Database CDC Streaming",
+    "zoneCenter": [
+      11.2,
+      0,
+      -10.5
+    ],
+    "zoneColor": "#14b8a6",
+    "metrics": {
+      "totalStoryPoints": 72,
+      "completedStoryPoints": 20,
+      "defects": {
+        "p1": 0,
+        "p2": 2,
+        "p3": 2
       },
       "approvals": {
         "brd": true,
@@ -1542,298 +3089,314 @@ export const INITIAL_SQUADS: Squad[] = [
         "rfcDeployment": false
       },
       "pipeline": {
-        "stage": "SIT",
-        "health": "red",
-        "sonarCoverage": 89.5
+        "stage": "DEV",
+        "health": "yellow",
+        "sonarCoverage": 90.5
       }
     },
     "members": [
       {
-        "id": "titan-sl",
-        "pn": "90155778",
-        "name": "Gunawan Wibisono",
+        "id": "squad-vulcan-out-1",
+        "pn": "901720",
+        "name": "Aris Munandar",
+        "shortName": "Aris",
+        "isStanding": false,
         "role": "SL",
         "avatarColor": "#f59e0b",
         "deskPosition": [
-          -6,
+          8.8,
           0,
-          -3
+          -10.91
         ],
         "rotationY": 3.141592653589793,
         "status": "active",
-        "speechBubble": "Target waktu proses cut-off settlement EOD dipangkas dari 3 jam jadi 45 menit.",
+        "speechBubble": "DR Drill simulation RPO < 1s, RTO < 30s achieved.",
         "isBlocker": false,
         "jiraTickets": [
           {
-            "key": "TTN-601",
-            "title": "Batch Settlement Window Optimization Architecture",
+            "key": "VUL-201",
+            "title": "Task: DR Drill simulation RPO < 1s, RTO < 30s achie",
             "status": "In Progress",
-            "storyPoints": 8,
-            "priority": "Highest"
+            "storyPoints": 5,
+            "priority": "High"
           }
         ],
         "bitbucket": {
-          "repo": "titan-settlement-core",
-          "branch": "release/v3.1.0",
-          "activePR": "PR #190: Spark cluster partition tune",
-          "prStatus": "OPEN",
-          "lastCommit": "1 hour ago by gwibisono",
-          "sonarScore": 91
-        }
-      },
-      {
-        "id": "titan-sm",
-        "pn": "90177665",
-        "name": "Mira Santika",
-        "role": "SM",
-        "avatarColor": "#8b5cf6",
-        "deskPosition": [
-          -3.8,
-          0,
-          -3
-        ],
-        "rotationY": 3.141592653589793,
-        "status": "active",
-        "speechBubble": "Koordinasi file kliring bersama Bank Indonesia & Artajasa terjadwal.",
-        "isBlocker": false,
-        "jiraTickets": [
-          {
-            "key": "TTN-605",
-            "title": "Clearing File Interchange Protocol Protocol",
-            "status": "Done",
-            "storyPoints": 3,
-            "priority": "Medium"
-          }
-        ],
-        "bitbucket": {
-          "repo": "titan-docs",
+          "repo": "squad-vulcan-core",
           "branch": "main",
           "activePR": null,
           "prStatus": null,
-          "lastCommit": "Yesterday by msantika",
-          "sonarScore": 98
-        }
-      },
-      {
-        "id": "titan-fe1",
-        "pn": "90188554",
-        "name": "Joko Susilo",
-        "role": "FE",
-        "avatarColor": "#ec4899",
-        "deskPosition": [
-          -6,
-          0,
-          -1.2
-        ],
-        "rotationY": 0,
-        "status": "active",
-        "speechBubble": "Visualisasi progress bar batch settlement & delta dispute real-time.",
-        "isBlocker": false,
-        "jiraTickets": [
-          {
-            "key": "TTN-610",
-            "title": "EOD Batch Progress Bar & Live Status Cards",
-            "status": "Done",
-            "storyPoints": 5,
-            "priority": "High"
-          }
-        ],
-        "bitbucket": {
-          "repo": "titan-reconcile-web",
-          "branch": "feat/progress-monitor",
-          "activePR": null,
-          "prStatus": null,
-          "lastCommit": "3 hours ago by jsusilo",
-          "sonarScore": 94
-        }
-      },
-      {
-        "id": "titan-fe2",
-        "pn": "90199443",
-        "name": "Mega Utami",
-        "role": "FE",
-        "avatarColor": "#db2777",
-        "deskPosition": [
-          -3.8,
-          0,
-          -1.2
-        ],
-        "rotationY": 0,
-        "status": "active",
-        "speechBubble": "Data grid audit selisih transaksi dengan filter multi-merchant.",
-        "isBlocker": false,
-        "jiraTickets": [
-          {
-            "key": "TTN-615",
-            "title": "Discrepancy Audit Data Table with Export Excel",
-            "status": "In Review",
-            "storyPoints": 5,
-            "priority": "High"
-          }
-        ],
-        "bitbucket": {
-          "repo": "titan-reconcile-web",
-          "branch": "feat/audit-grid",
-          "activePR": "PR #56: Virtualized grid rows",
-          "prStatus": "OPEN",
-          "lastCommit": "1 hour ago by mutami",
+          "lastCommit": "30 mins ago",
           "sonarScore": 92
         }
       },
       {
-        "id": "titan-be1",
-        "pn": "90166112",
-        "name": "Prasetyo Utomo",
+        "id": "squad-vulcan-out-2",
+        "pn": "901721",
+        "name": "Wulan Guritno",
+        "shortName": "Wulan",
+        "isStanding": false,
+        "role": "SM",
+        "avatarColor": "#8b5cf6",
+        "deskPosition": [
+          10.4,
+          0,
+          -10.91
+        ],
+        "rotationY": 3.141592653589793,
+        "status": "active",
+        "speechBubble": "Sprint backlog kickoff and task assignment done.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "VUL-202",
+            "title": "Task: Sprint backlog kickoff and task assignment do",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-vulcan-core",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
+        }
+      },
+      {
+        "id": "squad-vulcan-out-3",
+        "pn": "901722",
+        "name": "Ilham Kusumo",
+        "shortName": "Ilham",
+        "isStanding": false,
         "role": "BE",
         "avatarColor": "#3b82f6",
         "deskPosition": [
-          3,
+          12,
           0,
-          -3
+          -10.91
+        ],
+        "rotationY": 3.141592653589793,
+        "status": "active",
+        "speechBubble": "Debezium CDC streaming to Secondary DC setup.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "VUL-203",
+            "title": "Task: Debezium CDC streaming to Secondary DC setup.",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-vulcan-core",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
+        }
+      },
+      {
+        "id": "squad-vulcan-out-4",
+        "pn": "901723",
+        "name": "Rangga Danu",
+        "shortName": "Rangga",
+        "isStanding": false,
+        "role": "BE",
+        "avatarColor": "#2563eb",
+        "deskPosition": [
+          13.6,
+          0,
+          -10.91
         ],
         "rotationY": 3.141592653589793,
         "status": "blocked",
-        "speechBubble": "⚠️ Blocker: Deadlock pada table partition ledger saat 50 juta baris di-reconcile.",
+        "speechBubble": "⚠️ Blocker: Replication lag spike on high-volume write.",
         "isBlocker": true,
         "jiraTickets": [
           {
-            "key": "TTN-620",
-            "title": "BUG P1: PostgreSQL Table Partition Lock Contention",
+            "key": "VUL-204",
+            "title": "Task: ⚠️ Blocker: Replication lag spike on high-vol",
             "status": "In Progress",
-            "storyPoints": 8,
+            "storyPoints": 5,
             "priority": "Highest"
           }
         ],
         "bitbucket": {
-          "repo": "titan-settlement-core",
-          "branch": "fix/partition-lock-deadlock",
-          "activePR": "PR #78: Batch chunk advisory lock",
-          "prStatus": "OPEN",
-          "lastCommit": "15 mins ago by putomo",
-          "sonarScore": 84
-        }
-      },
-      {
-        "id": "titan-be2",
-        "pn": "90144998",
-        "name": "Eko Prasetyo",
-        "role": "BE",
-        "avatarColor": "#2563eb",
-        "deskPosition": [
-          5.1,
-          0,
-          -3
-        ],
-        "rotationY": 3.141592653589793,
-        "status": "active",
-        "speechBubble": "BigQuery pipeline streaming insert 20.000 rows/detik stabil.",
-        "isBlocker": false,
-        "jiraTickets": [
-          {
-            "key": "TTN-625",
-            "title": "Google Cloud BigQuery Streaming Buffer Tuning",
-            "status": "In Progress",
-            "storyPoints": 5,
-            "priority": "High"
-          }
-        ],
-        "bitbucket": {
-          "repo": "titan-bigquery-sink",
-          "branch": "feat/streaming-buffer",
-          "activePR": "PR #41: Add exponential backoff retry",
-          "prStatus": "OPEN",
-          "lastCommit": "2 hours ago by eprasetyo",
-          "sonarScore": 93
-        }
-      },
-      {
-        "id": "titan-qa1",
-        "pn": "90133887",
-        "name": "Sri Wahyuni",
-        "role": "QA",
-        "avatarColor": "#10b981",
-        "deskPosition": [
-          3,
-          0,
-          -1.2
-        ],
-        "rotationY": 0,
-        "status": "testing",
-        "speechBubble": "Testing synthetic settlement file generator 100 juta record.",
-        "isBlocker": false,
-        "jiraTickets": [
-          {
-            "key": "TTN-630",
-            "title": "High-Volume Synthetic File Generation Benchmark",
-            "status": "In Progress",
-            "storyPoints": 5,
-            "priority": "High"
-          }
-        ],
-        "bitbucket": {
-          "repo": "titan-qa-automation",
-          "branch": "test/100m-records",
-          "activePR": null,
-          "prStatus": null,
-          "lastCommit": "4 hours ago by swahyuni_t",
-          "sonarScore": 90
-        }
-      },
-      {
-        "id": "titan-qa2",
-        "pn": "90122776",
-        "name": "Bambang Kusuma",
-        "role": "QA",
-        "avatarColor": "#059669",
-        "deskPosition": [
-          5.1,
-          0,
-          -1.2
-        ],
-        "rotationY": 0,
-        "status": "active",
-        "speechBubble": "Verifikasi hash checksum SHA-256 file kliring Bank Indonesia matched.",
-        "isBlocker": false,
-        "jiraTickets": [
-          {
-            "key": "TTN-635",
-            "title": "SHA-256 Checksum Automated Validation Suite",
-            "status": "Done",
-            "storyPoints": 3,
-            "priority": "Medium"
-          }
-        ],
-        "bitbucket": {
-          "repo": "titan-qa-automation",
+          "repo": "squad-vulcan-core",
           "branch": "main",
           "activePR": null,
           "prStatus": null,
-          "lastCommit": "Yesterday by bkusuma",
-          "sonarScore": 96
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
+        }
+      },
+      {
+        "id": "squad-vulcan-out-5",
+        "pn": "901724",
+        "name": "Kiki Amalia",
+        "shortName": "Kiki",
+        "isStanding": false,
+        "role": "FE",
+        "avatarColor": "#ec4899",
+        "deskPosition": [
+          8.8,
+          0,
+          -10.09
+        ],
+        "rotationY": 0,
+        "status": "active",
+        "speechBubble": "Failover status indicator & health topology UI.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "VUL-205",
+            "title": "Task: Failover status indicator & health topology U",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-vulcan-core",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
+        }
+      },
+      {
+        "id": "squad-vulcan-out-6",
+        "pn": "901725",
+        "name": "Tono Sudirgo",
+        "shortName": "Tono",
+        "isStanding": false,
+        "role": "FE",
+        "avatarColor": "#06b6d4",
+        "deskPosition": [
+          10.4,
+          0,
+          -10.09
+        ],
+        "rotationY": 0,
+        "status": "active",
+        "speechBubble": "DR Drill countdown timer & runbook modal.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "VUL-206",
+            "title": "Task: DR Drill countdown timer & runbook modal.",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-vulcan-core",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
+        }
+      },
+      {
+        "id": "squad-vulcan-out-7",
+        "pn": "901726",
+        "name": "Bella Saphira",
+        "shortName": "Bella",
+        "isStanding": false,
+        "role": "QA",
+        "avatarColor": "#10b981",
+        "deskPosition": [
+          12,
+          0,
+          -10.09
+        ],
+        "rotationY": 0,
+        "status": "active",
+        "speechBubble": "Chaos engineering network partition test running.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "VUL-207",
+            "title": "Task: Chaos engineering network partition test runn",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-vulcan-core",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
+        }
+      },
+      {
+        "id": "squad-vulcan-out-8",
+        "pn": "901727",
+        "name": "Sandy Pratama",
+        "shortName": "Sandy",
+        "isStanding": false,
+        "role": "QA",
+        "avatarColor": "#059669",
+        "deskPosition": [
+          13.6,
+          0,
+          -10.09
+        ],
+        "rotationY": 0,
+        "status": "active",
+        "speechBubble": "Database failover split-brain verification.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "VUL-208",
+            "title": "Task: Database failover split-brain verification.",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-vulcan-core",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
         }
       }
     ]
   },
   {
-    "id": "squad-apollo",
-    "name": "Row 7: Squad Apollo (BI-FAST & National Switching)",
-    "alias": "Apollo",
-    "leadPN": "PN 90199001 (Dedi Mulyadi)",
-    "sprint": "Sprint 26 (Day 5/10)",
-    "sprintGoal": "BI-FAST Direct ISO 20022 High Concurrency Connector Latency <50ms",
+    "id": "squad-sentinel",
+    "name": "Row 9: Squad Sentinel (API Gateway & Security)",
+    "alias": "Sentinel",
+    "leadPN": "PN 90189012 (Firman Utina)",
+    "sprint": "Sprint 27 (Day 7/10)",
+    "sprintGoal": "API Gateway Rate Limiting, WAF & OAuth2 mTLS Security",
     "zoneCenter": [
-      1,
+      11.2,
       0,
-      -6.3
+      -14.7
     ],
-    "zoneColor": "#f43f5e",
+    "zoneColor": "#3b82f6",
     "metrics": {
       "totalStoryPoints": 78,
-      "completedStoryPoints": 58,
+      "completedStoryPoints": 54,
       "defects": {
-        "p1": 0,
-        "p2": 2,
-        "p3": 2
+        "p1": 1,
+        "p2": 1,
+        "p3": 1
       },
       "approvals": {
         "brd": true,
@@ -1843,900 +3406,314 @@ export const INITIAL_SQUADS: Squad[] = [
         "rfcDeployment": false
       },
       "pipeline": {
-        "stage": "SECMAN",
+        "stage": "SIT",
         "health": "yellow",
-        "sonarCoverage": 93.6
+        "sonarCoverage": 94.7
       }
     },
     "members": [
       {
-        "id": "apollo-sl",
-        "pn": "90199001",
-        "name": "Dedi Mulyadi",
+        "id": "squad-sentinel-out-1",
+        "pn": "901820",
+        "name": "Firman Utina",
+        "shortName": "Firman",
+        "isStanding": false,
         "role": "SL",
         "avatarColor": "#f59e0b",
         "deskPosition": [
-          -6,
+          8.8,
           0,
-          -7.2
+          -15.11
         ],
         "rotationY": 3.141592653589793,
         "status": "active",
-        "speechBubble": "Sertifikasi compliance ISO 20022 versi 2024 bersama BI compliant.",
+        "speechBubble": "mTLS certificate rotation automation with Vault.",
         "isBlocker": false,
         "jiraTickets": [
           {
-            "key": "APO-701",
-            "title": "BI-FAST ISO 20022 Standard Migration Compliance",
+            "key": "SEN-201",
+            "title": "Task: mTLS certificate rotation automation with Vau",
             "status": "In Progress",
-            "storyPoints": 8,
-            "priority": "Highest"
-          }
-        ],
-        "bitbucket": {
-          "repo": "apollo-bifast-core",
-          "branch": "release/v2.6.0",
-          "activePR": "PR #165: ISO 20022 parser engine",
-          "prStatus": "OPEN",
-          "lastCommit": "2 hours ago by dmulyadi",
-          "sonarScore": 94
-        }
-      },
-      {
-        "id": "apollo-sm",
-        "pn": "90188112",
-        "name": "Fitri Handayani",
-        "role": "SM",
-        "avatarColor": "#8b5cf6",
-        "deskPosition": [
-          -3.8,
-          0,
-          -7.2
-        ],
-        "rotationY": 3.141592653589793,
-        "status": "active",
-        "speechBubble": "Target cut-over weekend switching BI-FAST disetujui Komite RFC.",
-        "isBlocker": false,
-        "jiraTickets": [
-          {
-            "key": "APO-705",
-            "title": "RFC CAB Maintenance Window Approval Plan",
-            "status": "Done",
-            "storyPoints": 3,
+            "storyPoints": 5,
             "priority": "High"
           }
         ],
         "bitbucket": {
-          "repo": "apollo-docs",
+          "repo": "squad-sentinel-core",
           "branch": "main",
           "activePR": null,
           "prStatus": null,
-          "lastCommit": "Yesterday by fhandayani",
-          "sonarScore": 99
-        }
-      },
-      {
-        "id": "apollo-fe1",
-        "pn": "90177223",
-        "name": "Hana Safitri",
-        "role": "FE",
-        "avatarColor": "#ec4899",
-        "deskPosition": [
-          -6,
-          0,
-          -5.4
-        ],
-        "rotationY": 0,
-        "status": "active",
-        "speechBubble": "Pilihan transfer BI-FAST di layar transfer BRImo dioptimasi UX-nya.",
-        "isBlocker": false,
-        "jiraTickets": [
-          {
-            "key": "APO-710",
-            "title": "BRImo Fast Transfer Fee & Badge Animation",
-            "status": "Done",
-            "storyPoints": 5,
-            "priority": "High"
-          }
-        ],
-        "bitbucket": {
-          "repo": "apollo-transfer-ui",
-          "branch": "feat/bifast-badge",
-          "activePR": null,
-          "prStatus": null,
-          "lastCommit": "4 hours ago by hsafitri",
-          "sonarScore": 95
-        }
-      },
-      {
-        "id": "apollo-fe2",
-        "pn": "90166334",
-        "name": "Surya Kencana",
-        "role": "FE",
-        "avatarColor": "#db2777",
-        "deskPosition": [
-          -3.8,
-          0,
-          -5.4
-        ],
-        "rotationY": 0,
-        "status": "active",
-        "speechBubble": "Proxy Address resolution UI (nomor HP & email ID) tested.",
-        "isBlocker": false,
-        "jiraTickets": [
-          {
-            "key": "APO-715",
-            "title": "BI-FAST Proxy ID Lookup Auto-complete Component",
-            "status": "In Review",
-            "storyPoints": 5,
-            "priority": "High"
-          }
-        ],
-        "bitbucket": {
-          "repo": "apollo-transfer-ui",
-          "branch": "feat/proxy-lookup",
-          "activePR": "PR #48: Debounce proxy search API",
-          "prStatus": "OPEN",
-          "lastCommit": "1 hour ago by skencana",
+          "lastCommit": "30 mins ago",
           "sonarScore": 92
         }
       },
       {
-        "id": "apollo-be1",
-        "pn": "90155445",
-        "name": "Yusuf Habibi",
-        "role": "BE",
-        "avatarColor": "#3b82f6",
-        "deskPosition": [
-          3,
-          0,
-          -7.2
-        ],
-        "rotationY": 3.141592653589793,
-        "status": "active",
-        "speechBubble": "Netty NIO TCP socket connection pool ke BI Switcher tembus <35ms.",
-        "isBlocker": false,
-        "jiraTickets": [
-          {
-            "key": "APO-720",
-            "title": "Netty Epoll TCP Socket Tuning for Low-Latency",
-            "status": "In Progress",
-            "storyPoints": 8,
-            "priority": "Highest"
-          }
-        ],
-        "bitbucket": {
-          "repo": "apollo-bifast-connector",
-          "branch": "perf/netty-epoll",
-          "activePR": "PR #104: Zero-copy buffer allocation",
-          "prStatus": "OPEN",
-          "lastCommit": "45 mins ago by yhabibi",
-          "sonarScore": 96
-        }
-      },
-      {
-        "id": "apollo-be2",
-        "pn": "90144556",
-        "name": "Doni Firmansyah",
-        "role": "BE",
-        "avatarColor": "#2563eb",
-        "deskPosition": [
-          5.1,
-          0,
-          -7.2
-        ],
-        "rotationY": 3.141592653589793,
-        "status": "active",
-        "speechBubble": "Circuit breaker Resilience4j failover ke switching cadangan ready.",
-        "isBlocker": false,
-        "jiraTickets": [
-          {
-            "key": "APO-725",
-            "title": "Resilience4j Automated Failover Secondary Gateway",
-            "status": "Done",
-            "storyPoints": 5,
-            "priority": "High"
-          }
-        ],
-        "bitbucket": {
-          "repo": "apollo-bifast-connector",
-          "branch": "feat/resilience-failover",
-          "activePR": null,
-          "prStatus": null,
-          "lastCommit": "Yesterday by dfirmansyah",
-          "sonarScore": 93
-        }
-      },
-      {
-        "id": "apollo-qa1",
-        "pn": "90133667",
-        "name": "Lia Kartika",
-        "role": "QA",
-        "avatarColor": "#10b981",
-        "deskPosition": [
-          3,
-          0,
-          -5.4
-        ],
-        "rotationY": 0,
-        "status": "testing",
-        "speechBubble": "Simulation test 5.000 TPS BI-FAST peak transfer load berjalan aman.",
-        "isBlocker": false,
-        "jiraTickets": [
-          {
-            "key": "APO-730",
-            "title": "k6 Concurrency Stress Test BI-FAST Connector",
-            "status": "In Progress",
-            "storyPoints": 5,
-            "priority": "High"
-          }
-        ],
-        "bitbucket": {
-          "repo": "apollo-qa-suite",
-          "branch": "test/5k-tps-load",
-          "activePR": null,
-          "prStatus": null,
-          "lastCommit": "3 hours ago by lkartika",
-          "sonarScore": 91
-        }
-      },
-      {
-        "id": "apollo-qa2",
-        "pn": "90122778",
-        "name": "Fajar Ramadhan",
-        "role": "QA",
-        "avatarColor": "#059669",
-        "deskPosition": [
-          5.1,
-          0,
-          -5.4
-        ],
-        "rotationY": 0,
-        "status": "idle",
-        "speechBubble": "☕ Stress test pass! Tinggal menunggu Secman security sign-off.",
-        "isBlocker": false,
-        "jiraTickets": [
-          {
-            "key": "APO-735",
-            "title": "Security Vulnerability Remediation Sign-Off",
-            "status": "In Progress",
-            "storyPoints": 3,
-            "priority": "High"
-          }
-        ],
-        "bitbucket": {
-          "repo": "apollo-qa-suite",
-          "branch": "main",
-          "activePR": null,
-          "prStatus": null,
-          "lastCommit": "Yesterday by framadhan",
-          "sonarScore": 95
-        }
-      }
-    ]
-  },
-  {
-    "id": "squad-vulcan",
-    "name": "Row 8: Squad Vulcan (Cloud Infra & DevSecOps)",
-    "alias": "Vulcan",
-    "leadPN": "PN 90199887 (Aris Munandar)",
-    "sprint": "Sprint 30 (Day 7/10)",
-    "sprintGoal": "OpenShift Multi-Cluster Auto-Scaling & Zero-Downtime Blue-Green Pipeline",
-    "zoneCenter": [
-      1,
-      0,
-      -10.5
-    ],
-    "zoneColor": "#06b6d4",
-    "metrics": {
-      "totalStoryPoints": 70,
-      "completedStoryPoints": 55,
-      "defects": {
-        "p1": 0,
-        "p2": 1,
-        "p3": 1
-      },
-      "approvals": {
-        "brd": true,
-        "sitSignOff": true,
-        "uatSignOff": true,
-        "secmanSignOff": true,
-        "rfcDeployment": true
-      },
-      "pipeline": {
-        "stage": "PROD_READY",
-        "health": "green",
-        "sonarCoverage": 97.5
-      }
-    },
-    "members": [
-      {
-        "id": "vulcan-sl",
-        "pn": "90199887",
-        "name": "Aris Munandar",
-        "role": "SL",
-        "avatarColor": "#f59e0b",
-        "deskPosition": [
-          -6,
-          0,
-          -11.4
-        ],
-        "rotationY": 3.141592653589793,
-        "status": "active",
-        "speechBubble": "Cluster Kubernetes OpenShift siap untuk lonjakan transaksi gajian akhir bulan!",
-        "isBlocker": false,
-        "jiraTickets": [
-          {
-            "key": "VLC-801",
-            "title": "Cluster Resource Quota Multi-region DR Plan",
-            "status": "Done",
-            "storyPoints": 5,
-            "priority": "Highest"
-          }
-        ],
-        "bitbucket": {
-          "repo": "vulcan-k8s-manifests",
-          "branch": "release/v3.0.0",
-          "activePR": "PR #210: Blue-Green rollout canary config",
-          "prStatus": "OPEN",
-          "lastCommit": "1 hour ago by amunandar",
-          "sonarScore": 98
-        }
-      },
-      {
-        "id": "vulcan-sm",
-        "pn": "90188776",
-        "name": "Wulan Guritno",
-        "role": "SM",
-        "avatarColor": "#8b5cf6",
-        "deskPosition": [
-          -3.8,
-          0,
-          -11.4
-        ],
-        "rotationY": 3.141592653589793,
-        "status": "active",
-        "speechBubble": "Semua tiket RFC Deployment CAB minggu ini sudah 100% approved.",
-        "isBlocker": false,
-        "jiraTickets": [
-          {
-            "key": "VLC-805",
-            "title": "CAB Committee Formal Approval Signatures",
-            "status": "Done",
-            "storyPoints": 3,
-            "priority": "High"
-          }
-        ],
-        "bitbucket": {
-          "repo": "vulcan-governance",
-          "branch": "main",
-          "activePR": null,
-          "prStatus": null,
-          "lastCommit": "Yesterday by wguritno",
-          "sonarScore": 99
-        }
-      },
-      {
-        "id": "vulcan-fe1",
-        "pn": "90177665",
-        "name": "Kiki Amalia",
-        "role": "FE",
-        "avatarColor": "#ec4899",
-        "deskPosition": [
-          -6,
-          0,
-          -9.6
-        ],
-        "rotationY": 0,
-        "status": "active",
-        "speechBubble": "Internal Developer Platform (IDP) Backstage dashboard selesai di-deploy.",
-        "isBlocker": false,
-        "jiraTickets": [
-          {
-            "key": "VLC-810",
-            "title": "Spotify Backstage IDP Service Catalog UI",
-            "status": "Done",
-            "storyPoints": 5,
-            "priority": "High"
-          }
-        ],
-        "bitbucket": {
-          "repo": "vulcan-idp-backstage",
-          "branch": "feat/service-catalog",
-          "activePR": null,
-          "prStatus": null,
-          "lastCommit": "3 hours ago by kamalia",
-          "sonarScore": 95
-        }
-      },
-      {
-        "id": "vulcan-fe2",
-        "pn": "90166554",
-        "name": "Tono Sudirgo",
-        "role": "FE",
-        "avatarColor": "#db2777",
-        "deskPosition": [
-          -3.8,
-          0,
-          -9.6
-        ],
-        "rotationY": 0,
-        "status": "active",
-        "speechBubble": "Grafana dashboards 3D visual cluster node topology live.",
-        "isBlocker": false,
-        "jiraTickets": [
-          {
-            "key": "VLC-815",
-            "title": "Grafana Custom Plugin: 3D Node Heatmap",
-            "status": "In Review",
-            "storyPoints": 5,
-            "priority": "High"
-          }
-        ],
-        "bitbucket": {
-          "repo": "vulcan-grafana-plugins",
-          "branch": "feat/3d-heatmap",
-          "activePR": "PR #32: WebGL memory leak fix",
-          "prStatus": "OPEN",
-          "lastCommit": "2 hours ago by tsudirgo",
-          "sonarScore": 93
-        }
-      },
-      {
-        "id": "vulcan-be1",
-        "pn": "90155443",
-        "name": "Ilham Kusumo",
-        "role": "BE",
-        "avatarColor": "#3b82f6",
-        "deskPosition": [
-          3,
-          0,
-          -11.4
-        ],
-        "rotationY": 3.141592653589793,
-        "status": "active",
-        "speechBubble": "ArgoCD GitOps automated sync pipeline jalan di 18 squads mikroservis.",
-        "isBlocker": false,
-        "jiraTickets": [
-          {
-            "key": "VLC-820",
-            "title": "ArgoCD Automated Sync Hook & Slack Webhook Alert",
-            "status": "Done",
-            "storyPoints": 5,
-            "priority": "High"
-          }
-        ],
-        "bitbucket": {
-          "repo": "vulcan-gitops-helm",
-          "branch": "master",
-          "activePR": null,
-          "prStatus": null,
-          "lastCommit": "50 mins ago by ikusumo",
-          "sonarScore": 97
-        }
-      },
-      {
-        "id": "vulcan-be2",
-        "pn": "90144332",
-        "name": "Rangga Danu",
-        "role": "BE",
-        "avatarColor": "#2563eb",
-        "deskPosition": [
-          5.1,
-          0,
-          -11.4
-        ],
-        "rotationY": 3.141592653589793,
-        "status": "active",
-        "speechBubble": "HashiCorp Vault auto-injection token TTL rotation policy verified.",
-        "isBlocker": false,
-        "jiraTickets": [
-          {
-            "key": "VLC-825",
-            "title": "HashiCorp Vault Kubernetes Sidecar Injector Tune",
-            "status": "In Progress",
-            "storyPoints": 5,
-            "priority": "Medium"
-          }
-        ],
-        "bitbucket": {
-          "repo": "vulcan-vault-config",
-          "branch": "feat/sidecar-ttl",
-          "activePR": "PR #19: Token lease renewal fix",
-          "prStatus": "OPEN",
-          "lastCommit": "1 hour ago by rdanu",
-          "sonarScore": 96
-        }
-      },
-      {
-        "id": "vulcan-qa1",
-        "pn": "90133221",
-        "name": "Bella Saphira",
-        "role": "QA",
-        "avatarColor": "#10b981",
-        "deskPosition": [
-          3,
-          0,
-          -9.6
-        ],
-        "rotationY": 0,
-        "status": "testing",
-        "speechBubble": "Chaos Engineering test Kube-monkey kill pod acak, failover <2 detik.",
-        "isBlocker": false,
-        "jiraTickets": [
-          {
-            "key": "VLC-830",
-            "title": "Chaos Mesh Pod Kill & Network Partition Scenario",
-            "status": "In Progress",
-            "storyPoints": 5,
-            "priority": "High"
-          }
-        ],
-        "bitbucket": {
-          "repo": "vulcan-chaos-tests",
-          "branch": "chaos/node-drain",
-          "activePR": null,
-          "prStatus": null,
-          "lastCommit": "2 hours ago by bsaphira",
-          "sonarScore": 94
-        }
-      },
-      {
-        "id": "vulcan-qa2",
-        "pn": "90122110",
-        "name": "Sandy Pratama",
-        "role": "QA",
-        "avatarColor": "#059669",
-        "deskPosition": [
-          5.1,
-          0,
-          -9.6
-        ],
-        "rotationY": 0,
-        "status": "deploying",
-        "speechBubble": "🚀 Verifikasi pre-flight deployment checklist ke OpenShift Production.",
-        "isBlocker": false,
-        "jiraTickets": [
-          {
-            "key": "VLC-835",
-            "title": "Production Pre-flight Deployment Automation Check",
-            "status": "In Progress",
-            "storyPoints": 5,
-            "priority": "Highest"
-          }
-        ],
-        "bitbucket": {
-          "repo": "vulcan-chaos-tests",
-          "branch": "main",
-          "activePR": null,
-          "prStatus": null,
-          "lastCommit": "Yesterday by spratama",
-          "sonarScore": 98
-        }
-      }
-    ]
-  },
-  {
-    "id": "squad-sentinel",
-    "name": "Row 9: Squad Sentinel (SRE, APM & 24/7 War Room)",
-    "alias": "Sentinel",
-    "leadPN": "PN 90199776 (Firman Utina)",
-    "sprint": "Sprint 27 (Day 9/10)",
-    "sprintGoal": "Distributed Tracing OpenTelemetry & 99.999% High Availability SLA Uptime",
-    "zoneCenter": [
-      1,
-      0,
-      -14.7
-    ],
-    "zoneColor": "#ea580c",
-    "metrics": {
-      "totalStoryPoints": 65,
-      "completedStoryPoints": 58,
-      "defects": {
-        "p1": 0,
-        "p2": 1,
-        "p3": 0
-      },
-      "approvals": {
-        "brd": true,
-        "sitSignOff": true,
-        "uatSignOff": true,
-        "secmanSignOff": true,
-        "rfcDeployment": false
-      },
-      "pipeline": {
-        "stage": "PROD_READY",
-        "health": "green",
-        "sonarCoverage": 98.2
-      }
-    },
-    "members": [
-      {
-        "id": "sentinel-sl",
-        "pn": "90199776",
-        "name": "Firman Utina",
-        "role": "SL",
-        "avatarColor": "#f59e0b",
-        "deskPosition": [
-          -6,
-          0,
-          -15.6
-        ],
-        "rotationY": 3.141592653589793,
-        "status": "active",
-        "speechBubble": "SLA uptime QCash bulan ini 99.998%! War room dashboard aman.",
-        "isBlocker": false,
-        "jiraTickets": [
-          {
-            "key": "SNT-901",
-            "title": "Monthly SLA Uptime & MTTR Compliance Report",
-            "status": "Done",
-            "storyPoints": 5,
-            "priority": "Highest"
-          }
-        ],
-        "bitbucket": {
-          "repo": "sentinel-war-room",
-          "branch": "release/v2.7.0",
-          "activePR": "PR #134: SLA automated calculator",
-          "prStatus": "OPEN",
-          "lastCommit": "1 hour ago by futina",
-          "sonarScore": 99
-        }
-      },
-      {
-        "id": "sentinel-sm",
-        "pn": "90188665",
+        "id": "squad-sentinel-out-2",
+        "pn": "901821",
         "name": "Ayu Tingting",
+        "shortName": "Ayu",
+        "isStanding": false,
         "role": "SM",
         "avatarColor": "#8b5cf6",
         "deskPosition": [
-          -3.8,
+          10.4,
           0,
-          -15.6
+          -15.11
         ],
         "rotationY": 3.141592653589793,
         "status": "active",
-        "speechBubble": "Jadwal on-call rota SRE & war room escalation matrix diperbarui.",
+        "speechBubble": "Partner API onboarding documentation published.",
         "isBlocker": false,
         "jiraTickets": [
           {
-            "key": "SNT-905",
-            "title": "PagerDuty On-call Rotation Q4 Matrix Schedule",
-            "status": "Done",
-            "storyPoints": 3,
+            "key": "SEN-202",
+            "title": "Task: Partner API onboarding documentation publishe",
+            "status": "In Progress",
+            "storyPoints": 5,
             "priority": "High"
           }
         ],
         "bitbucket": {
-          "repo": "sentinel-runbooks",
+          "repo": "squad-sentinel-core",
           "branch": "main",
           "activePR": null,
           "prStatus": null,
-          "lastCommit": "Yesterday by atingting",
-          "sonarScore": 98
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
         }
       },
       {
-        "id": "sentinel-fe1",
-        "pn": "90177554",
-        "name": "Lukman Sardi",
-        "role": "FE",
-        "avatarColor": "#ec4899",
-        "deskPosition": [
-          -6,
-          0,
-          -13.8
-        ],
-        "rotationY": 0,
-        "status": "active",
-        "speechBubble": "War Room Big Screen Command Dashboard dengan sound alert selesai.",
-        "isBlocker": false,
-        "jiraTickets": [
-          {
-            "key": "SNT-910",
-            "title": "War Room Big Screen TV Wall Display Component",
-            "status": "Done",
-            "storyPoints": 5,
-            "priority": "High"
-          }
-        ],
-        "bitbucket": {
-          "repo": "sentinel-war-room",
-          "branch": "feat/tv-wall-mode",
-          "activePR": null,
-          "prStatus": null,
-          "lastCommit": "3 hours ago by lsardi",
-          "sonarScore": 96
-        }
-      },
-      {
-        "id": "sentinel-fe2",
-        "pn": "90166443",
-        "name": "Nadira Adnan",
-        "role": "FE",
-        "avatarColor": "#db2777",
-        "deskPosition": [
-          -3.8,
-          0,
-          -13.8
-        ],
-        "rotationY": 0,
-        "status": "active",
-        "speechBubble": "Jaeger Distributed Tracing Gantt chart waterfall UI terintegrasi.",
-        "isBlocker": false,
-        "jiraTickets": [
-          {
-            "key": "SNT-915",
-            "title": "OpenTelemetry Waterfall Trace Visualization",
-            "status": "In Review",
-            "storyPoints": 5,
-            "priority": "High"
-          }
-        ],
-        "bitbucket": {
-          "repo": "sentinel-war-room",
-          "branch": "feat/opentelemetry-waterfall",
-          "activePR": "PR #81: Canvas render span bars",
-          "prStatus": "OPEN",
-          "lastCommit": "2 hours ago by nadnan",
-          "sonarScore": 94
-        }
-      },
-      {
-        "id": "sentinel-be1",
-        "pn": "90155332",
+        "id": "squad-sentinel-out-3",
+        "pn": "901822",
         "name": "Dharma Kusuma",
+        "shortName": "Dharma",
+        "isStanding": false,
         "role": "BE",
         "avatarColor": "#3b82f6",
         "deskPosition": [
-          3,
+          12,
           0,
-          -15.6
+          -15.11
         ],
         "rotationY": 3.141592653589793,
-        "status": "active",
-        "speechBubble": "OpenTelemetry Collector daemonset throughput 150.000 spans/detik.",
-        "isBlocker": false,
+        "status": "blocked",
+        "speechBubble": "⚠️ Blocker: Partner cert format mismatch during handshake.",
+        "isBlocker": true,
         "jiraTickets": [
           {
-            "key": "SNT-920",
-            "title": "OTel Collector DaemonSet High-Volume Ingest",
+            "key": "SEN-203",
+            "title": "Task: ⚠️ Blocker: Partner cert format mismatch duri",
             "status": "In Progress",
-            "storyPoints": 8,
+            "storyPoints": 5,
             "priority": "Highest"
           }
         ],
         "bitbucket": {
-          "repo": "sentinel-otel-collector",
-          "branch": "perf/batch-send",
-          "activePR": "PR #55: Gzip compression on span export",
-          "prStatus": "OPEN",
-          "lastCommit": "40 mins ago by dkusuma",
-          "sonarScore": 97
+          "repo": "squad-sentinel-core",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
         }
       },
       {
-        "id": "sentinel-be2",
-        "pn": "90144221",
+        "id": "squad-sentinel-out-4",
+        "pn": "901823",
         "name": "Zulkifli Lubis",
+        "shortName": "Zulkifli",
+        "isStanding": false,
         "role": "BE",
         "avatarColor": "#2563eb",
         "deskPosition": [
-          5.1,
+          13.6,
           0,
-          -15.6
+          -15.11
         ],
         "rotationY": 3.141592653589793,
         "status": "active",
-        "speechBubble": "Slack & Microsoft Teams bot auto-trigger War Room incident room ready.",
+        "speechBubble": "Kong API Gateway token bucket rate limiter tuned.",
         "isBlocker": false,
         "jiraTickets": [
           {
-            "key": "SNT-925",
-            "title": "Bot Incident Management: Teams Channel Auto-Create",
-            "status": "Done",
-            "storyPoints": 5,
-            "priority": "High"
-          }
-        ],
-        "bitbucket": {
-          "repo": "sentinel-incident-bot",
-          "branch": "feat/teams-integration",
-          "activePR": null,
-          "prStatus": null,
-          "lastCommit": "Yesterday by zlubis",
-          "sonarScore": 95
-        }
-      },
-      {
-        "id": "sentinel-qa1",
-        "pn": "90133110",
-        "name": "Chandra Wijaya",
-        "role": "QA",
-        "avatarColor": "#10b981",
-        "deskPosition": [
-          3,
-          0,
-          -13.8
-        ],
-        "rotationY": 0,
-        "status": "testing",
-        "speechBubble": "Drill simulasi outage data center: failover ke DR berhasil 38 detik.",
-        "isBlocker": false,
-        "jiraTickets": [
-          {
-            "key": "SNT-930",
-            "title": "Bi-Monthly Disaster Recovery (DR) Drill Benchmark",
+            "key": "SEN-204",
+            "title": "Task: Kong API Gateway token bucket rate limiter tu",
             "status": "In Progress",
             "storyPoints": 5,
             "priority": "High"
           }
         ],
         "bitbucket": {
-          "repo": "sentinel-dr-drills",
-          "branch": "drill/dc-failover",
-          "activePR": null,
-          "prStatus": null,
-          "lastCommit": "4 hours ago by cwijaya",
-          "sonarScore": 96
-        }
-      },
-      {
-        "id": "sentinel-qa2",
-        "pn": "90122009",
-        "name": "Tiara Andini",
-        "role": "QA",
-        "avatarColor": "#059669",
-        "deskPosition": [
-          5.1,
-          0,
-          -13.8
-        ],
-        "rotationY": 0,
-        "status": "idle",
-        "speechBubble": "☕ Semua server health check hijau, standby monitoring transaksi malam.",
-        "isBlocker": false,
-        "jiraTickets": [
-          {
-            "key": "SNT-935",
-            "title": "Synthetics Health Ping 24/7 Monitoring Pass",
-            "status": "Done",
-            "storyPoints": 3,
-            "priority": "Medium"
-          }
-        ],
-        "bitbucket": {
-          "repo": "sentinel-dr-drills",
+          "repo": "squad-sentinel-core",
           "branch": "main",
           "activePR": null,
           "prStatus": null,
-          "lastCommit": "Yesterday by tandini",
-          "sonarScore": 98
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
+        }
+      },
+      {
+        "id": "squad-sentinel-out-5",
+        "pn": "901824",
+        "name": "Lukman Sardi",
+        "shortName": "Lukman",
+        "isStanding": false,
+        "role": "FE",
+        "avatarColor": "#ec4899",
+        "deskPosition": [
+          8.8,
+          0,
+          -14.29
+        ],
+        "rotationY": 0,
+        "status": "active",
+        "speechBubble": "Developer portal API keys & rate limit quota UI.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "SEN-205",
+            "title": "Task: Developer portal API keys & rate limit quota ",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-sentinel-core",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
+        }
+      },
+      {
+        "id": "squad-sentinel-out-6",
+        "pn": "901825",
+        "name": "Nadira Adnan",
+        "shortName": "Nadira",
+        "isStanding": false,
+        "role": "FE",
+        "avatarColor": "#06b6d4",
+        "deskPosition": [
+          10.4,
+          0,
+          -14.29
+        ],
+        "rotationY": 0,
+        "status": "active",
+        "speechBubble": "Interactive API documentation Swagger integration.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "SEN-206",
+            "title": "Task: Interactive API documentation Swagger integra",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-sentinel-core",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
+        }
+      },
+      {
+        "id": "squad-sentinel-out-7",
+        "pn": "901826",
+        "name": "Chandra Wijaya",
+        "shortName": "Chandra",
+        "isStanding": false,
+        "role": "QA",
+        "avatarColor": "#10b981",
+        "deskPosition": [
+          12,
+          0,
+          -14.29
+        ],
+        "rotationY": 0,
+        "status": "active",
+        "speechBubble": "DDoS simulation test against gateway rate limit.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "SEN-207",
+            "title": "Task: DDoS simulation test against gateway rate lim",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-sentinel-core",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
+        }
+      },
+      {
+        "id": "squad-sentinel-out-8",
+        "pn": "901827",
+        "name": "Tiara Andini",
+        "shortName": "Tiara",
+        "isStanding": false,
+        "role": "QA",
+        "avatarColor": "#059669",
+        "deskPosition": [
+          13.6,
+          0,
+          -14.29
+        ],
+        "rotationY": 0,
+        "status": "active",
+        "speechBubble": "Penetration test regression on auth endpoints.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "SEN-208",
+            "title": "Task: Penetration test regression on auth endpoints",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-sentinel-core",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
         }
       }
     ]
   },
   {
     "id": "squad-nexus",
-    "name": "Row 10: Squad Nexus (QA Automation & Performance)",
+    "name": "Row 10: Squad Nexus (Loyalty & Campaign)",
     "alias": "Nexus",
-    "leadPN": "PN 90199665 (Tri Handoko)",
-    "sprint": "Sprint 24 (Day 6/10)",
-    "sprintGoal": "10,000 TPS Load Testing with k6 & Automated Regression Suite",
+    "leadPN": "PN 90190123 (Tri Handoko)",
+    "sprint": "Sprint 20 (Day 5/10)",
+    "sprintGoal": "Merchant Loyalty Points, Cashback & Campaign Engine",
     "zoneCenter": [
-      1,
+      11.2,
       0,
       -18.9
     ],
-    "zoneColor": "#14b8a6",
+    "zoneColor": "#a855f7",
     "metrics": {
-      "totalStoryPoints": 72,
-      "completedStoryPoints": 60,
+      "totalStoryPoints": 74,
+      "completedStoryPoints": 48,
       "defects": {
         "p1": 0,
         "p2": 1,
-        "p3": 1
+        "p3": 2
       },
       "approvals": {
         "brd": true,
@@ -2746,276 +3723,335 @@ export const INITIAL_SQUADS: Squad[] = [
         "rfcDeployment": false
       },
       "pipeline": {
-        "stage": "SIT",
+        "stage": "DEV",
         "health": "green",
-        "sonarCoverage": 95.8
+        "sonarCoverage": 92.9
       }
     },
     "members": [
       {
-        "id": "nexus-sl",
-        "pn": "90199665",
+        "id": "squad-nexus-out-1",
+        "pn": "901920",
         "name": "Tri Handoko",
+        "shortName": "Tri",
+        "isStanding": false,
         "role": "SL",
         "avatarColor": "#f59e0b",
         "deskPosition": [
-          -6,
+          8.8,
           0,
-          -19.8
+          -19.31
         ],
         "rotationY": 3.141592653589793,
         "status": "active",
-        "speechBubble": "Testing QCash 10.000 TPS tembus dengan p99 latency di bawah 95ms!",
+        "speechBubble": "Cashback dynamic ledger double-entry validation ready.",
         "isBlocker": false,
         "jiraTickets": [
           {
-            "key": "NEX-101",
-            "title": "10,000 TPS Performance Sign-Off Clearance",
+            "key": "NEX-201",
+            "title": "Task: Cashback dynamic ledger double-entry validati",
             "status": "In Progress",
             "storyPoints": 5,
-            "priority": "Highest"
+            "priority": "High"
           }
         ],
         "bitbucket": {
-          "repo": "nexus-perf-framework",
-          "branch": "release/v2.4.0",
-          "activePR": "PR #90: k6 distributed runners config",
-          "prStatus": "OPEN",
-          "lastCommit": "2 hours ago by thandoko",
-          "sonarScore": 97
+          "repo": "squad-nexus-core",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
         }
       },
       {
-        "id": "nexus-sm",
-        "pn": "90188554",
+        "id": "squad-nexus-out-2",
+        "pn": "901921",
         "name": "Rini Yulianti",
+        "shortName": "Rini",
+        "isStanding": false,
         "role": "SM",
         "avatarColor": "#8b5cf6",
         "deskPosition": [
-          -3.8,
+          10.4,
           0,
-          -19.8
+          -19.31
         ],
         "rotationY": 3.141592653589793,
         "status": "active",
-        "speechBubble": "Sprint backlog burndown chart sesuai target, tidak ada defect blocker.",
+        "speechBubble": "Mid-sprint check-in: 65% tasks completed.",
         "isBlocker": false,
         "jiraTickets": [
           {
-            "key": "NEX-105",
-            "title": "Burndown Velocity & Test Debt Tracking",
-            "status": "Done",
-            "storyPoints": 3,
-            "priority": "Medium"
+            "key": "NEX-202",
+            "title": "Task: Mid-sprint check-in: 65% tasks completed.",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
           }
         ],
         "bitbucket": {
-          "repo": "nexus-qa-docs",
+          "repo": "squad-nexus-core",
           "branch": "main",
           "activePR": null,
           "prStatus": null,
-          "lastCommit": "Yesterday by ryulianti",
-          "sonarScore": 99
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
         }
       },
       {
-        "id": "nexus-fe1",
-        "pn": "90177443",
-        "name": "Bagus Ramadhan",
-        "role": "FE",
-        "avatarColor": "#ec4899",
-        "deskPosition": [
-          -6,
-          0,
-          -18
-        ],
-        "rotationY": 0,
-        "status": "active",
-        "speechBubble": "Dashboard visualizer k6 latency percentile & throughput graphs live.",
-        "isBlocker": false,
-        "jiraTickets": [
-          {
-            "key": "NEX-110",
-            "title": "k6 Real-time Metrics Dashboard React Components",
-            "status": "Done",
-            "storyPoints": 5,
-            "priority": "High"
-          }
-        ],
-        "bitbucket": {
-          "repo": "nexus-portal-ui",
-          "branch": "feat/k6-graphs",
-          "activePR": null,
-          "prStatus": null,
-          "lastCommit": "4 hours ago by bramadhan",
-          "sonarScore": 95
-        }
-      },
-      {
-        "id": "nexus-fe2",
-        "pn": "90166332",
-        "name": "Vivi Novita",
-        "role": "FE",
-        "avatarColor": "#db2777",
-        "deskPosition": [
-          -3.8,
-          0,
-          -18
-        ],
-        "rotationY": 0,
-        "status": "active",
-        "speechBubble": "Allure Report test execution viewer dengan video playback defect ready.",
-        "isBlocker": false,
-        "jiraTickets": [
-          {
-            "key": "NEX-115",
-            "title": "Allure Report Embedded Test Run Viewer",
-            "status": "In Review",
-            "storyPoints": 5,
-            "priority": "High"
-          }
-        ],
-        "bitbucket": {
-          "repo": "nexus-portal-ui",
-          "branch": "feat/allure-viewer",
-          "activePR": "PR #47: Video thumbnail playback",
-          "prStatus": "OPEN",
-          "lastCommit": "1 hour ago by vnovita",
-          "sonarScore": 93
-        }
-      },
-      {
-        "id": "nexus-be1",
-        "pn": "90155221",
+        "id": "squad-nexus-out-3",
+        "pn": "901922",
         "name": "Heru Prasetya",
+        "shortName": "Heru",
+        "isStanding": false,
         "role": "BE",
         "avatarColor": "#3b82f6",
         "deskPosition": [
-          3,
+          12,
           0,
-          -19.8
+          -19.31
         ],
         "rotationY": 3.141592653589793,
         "status": "active",
-        "speechBubble": "K6 distributed load generator di OpenShift cluster berhasil di-orchestrate.",
+        "speechBubble": "Campaign rule evaluation engine <10ms latency.",
         "isBlocker": false,
         "jiraTickets": [
           {
-            "key": "NEX-120",
-            "title": "Kubernetes k6 Operator Distributed Test Runner",
-            "status": "Done",
-            "storyPoints": 8,
-            "priority": "Highest"
-          }
-        ],
-        "bitbucket": {
-          "repo": "nexus-perf-framework",
-          "branch": "feat/k6-operator",
-          "activePR": null,
-          "prStatus": null,
-          "lastCommit": "3 hours ago by hprasetya",
-          "sonarScore": 96
-        }
-      },
-      {
-        "id": "nexus-be2",
-        "pn": "90144110",
-        "name": "Sony Hartono",
-        "role": "BE",
-        "avatarColor": "#2563eb",
-        "deskPosition": [
-          5.1,
-          0,
-          -19.8
-        ],
-        "rotationY": 3.141592653589793,
-        "status": "active",
-        "speechBubble": "Mock server switcher & payment gateway emulator throughput 25.000 TPS.",
-        "isBlocker": false,
-        "jiraTickets": [
-          {
-            "key": "NEX-125",
-            "title": "High-Speed Switcher Mock Server Emulator in Go",
+            "key": "NEX-203",
+            "title": "Task: Campaign rule evaluation engine <10ms latency",
             "status": "In Progress",
             "storyPoints": 5,
             "priority": "High"
           }
         ],
         "bitbucket": {
-          "repo": "nexus-mock-engine",
-          "branch": "feat/go-fast-mock",
-          "activePR": "PR #28: Zero allocation JSON parser",
-          "prStatus": "OPEN",
-          "lastCommit": "45 mins ago by shartono",
-          "sonarScore": 98
-        }
-      },
-      {
-        "id": "nexus-qa1",
-        "pn": "90133009",
-        "name": "Nita Anggraini",
-        "role": "QA",
-        "avatarColor": "#10b981",
-        "deskPosition": [
-          3,
-          0,
-          -18
-        ],
-        "rotationY": 0,
-        "status": "testing",
-        "speechBubble": "Running 450 automated regression tests via Playwright parallel.",
-        "isBlocker": false,
-        "jiraTickets": [
-          {
-            "key": "NEX-130",
-            "title": "Playwright Parallel Worker Execution Suite",
-            "status": "In Progress",
-            "storyPoints": 5,
-            "priority": "High"
-          }
-        ],
-        "bitbucket": {
-          "repo": "nexus-playwright-suite",
-          "branch": "test/parallel-workers",
-          "activePR": null,
-          "prStatus": null,
-          "lastCommit": "2 hours ago by nanggraini",
-          "sonarScore": 94
-        }
-      },
-      {
-        "id": "nexus-qa2",
-        "pn": "90122998",
-        "name": "Aldi Taher",
-        "role": "QA",
-        "avatarColor": "#059669",
-        "deskPosition": [
-          5.1,
-          0,
-          -18
-        ],
-        "rotationY": 0,
-        "status": "idle",
-        "speechBubble": "☕ 450 test case hijau semua! Kualitas sprint 24 aman terkendali.",
-        "isBlocker": false,
-        "jiraTickets": [
-          {
-            "key": "NEX-135",
-            "title": "QA Quality Gate Dashboard Sign-off Checklist",
-            "status": "Done",
-            "storyPoints": 3,
-            "priority": "Medium"
-          }
-        ],
-        "bitbucket": {
-          "repo": "nexus-playwright-suite",
+          "repo": "squad-nexus-core",
           "branch": "main",
           "activePR": null,
           "prStatus": null,
-          "lastCommit": "Yesterday by ataher",
-          "sonarScore": 97
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
+        }
+      },
+      {
+        "id": "squad-nexus-out-4",
+        "pn": "901923",
+        "name": "Sony Hartono",
+        "shortName": "Sony",
+        "isStanding": false,
+        "role": "BE",
+        "avatarColor": "#2563eb",
+        "deskPosition": [
+          13.6,
+          0,
+          -19.31
+        ],
+        "rotationY": 3.141592653589793,
+        "status": "active",
+        "speechBubble": "Loyalty points wallet ledger balance partition.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "NEX-204",
+            "title": "Task: Loyalty points wallet ledger balance partitio",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-nexus-core",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
+        }
+      },
+      {
+        "id": "squad-nexus-out-5",
+        "pn": "901924",
+        "name": "Bagus Ramadhan",
+        "shortName": "Bagus",
+        "isStanding": false,
+        "role": "FE",
+        "avatarColor": "#ec4899",
+        "deskPosition": [
+          8.8,
+          0,
+          -18.49
+        ],
+        "rotationY": 0,
+        "status": "active",
+        "speechBubble": "Customer loyalty rewards tier progress bar UI.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "NEX-205",
+            "title": "Task: Customer loyalty rewards tier progress bar UI",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-nexus-core",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
+        }
+      },
+      {
+        "id": "squad-nexus-out-6",
+        "pn": "901925",
+        "name": "Vivi Novita",
+        "shortName": "Vivi",
+        "isStanding": false,
+        "role": "FE",
+        "avatarColor": "#06b6d4",
+        "deskPosition": [
+          10.4,
+          0,
+          -18.49
+        ],
+        "rotationY": 0,
+        "status": "active",
+        "speechBubble": "Merchant promo campaign creator wizard.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "NEX-206",
+            "title": "Task: Merchant promo campaign creator wizard.",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-nexus-core",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
+        }
+      },
+      {
+        "id": "squad-nexus-out-7",
+        "pn": "901926",
+        "name": "Nita Anggraini",
+        "shortName": "Nita",
+        "isStanding": false,
+        "role": "QA",
+        "avatarColor": "#10b981",
+        "deskPosition": [
+          12,
+          0,
+          -18.49
+        ],
+        "rotationY": 0,
+        "status": "active",
+        "speechBubble": "Automated points expiry cron test suite passed.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "NEX-207",
+            "title": "Task: Automated points expiry cron test suite passe",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-nexus-core",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
+        }
+      },
+      {
+        "id": "squad-nexus-out-8",
+        "pn": "901927",
+        "name": "Aldi Taher",
+        "shortName": "Aldi",
+        "isStanding": false,
+        "role": "QA",
+        "avatarColor": "#059669",
+        "deskPosition": [
+          13.6,
+          0,
+          -18.49
+        ],
+        "rotationY": 0,
+        "status": "active",
+        "speechBubble": "Cashback idempotency verification on network drop.",
+        "isBlocker": false,
+        "jiraTickets": [
+          {
+            "key": "NEX-208",
+            "title": "Task: Cashback idempotency verification on network ",
+            "status": "In Progress",
+            "storyPoints": 5,
+            "priority": "High"
+          }
+        ],
+        "bitbucket": {
+          "repo": "squad-nexus-core",
+          "branch": "main",
+          "activePR": null,
+          "prStatus": null,
+          "lastCommit": "30 mins ago",
+          "sonarScore": 92
         }
       }
     ]
+  }
+];
+
+export const PLAYBOOK_TEMPLATES: Playbook[] = [
+  {
+    "id": "daily-briefing",
+    "title": "DAILY MORNING BRIEFING",
+    "schedule": "Every day at 9am",
+    "description": "Summarize sprint priorities, active blockers, and what changed overnight.",
+    "status": "ready",
+    "tag": "AGILE"
+  },
+  {
+    "id": "nightly-code-review",
+    "title": "NIGHTLY CODE REVIEW DIGEST",
+    "schedule": "Every night at midnight",
+    "description": "Review the day and summarize risky changes, Bitbucket PRs, or regressions.",
+    "status": "ready",
+    "tag": "BITBUCKET"
+  },
+  {
+    "id": "hourly-health-check",
+    "title": "HOURLY HEALTH CHECK",
+    "schedule": "Every 60 minutes",
+    "description": "Report runtime health, payment latency (<80ms), and anything that needs intervention.",
+    "status": "running",
+    "tag": "SRE"
+  },
+  {
+    "id": "weekly-progress-report",
+    "title": "WEEKLY PROGRESS REPORT",
+    "schedule": "Every Monday at 8am",
+    "description": "Roll up wins, unfinished work, and next steps for RFC CAB governance.",
+    "status": "ready",
+    "tag": "GOVERNANCE"
+  },
+  {
+    "id": "continuous-monitor",
+    "title": "CONTINUOUS SRE MONITOR",
+    "schedule": "Every 15 minutes",
+    "description": "Watch for transaction drift, silent failures, or anomalous timeouts.",
+    "status": "active",
+    "tag": "INCIDENT"
   }
 ];
