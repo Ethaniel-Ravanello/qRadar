@@ -9,12 +9,148 @@ interface OfficeFloorProps {
   selectedSquadId: string | null;
 }
 
+/**
+ * Public component. Splits the floor into:
+ *   - <StaticOffice /> : everything that never changes (walls, core, windows,
+ *     elevators, caps, lounge...). Props-less + React.memo => renders once.
+ *   - <SquadPods />    : the only hover/select-reactive part (pod mats, ribbon,
+ *     badge). Re-renders on hover without touching the ~150 static meshes.
+ */
 export const OfficeFloor: React.FC<OfficeFloorProps> = ({
   squads,
   onSelectSquad,
   selectedSquadId,
 }) => {
+  return (
+    <group>
+      <StaticOffice squadZ={useMemo(() => squads.map((s) => s.zoneCenter[2]), [squads])} />
+      <SquadPods squads={squads} onSelectSquad={onSelectSquad} selectedSquadId={selectedSquadId} />
+    </group>
+  );
+};
+
+// =============================================================================
+// SQUAD PODS: the only hover/select-reactive layer.
+// =============================================================================
+interface SquadPodsProps {
+  squads: Squad[];
+  onSelectSquad: (squad: Squad) => void;
+  selectedSquadId: string | null;
+}
+
+const SquadPods: React.FC<SquadPodsProps> = ({ squads, onSelectSquad, selectedSquadId }) => {
   const [hoveredSquadId, setHoveredSquadId] = useState<string | null>(null);
+
+  return (
+    <group>
+      {squads.map((squad, idx) => {
+        const cz = squad.zoneCenter[2];
+        const isHovered = hoveredSquadId === squad.id;
+        const isSelected = selectedSquadId === squad.id;
+        const showBadge = isHovered || isSelected;
+
+        return (
+          <group
+            key={`squad-pod-${squad.id}`}
+            onPointerOver={(e) => {
+              e.stopPropagation();
+              setHoveredSquadId(squad.id);
+            }}
+            onPointerOut={() => {
+              setHoveredSquadId(null);
+            }}
+          >
+            {/* A. INNER POD CARPET MAT (4 Meja Berhadapan / 2x2 - Only for Rows 1 to 6) */}
+            {idx < 6 && (
+              <mesh position={[5.6, 0.008, cz]}>
+                <boxGeometry args={[3.4, 0.01, 2.2]} />
+                <meshStandardMaterial
+                  color={isSelected ? '#cbd5e1' : '#e2e8f0'}
+                  roughness={0.7}
+                />
+              </mesh>
+            )}
+
+            {/* B. OUTER POD CARPET MAT (8 Meja Berhadapan Deket Jendela / 4x2 at X = 11.2) */}
+            <mesh position={[11.2, 0.008, cz]}>
+              <boxGeometry args={[6.6, 0.01, 2.2]} />
+              <meshStandardMaterial
+                color={isSelected ? '#cbd5e1' : '#e2e8f0'}
+                roughness={0.7}
+              />
+            </mesh>
+
+            {/* Squad Color Accent Ribbon on Floor near Main Corridor */}
+            <mesh position={[3.8, 0.01, cz]}>
+              <boxGeometry args={[0.08, 0.012, 2.2]} />
+              <meshStandardMaterial color={squad.zoneColor} roughness={0.3} />
+            </mesh>
+
+            {/* White Air Purifier Unit at Squad Aisle Entrance */}
+            <group position={[3.6, 0, cz + 1.2]}>
+              <mesh position={[0, 0.42, 0]} castShadow>
+                <boxGeometry args={[0.3, 0.84, 0.28]} />
+                <meshStandardMaterial color="#ffffff" roughness={0.2} />
+              </mesh>
+              <mesh position={[0, 0.85, 0]}>
+                <boxGeometry args={[0.26, 0.02, 0.24]} />
+                <meshStandardMaterial color="#1e293b" />
+              </mesh>
+              <mesh position={[0.155, 0.68, 0]}>
+                <planeGeometry args={[0.08, 0.08]} />
+                <meshBasicMaterial color={squad.zoneColor} />
+              </mesh>
+            </group>
+
+            {/* Floating Squad Signboard Plaque (Only on Hover or Select) */}
+            {showBadge && (
+              <group position={[3.6, 2.0, cz]}>
+                <Html
+                  position={[0, 0, 0]}
+                  rotation={[0, Math.PI / 2, 0]}
+                  center
+                  distanceFactor={13}
+                  zIndexRange={[5, 0]}
+                  occlude={false}
+                >
+                  <div
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onSelectSquad(squad);
+                    }}
+                    className="font-bold text-white text-[10px] uppercase tracking-wider select-none px-2.5 py-1 rounded shadow-xl border whitespace-nowrap cursor-pointer transition hover:scale-105 flex items-center gap-1.5"
+                    style={{
+                      backgroundColor: `${squad.zoneColor}ee`,
+                      borderColor: squad.zoneColor,
+                    }}
+                  >
+                    <span>ROW {idx + 1}</span>
+                    <span>•</span>
+                    <span>{squad.alias.toUpperCase()}</span>
+                    <span>•</span>
+                    <span>{squad.sprint.split(' ')[0]}</span>
+                  </div>
+                </Html>
+              </group>
+            )}
+          </group>
+        );
+      })}
+    </group>
+  );
+};
+
+// =============================================================================
+// STATIC OFFICE: walls, core, windows, elevators, caps, lounge, benches.
+// No props that change at runtime (squadZ is derived from static zone data),
+// so React.memo keeps this subtree from reconciling on squad hover/select.
+// =============================================================================
+interface StaticOfficeProps {
+  /** Z centers of each squad row (stable), for per-row batik panels. */
+  squadZ: number[];
+}
+
+const StaticOfficeComponent: React.FC<StaticOfficeProps> = ({ squadZ }) => {
 
   // =========================================================================
   // 1. STADIUM / CAPSULE RACETRACK GEOMETRIES ("PANJANG LURUS, UJUNG MELENGKUNG")
@@ -396,101 +532,7 @@ export const OfficeFloor: React.FC<OfficeFloorProps> = ({
         </mesh>
       </group>
 
-      {/* ============================================================== */}
-      {/* 3. 10 SQUAD PODS (4 MEJA BERHADAPAN + 8 MEJA DEKET JENDELA)    */}
-      {/* ============================================================== */}
-      {squads.map((squad, idx) => {
-        const cz = squad.zoneCenter[2];
-        const isHovered = hoveredSquadId === squad.id;
-        const isSelected = selectedSquadId === squad.id;
-        const showBadge = isHovered || isSelected;
-
-        return (
-          <group
-            key={`squad-pod-${squad.id}`}
-            onPointerOver={(e) => {
-              e.stopPropagation();
-              setHoveredSquadId(squad.id);
-            }}
-            onPointerOut={() => {
-              setHoveredSquadId(null);
-            }}
-          >
-            {/* A. INNER POD CARPET MAT (4 Meja Berhadapan / 2x2 - Only for Rows 1 to 6) */}
-            {idx < 6 && (
-              <mesh position={[5.6, 0.008, cz]}>
-                <boxGeometry args={[3.4, 0.01, 2.2]} />
-                <meshStandardMaterial
-                  color={isSelected ? '#cbd5e1' : '#e2e8f0'}
-                  roughness={0.7}
-                />
-              </mesh>
-            )}
-
-            {/* B. OUTER POD CARPET MAT (8 Meja Berhadapan Deket Jendela / 4x2 at X = 11.2) */}
-            <mesh position={[11.2, 0.008, cz]}>
-              <boxGeometry args={[6.6, 0.01, 2.2]} />
-              <meshStandardMaterial
-                color={isSelected ? '#cbd5e1' : '#e2e8f0'}
-                roughness={0.7}
-              />
-            </mesh>
-
-            {/* Squad Color Accent Ribbon on Floor near Main Corridor */}
-            <mesh position={[3.8, 0.01, cz]}>
-              <boxGeometry args={[0.08, 0.012, 2.2]} />
-              <meshStandardMaterial color={squad.zoneColor} roughness={0.3} />
-            </mesh>
-
-            {/* White Air Purifier Unit at Squad Aisle Entrance */}
-            <group position={[3.6, 0, cz + 1.2]}>
-              <mesh position={[0, 0.42, 0]} castShadow>
-                <boxGeometry args={[0.3, 0.84, 0.28]} />
-                <meshStandardMaterial color="#ffffff" roughness={0.2} />
-              </mesh>
-              <mesh position={[0, 0.85, 0]}>
-                <boxGeometry args={[0.26, 0.02, 0.24]} />
-                <meshStandardMaterial color="#1e293b" />
-              </mesh>
-              <mesh position={[0.155, 0.68, 0]}>
-                <planeGeometry args={[0.08, 0.08]} />
-                <meshBasicMaterial color={squad.zoneColor} />
-              </mesh>
-            </group>
-
-            {/* Floating Squad Signboard Plaque (Only on Hover or Select) */}
-            {showBadge && (
-              <group position={[3.6, 2.0, cz]}>
-                <Html
-                  position={[0, 0, 0]}
-                  rotation={[0, Math.PI / 2, 0]}
-                  center
-                  distanceFactor={13}
-                  zIndexRange={[5, 0]}
-                >
-                  <div
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onSelectSquad(squad);
-                    }}
-                    className="font-bold text-white text-[10px] uppercase tracking-wider select-none px-2.5 py-1 rounded shadow-xl border whitespace-nowrap cursor-pointer transition hover:scale-105 flex items-center gap-1.5"
-                    style={{
-                      backgroundColor: `${squad.zoneColor}ee`,
-                      borderColor: squad.zoneColor,
-                    }}
-                  >
-                    <span>ROW {idx + 1}</span>
-                    <span>•</span>
-                    <span>{squad.alias.toUpperCase()}</span>
-                    <span>•</span>
-                    <span>{squad.sprint.split(' ')[0]}</span>
-                  </div>
-                </Html>
-              </group>
-            )}
-          </group>
-        );
-      })}
+      {/* Squad pods (hover/select-reactive) live in <SquadPods />, not here. */}
 
       {/* ============================================================== */}
       {/* 4. SISI KANAN: PANJANG LURUS DINDING KACA PANORAMA (AT X=16.8)  */}
@@ -553,8 +595,8 @@ export const OfficeFloor: React.FC<OfficeFloorProps> = ({
         </mesh>
 
         {/* Decorative Carved Batik Lotus Wooden Panels along each Squad Row */}
-        {squads.map((squad) => (
-          <group key={`batik-${squad.id}`} position={[0.14, 1.3, squad.zoneCenter[2]]}>
+        {squadZ.map((cz, row) => (
+          <group key={`batik-${row}`} position={[0.14, 1.3, cz]}>
             <mesh>
               <boxGeometry args={[0.04, 2.2, 2.6]} />
               <meshStandardMaterial color="#854d0e" roughness={0.4} />
@@ -668,3 +710,8 @@ export const OfficeFloor: React.FC<OfficeFloorProps> = ({
     </group>
   );
 };
+
+// squadZ is derived from static zone data, so the subtree never needs to
+// re-render in practice. React.memo makes that explicit (and cheap: a shallow
+// prop compare) so a parent re-render can't drag the ~150 static meshes along.
+const StaticOffice = React.memo(StaticOfficeComponent);

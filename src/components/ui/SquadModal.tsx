@@ -10,12 +10,12 @@ import {
   UserCheck,
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
-import type { Squad } from '../../types';
+import type { Squad, DocumentApprovals } from '../../types';
 
 interface SquadModalProps {
   squad: Squad | null;
   onClose: () => void;
-  onApproveStep: (squadId: string, step: string) => void;
+  onApproveStep: (squadId: string, step: keyof DocumentApprovals) => void;
 }
 
 export const SquadModal: React.FC<SquadModalProps> = ({

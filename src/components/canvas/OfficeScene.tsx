@@ -18,6 +18,8 @@ interface OfficeSceneProps {
   onSelectSquad: (squad: Squad) => void;
   onClearSelection: () => void;
   filterMode: 'ALL' | 'BLOCKERS' | 'IDLE';
+  /** When true, only the selected squad's avatars are rendered. */
+  focusActiveSquad?: boolean;
   isAsleep?: boolean;
   graphicMode?: GraphicMode;
 }
@@ -26,6 +28,7 @@ export const OfficeScene: React.FC<OfficeSceneProps> = ({
   squads,
   selectedEmployee,
   selectedSquad,
+  focusActiveSquad = false,
   onSelectEmployee,
   onSelectSquad,
   onClearSelection,
@@ -62,6 +65,17 @@ export const OfficeScene: React.FC<OfficeSceneProps> = ({
         }),
     [squads, filterMode]
   );
+
+  // When focused on a squad, only its avatars are rendered; avatars of other
+  // squads are dropped entirely (no draw, no per-frame animation) while their
+  // desks stay, so the room still reads as populated. Avatars are the costly
+  // part (more parts + the only per-frame work), so this is the real win.
+  // Reset View clears the focus (focusActiveSquad=false) -> every avatar shows.
+  const avatarMembers = useMemo(() => {
+    if (!focusActiveSquad || !selectedSquad) return visibleMembers;
+    const activeIds = new Set(selectedSquad.members.map((m) => m.id));
+    return visibleMembers.filter((m) => activeIds.has(m.id));
+  }, [focusActiveSquad, selectedSquad, visibleMembers]);
 
   return (
     <div className="w-full h-full relative bg-[#07090e]">
@@ -132,10 +146,10 @@ export const OfficeScene: React.FC<OfficeSceneProps> = ({
           selectedSquadId={selectedSquad?.id || null}
         />
 
-        {/* Desks & avatars for all squads, GPU-instanced (a few draw calls total) */}
+        {/* Desks for every visible squad; avatars only for the focused squad. */}
         <DeskInstances members={visibleMembers} capacity={capacity} />
         <AvatarInstances
-          members={visibleMembers}
+          members={avatarMembers}
           capacity={capacity}
           selectedId={selectedEmployee?.id ?? null}
           onSelect={onSelectEmployee}

@@ -423,7 +423,12 @@ interface AvatarInstancesProps {
   onSelect: (emp: Employee) => void;
 }
 
-const AvatarInstancesComponent: React.FC<AvatarInstancesProps> = ({ members, capacity, selectedId, onSelect }) => {
+const AvatarInstancesComponent: React.FC<AvatarInstancesProps> = ({
+  members,
+  capacity,
+  selectedId,
+  onSelect,
+}) => {
   const [hoveredId, setHoveredId] = useState<string | null>(null);
 
   const seated = useMemo(() => members.filter((m) => !m.isStanding), [members]);

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Activity, ShieldCheck } from 'lucide-react';
+import { Activity, ShieldCheck, RotateCcw } from 'lucide-react';
 
 interface BottomControlsProps {
   onResetView: () => void;
@@ -9,6 +9,7 @@ interface BottomControlsProps {
 }
 
 export const BottomControls: React.FC<BottomControlsProps> = ({
+  onResetView,
   onOpenSquadModal,
 }) => {
   return (
@@ -28,9 +29,18 @@ export const BottomControls: React.FC<BottomControlsProps> = ({
         <span className="text-slate-300">BRI Q-CASH ECOSYSTEM</span>
       </div>
 
-      {/* Right: Quick Governance Trigger */}
-      {onOpenSquadModal && (
-        <div className="pointer-events-auto">
+      {/* Right: Reset View + Quick Governance Trigger */}
+      <div className="flex items-center gap-2 pointer-events-auto">
+        <button
+          onClick={onResetView}
+          title="Reset View: tampilkan semua squad & recenter kamera"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-700/80 shadow-2xl font-bold tracking-wider transition backdrop-blur-xl group"
+        >
+          <RotateCcw className="w-3.5 h-3.5 text-amber-400 group-hover:-rotate-90 transition-transform" />
+          <span>RESET VIEW</span>
+        </button>
+
+        {onOpenSquadModal && (
           <button
             onClick={onOpenSquadModal}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-700/80 shadow-2xl font-bold tracking-wider transition backdrop-blur-xl group"
@@ -38,8 +48,8 @@ export const BottomControls: React.FC<BottomControlsProps> = ({
             <ShieldCheck className="w-3.5 h-3.5 text-sky-400 group-hover:rotate-12 transition-transform" />
             <span>RFC CAB MATRIX</span>
           </button>
-        </div>
-      )}
+        )}
+      </div>
     </footer>
   );
 };

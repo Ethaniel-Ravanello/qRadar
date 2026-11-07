@@ -33,10 +33,6 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   const isPerformance = graphicMode === 'performance';
 
-  // Find Hermes and Slytherin squads
-  const hermesSquad = squads.find((s) => s.id === 'squad-hermes') || squads[0];
-  const slytherinSquad = squads.find((s) => s.id === 'squad-slytherin') || squads[1];
-
   return (
     <header className="fixed top-4 left-0 right-0 z-30 pointer-events-none flex flex-col items-center">
       <div className="flex flex-col items-center gap-2 pointer-events-auto max-w-4xl px-4">
@@ -51,48 +47,23 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         {/* Squad Selection Row & Mode Toggle (Below HQ Title) */}
         <div className="flex items-center gap-2 flex-wrap justify-center bg-[#0e111a]/85 backdrop-blur-xl px-3 py-1.5 rounded-2xl border border-slate-800/80 shadow-2xl">
-          {/* Featured Squad: HERMES */}
-          <button
-            onClick={() => onSelectSquad(hermesSquad)}
-            className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-mono font-bold tracking-tight transition-all transform hover:scale-105 active:scale-95 ${
-              activeSquad.id === hermesSquad.id
-                ? 'bg-sky-500/20 text-white border border-sky-400 shadow-lg ring-1 ring-sky-400/40'
-                : 'bg-slate-900/90 text-slate-300 hover:text-white border border-slate-800 hover:border-slate-700'
-            }`}
-          >
-            <span className="w-2.5 h-2.5 rounded-full bg-sky-400 shrink-0" />
-            <span>SQUAD HERMES</span>
-            {hermesSquad.members.some((m) => m.isBlocker) && (
-              <span className="w-1.5 h-1.5 rounded-full bg-red-400 animate-ping" />
-            )}
-          </button>
-
-          {/* Featured Squad: SLYTHERIN */}
-          <button
-            onClick={() => onSelectSquad(slytherinSquad)}
-            className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-mono font-bold tracking-tight transition-all transform hover:scale-105 active:scale-95 ${
-              activeSquad.id === slytherinSquad.id
-                ? 'bg-emerald-500/20 text-white border border-emerald-400 shadow-lg ring-1 ring-emerald-400/40'
-                : 'bg-slate-900/90 text-slate-300 hover:text-white border border-slate-800 hover:border-slate-700'
-            }`}
-          >
-            <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 shrink-0" />
-            <span>SQUAD SLYTHERIN</span>
-            {slytherinSquad.members.some((m) => m.isBlocker) && (
-              <span className="w-1.5 h-1.5 rounded-full bg-red-400 animate-ping" />
-            )}
-          </button>
-
-          {/* All 10 Squads Dropdown Switcher */}
+          {/* Active Squad Selector Dropdown (single source for choosing a squad) */}
           <div ref={dropdownRef} className="relative">
             <button
               onClick={() => setIsAllSquadsDropdownOpen((prev) => !prev)}
-              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-mono font-medium text-slate-400 hover:text-white bg-slate-900/60 hover:bg-slate-800/80 border border-slate-800 transition"
-              title="Pilih Squad Lainnya (10 Squads)"
+              className="flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-mono font-bold tracking-tight text-white bg-slate-900/90 hover:bg-slate-800/80 border border-slate-700 hover:border-slate-600 transition min-w-[180px]"
+              title="Pilih Squad Aktif (10 Squads)"
             >
-              <span>10 SQUADS</span>
+              <span
+                className="w-2.5 h-2.5 rounded-full shrink-0"
+                style={{ backgroundColor: activeSquad.zoneColor }}
+              />
+              <span className="truncate">{activeSquad.name}</span>
+              {activeSquad.members.some((m) => m.isBlocker) && (
+                <span className="w-1.5 h-1.5 rounded-full bg-red-400 animate-ping shrink-0" />
+              )}
               <ChevronDown
-                className={`w-3.5 h-3.5 transition-transform duration-200 ${
+                className={`w-3.5 h-3.5 ml-auto text-slate-400 transition-transform duration-200 ${
                   isAllSquadsDropdownOpen ? 'rotate-180 text-white' : ''
                 }`}
               />
