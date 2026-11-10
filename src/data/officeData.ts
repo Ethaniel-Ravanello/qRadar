@@ -9,7 +9,7 @@ export const INITIAL_SQUADS: Squad[] = [
     "sprint": "Sprint 28 (Day 7/10)",
     "sprintGoal": "Fast Checkout QRIS Cross-Border & Settlement Latency <80ms",
     "zoneCenter": [
-      10,
+      11.5,
       0,
       18.9
     ],
@@ -45,7 +45,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "SL",
         "avatarColor": "#f59e0b",
         "deskPosition": [
-          4.8,
+          6,
           0,
           18.49
         ],
@@ -80,7 +80,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "SM",
         "avatarColor": "#8b5cf6",
         "deskPosition": [
-          6.4,
+          7.6,
           0,
           18.49
         ],
@@ -115,7 +115,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "SM",
         "avatarColor": "#10b981",
         "deskPosition": [
-          4.8,
+          6,
           0,
           19.31
         ],
@@ -150,7 +150,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "FE",
         "avatarColor": "#a855f7",
         "deskPosition": [
-          6.4,
+          7.6,
           0,
           19.31
         ],
@@ -185,7 +185,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "BE",
         "avatarColor": "#3b82f6",
         "deskPosition": [
-          8.8,
+          10.6,
           0,
           18.49
         ],
@@ -220,7 +220,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "BE",
         "avatarColor": "#2563eb",
         "deskPosition": [
-          10.4,
+          12.2,
           0,
           18.49
         ],
@@ -255,7 +255,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "BE",
         "avatarColor": "#0284c7",
         "deskPosition": [
-          12,
+          13.8,
           0,
           18.49
         ],
@@ -290,7 +290,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "BE",
         "avatarColor": "#0369a1",
         "deskPosition": [
-          13.6,
+          15.4,
           0,
           18.49
         ],
@@ -325,7 +325,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "FE",
         "avatarColor": "#ec4899",
         "deskPosition": [
-          8.8,
+          10.6,
           0,
           19.31
         ],
@@ -360,7 +360,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "FE",
         "avatarColor": "#06b6d4",
         "deskPosition": [
-          10.4,
+          12.2,
           0,
           19.31
         ],
@@ -395,7 +395,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "QA",
         "avatarColor": "#10b981",
         "deskPosition": [
-          12,
+          13.8,
           0,
           19.31
         ],
@@ -430,7 +430,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "QA",
         "avatarColor": "#059669",
         "deskPosition": [
-          13.6,
+          15.4,
           0,
           19.31
         ],
@@ -466,7 +466,7 @@ export const INITIAL_SQUADS: Squad[] = [
     "sprint": "Sprint 19 (Day 5/10)",
     "sprintGoal": "Multi-Currency High-Yield Ledger & Vault HSM Key Rotation Compliance",
     "zoneCenter": [
-      10,
+      11.5,
       0,
       14.7
     ],
@@ -502,7 +502,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "SL",
         "avatarColor": "#f59e0b",
         "deskPosition": [
-          4.8,
+          6,
           0,
           14.29
         ],
@@ -537,7 +537,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "SM",
         "avatarColor": "#8b5cf6",
         "deskPosition": [
-          6.4,
+          7.6,
           0,
           14.29
         ],
@@ -572,7 +572,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "BE",
         "avatarColor": "#0284c7",
         "deskPosition": [
-          4.8,
+          6,
           0,
           15.11
         ],
@@ -607,7 +607,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "BE",
         "avatarColor": "#1d4ed8",
         "deskPosition": [
-          6.4,
+          7.6,
           0,
           15.11
         ],
@@ -642,7 +642,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "BE",
         "avatarColor": "#3b82f6",
         "deskPosition": [
-          8.8,
+          10.6,
           0,
           14.29
         ],
@@ -677,7 +677,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "BE",
         "avatarColor": "#2563eb",
         "deskPosition": [
-          10.4,
+          12.2,
           0,
           14.29
         ],
@@ -712,7 +712,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "BE",
         "avatarColor": "#0369a1",
         "deskPosition": [
-          12,
+          13.8,
           0,
           14.29
         ],
@@ -747,7 +747,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "BE",
         "avatarColor": "#1e40af",
         "deskPosition": [
-          13.6,
+          15.4,
           0,
           14.29
         ],
@@ -782,7 +782,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "FE",
         "avatarColor": "#ec4899",
         "deskPosition": [
-          8.8,
+          10.6,
           0,
           15.11
         ],
@@ -817,7 +817,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "FE",
         "avatarColor": "#06b6d4",
         "deskPosition": [
-          10.4,
+          12.2,
           0,
           15.11
         ],
@@ -852,7 +852,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "QA",
         "avatarColor": "#10b981",
         "deskPosition": [
-          12,
+          13.8,
           0,
           15.11
         ],
@@ -887,7 +887,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "QA",
         "avatarColor": "#059669",
         "deskPosition": [
-          13.6,
+          15.4,
           0,
           15.11
         ],
@@ -923,7 +923,7 @@ export const INITIAL_SQUADS: Squad[] = [
     "sprint": "Sprint 14 (Day 3/10)",
     "sprintGoal": "Real-Time Fraud Detection Engine & Suspicious Pattern Blocking",
     "zoneCenter": [
-      10,
+      11.5,
       0,
       10.5
     ],
@@ -959,7 +959,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "SL",
         "avatarColor": "#f59e0b",
         "deskPosition": [
-          4.8,
+          6,
           0,
           10.09
         ],
@@ -994,7 +994,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "SM",
         "avatarColor": "#8b5cf6",
         "deskPosition": [
-          6.4,
+          7.6,
           0,
           10.09
         ],
@@ -1029,7 +1029,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "BE",
         "avatarColor": "#b91c1c",
         "deskPosition": [
-          4.8,
+          6,
           0,
           10.91
         ],
@@ -1064,7 +1064,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "FE",
         "avatarColor": "#f43f5e",
         "deskPosition": [
-          6.4,
+          7.6,
           0,
           10.91
         ],
@@ -1099,7 +1099,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "BE",
         "avatarColor": "#3b82f6",
         "deskPosition": [
-          8.8,
+          10.6,
           0,
           10.09
         ],
@@ -1134,7 +1134,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "BE",
         "avatarColor": "#2563eb",
         "deskPosition": [
-          10.4,
+          12.2,
           0,
           10.09
         ],
@@ -1169,7 +1169,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "BE",
         "avatarColor": "#0284c7",
         "deskPosition": [
-          12,
+          13.8,
           0,
           10.09
         ],
@@ -1204,7 +1204,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "BE",
         "avatarColor": "#0369a1",
         "deskPosition": [
-          13.6,
+          15.4,
           0,
           10.09
         ],
@@ -1239,7 +1239,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "FE",
         "avatarColor": "#ec4899",
         "deskPosition": [
-          8.8,
+          10.6,
           0,
           10.91
         ],
@@ -1274,7 +1274,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "FE",
         "avatarColor": "#06b6d4",
         "deskPosition": [
-          10.4,
+          12.2,
           0,
           10.91
         ],
@@ -1309,7 +1309,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "QA",
         "avatarColor": "#10b981",
         "deskPosition": [
-          12,
+          13.8,
           0,
           10.91
         ],
@@ -1344,7 +1344,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "QA",
         "avatarColor": "#059669",
         "deskPosition": [
-          13.6,
+          15.4,
           0,
           10.91
         ],
@@ -1380,7 +1380,7 @@ export const INITIAL_SQUADS: Squad[] = [
     "sprint": "Sprint 22 (Day 8/10)",
     "sprintGoal": "Merchant QRIS Soundbox & POS Terminal IoT Bluetooth Sync",
     "zoneCenter": [
-      10,
+      11.5,
       0,
       6.3
     ],
@@ -1416,7 +1416,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "SL",
         "avatarColor": "#f59e0b",
         "deskPosition": [
-          4.8,
+          6,
           0,
           5.89
         ],
@@ -1451,7 +1451,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "SM",
         "avatarColor": "#8b5cf6",
         "deskPosition": [
-          6.4,
+          7.6,
           0,
           5.89
         ],
@@ -1486,7 +1486,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "BE",
         "avatarColor": "#7c3aed",
         "deskPosition": [
-          4.8,
+          6,
           0,
           6.71
         ],
@@ -1521,7 +1521,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "FE",
         "avatarColor": "#c084fc",
         "deskPosition": [
-          6.4,
+          7.6,
           0,
           6.71
         ],
@@ -1556,7 +1556,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "BE",
         "avatarColor": "#3b82f6",
         "deskPosition": [
-          8.8,
+          10.6,
           0,
           5.89
         ],
@@ -1591,7 +1591,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "BE",
         "avatarColor": "#2563eb",
         "deskPosition": [
-          10.4,
+          12.2,
           0,
           5.89
         ],
@@ -1626,7 +1626,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "BE",
         "avatarColor": "#0284c7",
         "deskPosition": [
-          12,
+          13.8,
           0,
           5.89
         ],
@@ -1661,7 +1661,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "BE",
         "avatarColor": "#0369a1",
         "deskPosition": [
-          13.6,
+          15.4,
           0,
           5.89
         ],
@@ -1696,7 +1696,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "FE",
         "avatarColor": "#ec4899",
         "deskPosition": [
-          8.8,
+          10.6,
           0,
           6.71
         ],
@@ -1731,7 +1731,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "FE",
         "avatarColor": "#06b6d4",
         "deskPosition": [
-          10.4,
+          12.2,
           0,
           6.71
         ],
@@ -1766,7 +1766,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "QA",
         "avatarColor": "#10b981",
         "deskPosition": [
-          12,
+          13.8,
           0,
           6.71
         ],
@@ -1801,7 +1801,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "QA",
         "avatarColor": "#059669",
         "deskPosition": [
-          13.6,
+          15.4,
           0,
           6.71
         ],
@@ -1837,7 +1837,7 @@ export const INITIAL_SQUADS: Squad[] = [
     "sprint": "Sprint 31 (Day 4/10)",
     "sprintGoal": "QRIS CPM Cross-Border Singapore & Malaysia Gateway Integration",
     "zoneCenter": [
-      10,
+      11.5,
       0,
       2.1
     ],
@@ -1873,7 +1873,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "SL",
         "avatarColor": "#f59e0b",
         "deskPosition": [
-          4.8,
+          6,
           0,
           1.69
         ],
@@ -1908,7 +1908,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "SM",
         "avatarColor": "#8b5cf6",
         "deskPosition": [
-          6.4,
+          7.6,
           0,
           1.69
         ],
@@ -1943,7 +1943,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "BE",
         "avatarColor": "#d97706",
         "deskPosition": [
-          4.8,
+          6,
           0,
           2.51
         ],
@@ -1978,7 +1978,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "FE",
         "avatarColor": "#fbbf24",
         "deskPosition": [
-          6.4,
+          7.6,
           0,
           2.51
         ],
@@ -2013,7 +2013,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "BE",
         "avatarColor": "#3b82f6",
         "deskPosition": [
-          8.8,
+          10.6,
           0,
           1.69
         ],
@@ -2048,7 +2048,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "BE",
         "avatarColor": "#2563eb",
         "deskPosition": [
-          10.4,
+          12.2,
           0,
           1.69
         ],
@@ -2083,7 +2083,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "BE",
         "avatarColor": "#0284c7",
         "deskPosition": [
-          12,
+          13.8,
           0,
           1.69
         ],
@@ -2118,7 +2118,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "BE",
         "avatarColor": "#0369a1",
         "deskPosition": [
-          13.6,
+          15.4,
           0,
           1.69
         ],
@@ -2153,7 +2153,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "FE",
         "avatarColor": "#ec4899",
         "deskPosition": [
-          8.8,
+          10.6,
           0,
           2.51
         ],
@@ -2188,7 +2188,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "FE",
         "avatarColor": "#06b6d4",
         "deskPosition": [
-          10.4,
+          12.2,
           0,
           2.51
         ],
@@ -2223,7 +2223,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "QA",
         "avatarColor": "#10b981",
         "deskPosition": [
-          12,
+          13.8,
           0,
           2.51
         ],
@@ -2258,7 +2258,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "QA",
         "avatarColor": "#059669",
         "deskPosition": [
-          13.6,
+          15.4,
           0,
           2.51
         ],
@@ -2294,7 +2294,7 @@ export const INITIAL_SQUADS: Squad[] = [
     "sprint": "Sprint 16 (Day 6/10)",
     "sprintGoal": "High-Volume Settlement Engine & Core Banking Reconciliation",
     "zoneCenter": [
-      10,
+      11.5,
       0,
       -2.1
     ],
@@ -2330,7 +2330,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "SL",
         "avatarColor": "#f59e0b",
         "deskPosition": [
-          4.8,
+          6,
           0,
           -2.51
         ],
@@ -2365,7 +2365,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "SM",
         "avatarColor": "#8b5cf6",
         "deskPosition": [
-          6.4,
+          7.6,
           0,
           -2.51
         ],
@@ -2400,7 +2400,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "BE",
         "avatarColor": "#4f46e5",
         "deskPosition": [
-          4.8,
+          6,
           0,
           -1.69
         ],
@@ -2435,7 +2435,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "FE",
         "avatarColor": "#818cf8",
         "deskPosition": [
-          6.4,
+          7.6,
           0,
           -1.69
         ],
@@ -2470,7 +2470,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "BE",
         "avatarColor": "#3b82f6",
         "deskPosition": [
-          8.8,
+          10.6,
           0,
           -2.51
         ],
@@ -2505,7 +2505,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "BE",
         "avatarColor": "#2563eb",
         "deskPosition": [
-          10.4,
+          12.2,
           0,
           -2.51
         ],
@@ -2540,7 +2540,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "BE",
         "avatarColor": "#0284c7",
         "deskPosition": [
-          12,
+          13.8,
           0,
           -2.51
         ],
@@ -2575,7 +2575,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "BE",
         "avatarColor": "#0369a1",
         "deskPosition": [
-          13.6,
+          15.4,
           0,
           -2.51
         ],
@@ -2610,7 +2610,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "FE",
         "avatarColor": "#ec4899",
         "deskPosition": [
-          8.8,
+          10.6,
           0,
           -1.69
         ],
@@ -2645,7 +2645,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "FE",
         "avatarColor": "#06b6d4",
         "deskPosition": [
-          10.4,
+          12.2,
           0,
           -1.69
         ],
@@ -2680,7 +2680,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "QA",
         "avatarColor": "#10b981",
         "deskPosition": [
-          12,
+          13.8,
           0,
           -1.69
         ],
@@ -2715,7 +2715,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "QA",
         "avatarColor": "#059669",
         "deskPosition": [
-          13.6,
+          15.4,
           0,
           -1.69
         ],
@@ -2751,7 +2751,7 @@ export const INITIAL_SQUADS: Squad[] = [
     "sprint": "Sprint 24 (Day 9/10)",
     "sprintGoal": "Merchant Cash Advance & Lending Underwriting Engine",
     "zoneCenter": [
-      11.2,
+      13,
       0,
       -6.3
     ],
@@ -2787,7 +2787,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "SL",
         "avatarColor": "#f59e0b",
         "deskPosition": [
-          8.8,
+          10.6,
           0,
           -6.71
         ],
@@ -2822,7 +2822,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "SM",
         "avatarColor": "#8b5cf6",
         "deskPosition": [
-          10.4,
+          12.2,
           0,
           -6.71
         ],
@@ -2857,7 +2857,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "BE",
         "avatarColor": "#3b82f6",
         "deskPosition": [
-          12,
+          13.8,
           0,
           -6.71
         ],
@@ -2892,7 +2892,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "BE",
         "avatarColor": "#2563eb",
         "deskPosition": [
-          13.6,
+          15.4,
           0,
           -6.71
         ],
@@ -2927,7 +2927,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "FE",
         "avatarColor": "#ec4899",
         "deskPosition": [
-          8.8,
+          10.6,
           0,
           -5.89
         ],
@@ -2962,7 +2962,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "FE",
         "avatarColor": "#06b6d4",
         "deskPosition": [
-          10.4,
+          12.2,
           0,
           -5.89
         ],
@@ -2997,7 +2997,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "QA",
         "avatarColor": "#10b981",
         "deskPosition": [
-          12,
+          13.8,
           0,
           -5.89
         ],
@@ -3032,7 +3032,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "QA",
         "avatarColor": "#059669",
         "deskPosition": [
-          13.6,
+          15.4,
           0,
           -5.89
         ],
@@ -3068,7 +3068,7 @@ export const INITIAL_SQUADS: Squad[] = [
     "sprint": "Sprint 18 (Day 2/10)",
     "sprintGoal": "Disaster Recovery Warm Standby & Database CDC Streaming",
     "zoneCenter": [
-      11.2,
+      13,
       0,
       -10.5
     ],
@@ -3104,7 +3104,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "SL",
         "avatarColor": "#f59e0b",
         "deskPosition": [
-          8.8,
+          10.6,
           0,
           -10.91
         ],
@@ -3139,7 +3139,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "SM",
         "avatarColor": "#8b5cf6",
         "deskPosition": [
-          10.4,
+          12.2,
           0,
           -10.91
         ],
@@ -3174,7 +3174,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "BE",
         "avatarColor": "#3b82f6",
         "deskPosition": [
-          12,
+          13.8,
           0,
           -10.91
         ],
@@ -3209,7 +3209,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "BE",
         "avatarColor": "#2563eb",
         "deskPosition": [
-          13.6,
+          15.4,
           0,
           -10.91
         ],
@@ -3244,7 +3244,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "FE",
         "avatarColor": "#ec4899",
         "deskPosition": [
-          8.8,
+          10.6,
           0,
           -10.09
         ],
@@ -3279,7 +3279,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "FE",
         "avatarColor": "#06b6d4",
         "deskPosition": [
-          10.4,
+          12.2,
           0,
           -10.09
         ],
@@ -3314,7 +3314,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "QA",
         "avatarColor": "#10b981",
         "deskPosition": [
-          12,
+          13.8,
           0,
           -10.09
         ],
@@ -3349,7 +3349,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "QA",
         "avatarColor": "#059669",
         "deskPosition": [
-          13.6,
+          15.4,
           0,
           -10.09
         ],
@@ -3385,7 +3385,7 @@ export const INITIAL_SQUADS: Squad[] = [
     "sprint": "Sprint 27 (Day 7/10)",
     "sprintGoal": "API Gateway Rate Limiting, WAF & OAuth2 mTLS Security",
     "zoneCenter": [
-      11.2,
+      13,
       0,
       -14.7
     ],
@@ -3421,7 +3421,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "SL",
         "avatarColor": "#f59e0b",
         "deskPosition": [
-          8.8,
+          10.6,
           0,
           -15.11
         ],
@@ -3456,7 +3456,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "SM",
         "avatarColor": "#8b5cf6",
         "deskPosition": [
-          10.4,
+          12.2,
           0,
           -15.11
         ],
@@ -3491,7 +3491,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "BE",
         "avatarColor": "#3b82f6",
         "deskPosition": [
-          12,
+          13.8,
           0,
           -15.11
         ],
@@ -3526,7 +3526,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "BE",
         "avatarColor": "#2563eb",
         "deskPosition": [
-          13.6,
+          15.4,
           0,
           -15.11
         ],
@@ -3561,7 +3561,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "FE",
         "avatarColor": "#ec4899",
         "deskPosition": [
-          8.8,
+          10.6,
           0,
           -14.29
         ],
@@ -3596,7 +3596,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "FE",
         "avatarColor": "#06b6d4",
         "deskPosition": [
-          10.4,
+          12.2,
           0,
           -14.29
         ],
@@ -3631,7 +3631,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "QA",
         "avatarColor": "#10b981",
         "deskPosition": [
-          12,
+          13.8,
           0,
           -14.29
         ],
@@ -3666,7 +3666,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "QA",
         "avatarColor": "#059669",
         "deskPosition": [
-          13.6,
+          15.4,
           0,
           -14.29
         ],
@@ -3702,7 +3702,7 @@ export const INITIAL_SQUADS: Squad[] = [
     "sprint": "Sprint 20 (Day 5/10)",
     "sprintGoal": "Merchant Loyalty Points, Cashback & Campaign Engine",
     "zoneCenter": [
-      11.2,
+      13,
       0,
       -18.9
     ],
@@ -3738,7 +3738,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "SL",
         "avatarColor": "#f59e0b",
         "deskPosition": [
-          8.8,
+          10.6,
           0,
           -19.31
         ],
@@ -3773,7 +3773,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "SM",
         "avatarColor": "#8b5cf6",
         "deskPosition": [
-          10.4,
+          12.2,
           0,
           -19.31
         ],
@@ -3808,7 +3808,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "BE",
         "avatarColor": "#3b82f6",
         "deskPosition": [
-          12,
+          13.8,
           0,
           -19.31
         ],
@@ -3843,7 +3843,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "BE",
         "avatarColor": "#2563eb",
         "deskPosition": [
-          13.6,
+          15.4,
           0,
           -19.31
         ],
@@ -3878,7 +3878,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "FE",
         "avatarColor": "#ec4899",
         "deskPosition": [
-          8.8,
+          10.6,
           0,
           -18.49
         ],
@@ -3913,7 +3913,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "FE",
         "avatarColor": "#06b6d4",
         "deskPosition": [
-          10.4,
+          12.2,
           0,
           -18.49
         ],
@@ -3948,7 +3948,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "QA",
         "avatarColor": "#10b981",
         "deskPosition": [
-          12,
+          13.8,
           0,
           -18.49
         ],
@@ -3983,7 +3983,7 @@ export const INITIAL_SQUADS: Squad[] = [
         "role": "QA",
         "avatarColor": "#059669",
         "deskPosition": [
-          13.6,
+          15.4,
           0,
           -18.49
         ],

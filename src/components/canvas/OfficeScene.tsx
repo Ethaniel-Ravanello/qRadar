@@ -6,6 +6,7 @@ import type { Squad, Employee, GraphicMode } from '../../types';
 import { OfficeFloor } from './OfficeFloor';
 import { DeskInstances } from './DeskInstances';
 import { AvatarInstances } from './AvatarInstances';
+import { CameraKeyboardControls } from './CameraKeyboardControls';
 // Dev-only perf monitor; the import.meta.env.DEV guards below let the
 // production build tree-shake it out entirely.
 import { PerfProbe, PerfPanel } from './PerfMonitor';
@@ -138,6 +139,9 @@ export const OfficeScene: React.FC<OfficeSceneProps> = ({
           minDistance={5}
           maxDistance={65}
         />
+
+        {/* WASD = move, Space = up, Shift = down (moves camera + orbit pivot) */}
+        <CameraKeyboardControls enabled={!isAsleep} />
 
         {/* Oval Headquarters Room with Walls on All Sides */}
         <OfficeFloor

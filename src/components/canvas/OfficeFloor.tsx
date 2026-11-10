@@ -2,6 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { Html } from '@react-three/drei';
 import * as THREE from 'three';
 import type { Squad } from '../../types';
+import { mergeParts, type Vec3 } from './instancing';
 
 interface OfficeFloorProps {
   squads: Squad[];
@@ -62,8 +63,8 @@ const SquadPods: React.FC<SquadPodsProps> = ({ squads, onSelectSquad, selectedSq
           >
             {/* A. INNER POD CARPET MAT (4 Meja Berhadapan / 2x2 - Only for Rows 1 to 6) */}
             {idx < 6 && (
-              <mesh position={[5.6, 0.008, cz]}>
-                <boxGeometry args={[3.4, 0.01, 2.2]} />
+              <mesh position={[6.8, 0.008, cz]}>
+                <boxGeometry args={[3.2, 0.01, 2.2]} />
                 <meshStandardMaterial
                   color={isSelected ? '#cbd5e1' : '#e2e8f0'}
                   roughness={0.7}
@@ -71,23 +72,24 @@ const SquadPods: React.FC<SquadPodsProps> = ({ squads, onSelectSquad, selectedSq
               </mesh>
             )}
 
-            {/* B. OUTER POD CARPET MAT (8 Meja Berhadapan Deket Jendela / 4x2 at X = 11.2) */}
-            <mesh position={[11.2, 0.008, cz]}>
-              <boxGeometry args={[6.6, 0.01, 2.2]} />
+            {/* B. OUTER POD CARPET MAT (8 Meja Berhadapan Deket Jendela / 4x2 at X = 13.0) */}
+            <mesh position={[13.0, 0.008, cz]}>
+              <boxGeometry args={[6.4, 0.01, 2.2]} />
               <meshStandardMaterial
                 color={isSelected ? '#cbd5e1' : '#e2e8f0'}
                 roughness={0.7}
               />
             </mesh>
 
-            {/* Squad Color Accent Ribbon on Floor near Main Corridor */}
-            <mesh position={[3.8, 0.01, cz]}>
-              <boxGeometry args={[0.08, 0.012, 2.2]} />
-              <meshStandardMaterial color={squad.zoneColor} roughness={0.3} />
+            {/* Squad color stripe on the continuous pod wall (wall itself lives in
+                StaticOffice), facing the Main Walk Path. */}
+            <mesh position={[POD_WALL_X - 0.051, POD_WALL_HEIGHT - 0.15, cz]} rotation={[0, -Math.PI / 2, 0]}>
+              <planeGeometry args={[2.2, 0.08]} />
+              <meshBasicMaterial color={squad.zoneColor} />
             </mesh>
 
-            {/* White Air Purifier Unit at Squad Aisle Entrance */}
-            <group position={[3.6, 0, cz + 1.2]}>
+            {/* White Air Purifier Unit at Squad Aisle Entrance (pod corner, outside the walk path) */}
+            <group position={[5.35, 0, cz + 1.2]}>
               <mesh position={[0, 0.42, 0]} castShadow>
                 <boxGeometry args={[0.3, 0.84, 0.28]} />
                 <meshStandardMaterial color="#ffffff" roughness={0.2} />
@@ -104,7 +106,7 @@ const SquadPods: React.FC<SquadPodsProps> = ({ squads, onSelectSquad, selectedSq
 
             {/* Floating Squad Signboard Plaque (Only on Hover or Select) */}
             {showBadge && (
-              <group position={[3.6, 2.0, cz]}>
+              <group position={[3.9, 2.0, cz]}>
                 <Html
                   position={[0, 0, 0]}
                   rotation={[0, Math.PI / 2, 0]}
@@ -140,6 +142,124 @@ const SquadPods: React.FC<SquadPodsProps> = ({ squads, onSelectSquad, selectedSq
   );
 };
 
+/** Half-width of the stadium floor; window wall (east) and batik wall (west) sit here. */
+const ROOM_HALF_WIDTH = 18.4;
+
+// Shared by every walk path (static, so module-level singletons are safe).
+const matWalkPath = new THREE.MeshStandardMaterial({ color: '#e7e5e4', roughness: 0.35 });
+const matWalkPathEdge = new THREE.MeshStandardMaterial({ color: '#0f172a', roughness: 0.2 });
+const WALK_PATH_LENGTH = 38.0; // straight section of the room (z ±19)
+
+// Pod partition wall: on the pod edge of the Main Walk Path (path ends at x=5.0,
+// edge inlay at 5.0–5.1, desks start at 5.2), so the path keeps its full width.
+const POD_WALL_X = 5.15;
+const POD_WALL_HEIGHT = 1.2; // chest height: separates the pod but keeps desks visible
+const matPodWall = new THREE.MeshStandardMaterial({ color: '#475569', roughness: 0.7 });
+const matPodWallCap = new THREE.MeshStandardMaterial({ color: '#1e293b', roughness: 0.4 });
+
+// Doors on the east core face (z). Seen from the squads, screen-right = -z.
+// Left half (z>0) stays mostly empty; right of Lift 2 (z -4.45..-2.2):
+// Pria -> Wanita -> Musholla at the far-right end (core ends at z=-12).
+const DOOR_Z = { pria: -5.6, wanita: -7.4, musholla: -10.5 } as const;
+
+// -----------------------------------------------------------------------------
+// MUSHOLLA: whole facade + roof dome baked into ONE merged, vertex-colored
+// geometry => a single draw call, built once at module load.
+// Local frame: facade faces +x (the walk path); width runs along z.
+// -----------------------------------------------------------------------------
+const MUSHOLLA = {
+  emerald: '#064e3b',
+  emeraldLight: '#047857',
+  gold: '#ca8a04',
+  walnut: '#78350f',
+  dark: '#0f172a',
+  brass: '#e5e7eb',
+};
+
+/** Pointed (Islamic) arch outline in the XY plane, base on y=0. */
+const archShape = (width: number, shoulderY: number, apexY: number) => {
+  const hw = width / 2;
+  const rise = apexY - shoulderY;
+  const s = new THREE.Shape();
+  s.moveTo(-hw, 0);
+  s.lineTo(hw, 0);
+  s.lineTo(hw, shoulderY);
+  // Control points off the vertical make the curves meet at a point.
+  s.quadraticCurveTo(hw * 0.95, shoulderY + rise * 0.75, 0, apexY);
+  s.quadraticCurveTo(-hw * 0.95, shoulderY + rise * 0.75, -hw, shoulderY);
+  s.closePath();
+  return new THREE.ShapeGeometry(s, 8);
+};
+
+// ShapeGeometry faces +z; yaw +90° turns it to face +x (the facade).
+const FACE_X: Vec3 = [0, Math.PI / 2, 0];
+
+const geoMusholla = mergeParts(
+  [
+    // Back panel + two pilasters framing the entrance
+    { geometry: new THREE.BoxGeometry(0.04, 2.3, 2.4), position: [0.02, 1.15, 0], color: MUSHOLLA.emerald },
+    { geometry: new THREE.BoxGeometry(0.08, 2.3, 0.16), position: [0.06, 1.15, 1.12], color: MUSHOLLA.emeraldLight },
+    { geometry: new THREE.BoxGeometry(0.08, 2.3, 0.16), position: [0.06, 1.15, -1.12], color: MUSHOLLA.emeraldLight },
+    // Gold pilaster capitals
+    { geometry: new THREE.BoxGeometry(0.1, 0.06, 0.2), position: [0.06, 2.27, 1.12], color: MUSHOLLA.gold },
+    { geometry: new THREE.BoxGeometry(0.1, 0.06, 0.2), position: [0.06, 2.27, -1.12], color: MUSHOLLA.gold },
+    // Gold arch frame, then walnut double door inside it
+    { geometry: archShape(1.5, 1.55, 2.2), position: [0.05, 0, 0], rotation: FACE_X, color: MUSHOLLA.gold },
+    { geometry: archShape(1.3, 1.5, 2.06), position: [0.06, 0, 0], rotation: FACE_X, color: MUSHOLLA.walnut },
+    // Door split + brass handles
+    { geometry: new THREE.BoxGeometry(0.01, 2.0, 0.025), position: [0.066, 1.0, 0], color: MUSHOLLA.dark },
+    { geometry: new THREE.BoxGeometry(0.02, 0.22, 0.03), position: [0.075, 1.05, 0.1], color: MUSHOLLA.brass },
+    { geometry: new THREE.BoxGeometry(0.02, 0.22, 0.03), position: [0.075, 1.05, -0.1], color: MUSHOLLA.brass },
+    // Geometric diamond tiles flanking the arch
+    // (one column each side, between the arch frame and the pilasters)
+    ...[-0.9, 0.9].flatMap((z) =>
+      [0.8, 1.15, 1.5].map((y) => ({
+        geometry: new THREE.BoxGeometry(0.01, 0.1, 0.1),
+        position: [0.065, y, z] as Vec3,
+        rotation: [Math.PI / 4, 0, 0] as Vec3,
+        color: MUSHOLLA.gold,
+      }))
+    ),
+    // Crescent above the arch (open torus arc)
+    {
+      geometry: new THREE.TorusGeometry(0.1, 0.022, 4, 12, Math.PI * 1.4),
+      position: [0.06, 2.4, 0],
+      rotation: [0, Math.PI / 2, Math.PI * 0.8],
+      color: MUSHOLLA.gold,
+    },
+    // Small dome on the core roof (roof top ≈ 2.66), set back from the facade
+    { geometry: new THREE.CylinderGeometry(0.5, 0.5, 0.14, 12), position: [-0.7, 2.73, 0], color: MUSHOLLA.emeraldLight },
+    {
+      geometry: new THREE.SphereGeometry(0.46, 12, 6, 0, Math.PI * 2, 0, Math.PI / 2),
+      position: [-0.7, 2.8, 0],
+      color: MUSHOLLA.emerald,
+    },
+    { geometry: new THREE.CylinderGeometry(0.015, 0.015, 0.22, 6), position: [-0.7, 3.36, 0], color: MUSHOLLA.gold },
+    {
+      geometry: new THREE.TorusGeometry(0.06, 0.014, 4, 10, Math.PI * 1.4),
+      position: [-0.7, 3.52, 0],
+      rotation: [0, Math.PI / 2, Math.PI * 0.8],
+      color: MUSHOLLA.gold,
+    },
+  ],
+  true
+);
+const matMusholla = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.55, flatShading: true });
+
+/** Floor runway marking a clear walking lane along Z, with dark granite edge inlays. */
+const WalkPath: React.FC<{ x: number; width: number }> = ({ x, width }) => (
+  <group position={[x, 0, 0]}>
+    <mesh position={[0, 0.003, 0]} material={matWalkPath} receiveShadow>
+      <boxGeometry args={[width, 0.006, WALK_PATH_LENGTH]} />
+    </mesh>
+    {[-1, 1].map((side) => (
+      <mesh key={side} position={[(side * (width + 0.1)) / 2, 0.005, 0]} material={matWalkPathEdge}>
+        <boxGeometry args={[0.1, 0.008, WALK_PATH_LENGTH]} />
+      </mesh>
+    ))}
+  </group>
+);
+
 // =============================================================================
 // STATIC OFFICE: walls, core, windows, elevators, caps, lounge, benches.
 // No props that change at runtime (squadZ is derived from static zone data),
@@ -157,7 +277,7 @@ const StaticOfficeComponent: React.FC<StaticOfficeProps> = ({ squadZ }) => {
   // =========================================================================
   const { floorGeo, borderGeo, innerTrackGeo, northCapSegments, southCapSegments } =
     useMemo(() => {
-      const xRadius = 16.8; // Half-width (Total Width = 33.6m to accommodate 4+8 desks + aisles)
+      const xRadius = ROOM_HALF_WIDTH; // Half-width (Total Width = 36.8m: 4+8 desks + 3 walk paths)
       const straightHalfZ = 19.5; // Straight length along Z = 39m (-19.5 to +19.5)
 
       // A. Main Floor: Straight parallel sides with semicircular caps at both ends
@@ -180,7 +300,7 @@ const StaticOfficeComponent: React.FC<StaticOfficeProps> = ({ squadZ }) => {
       const bGeo = new THREE.ShapeGeometry(bShape, 32);
 
       // C. Inner Walkway Circulation Track
-      const ix = 14.0;
+      const ix = ROOM_HALF_WIDTH - 2.8;
       const iz = 17.5;
       const tShape = new THREE.Shape();
       tShape.moveTo(ix, -iz);
@@ -267,26 +387,23 @@ const StaticOfficeComponent: React.FC<StaticOfficeProps> = ({ squadZ }) => {
         <meshStandardMaterial color="#f1f5f9" roughness={0.28} />
       </mesh>
 
-      {/* Polished Main East Corridor Runway (In front of Squad Desks) */}
-      <mesh position={[3.6, 0.003, 0]}>
-        <boxGeometry args={[1.6, 0.006, 38.0]} />
-        <meshStandardMaterial color="#ffffff" roughness={0.25} />
-      </mesh>
-      {/* Black Granite Lis Inlay Borders */}
-      <mesh position={[2.75, 0.005, 0]}>
-        <boxGeometry args={[0.1, 0.008, 38.0]} />
-        <meshStandardMaterial color="#0f172a" roughness={0.2} />
-      </mesh>
-      <mesh position={[4.45, 0.005, 0]}>
-        <boxGeometry args={[0.1, 0.008, 38.0]} />
-        <meshStandardMaterial color="#0f172a" roughness={0.2} />
-      </mesh>
+      {/* EAST WALK PATHS (clear lanes along Z, no furniture inside them):
+          core face x=2.62 | MAIN 2.8–5.0 | inner pod 5.2–8.4 | MIDDLE 8.5–9.7 |
+          outer pod 9.8–16.2 | WINDOW 16.4–18.1 | window sill x≈18.27 */}
+      <WalkPath x={3.9} width={2.2} />
 
-      {/* Intermediate Sub-Aisle Runway (Between Inner 4-desk pod & Outer 8-desk pod) */}
-      <mesh position={[8.15, 0.002, 0]}>
-        <boxGeometry args={[1.0, 0.004, 38.0]} />
-        <meshStandardMaterial color="#f1f5f9" roughness={0.3} />
-      </mesh>
+      {/* POD PARTITION WALL: one continuous wall between the Main Walk Path and
+          the squad pods, running the full length of the path (z ±19). */}
+      <group position={[POD_WALL_X, 0, 0]}>
+        <mesh position={[0, POD_WALL_HEIGHT / 2, 0]} material={matPodWall} castShadow receiveShadow>
+          <boxGeometry args={[0.1, POD_WALL_HEIGHT, WALK_PATH_LENGTH]} />
+        </mesh>
+        <mesh position={[0, POD_WALL_HEIGHT + 0.02, 0]} material={matPodWallCap}>
+          <boxGeometry args={[0.14, 0.04, WALK_PATH_LENGTH + 0.04]} />
+        </mesh>
+      </group>
+      <WalkPath x={9.1} width={1.2} />
+      <WalkPath x={17.25} width={1.7} />
 
       {/* Polished West Corridor Runway (Open Circulation Half) */}
       <mesh position={[-3.6, 0.003, 0]}>
@@ -325,20 +442,21 @@ const StaticOfficeComponent: React.FC<StaticOfficeProps> = ({ squadZ }) => {
         </mesh>
 
         {/* Vertical Acoustic Walnut Wood Slats lining the Core Faces */}
-        {[-10, -9.6, -9.2, -6.8, -6.4, -6.0, -0.8, -0.4, 0, 0.4, 0.8, 6.0, 6.4, 6.8, 9.2, 9.6, 10].map(
-          (zVal, i) => (
-            <React.Fragment key={`wood-slat-${i}`}>
-              <mesh position={[2.62, 1.3, zVal]}>
-                <boxGeometry args={[0.04, 2.5, 0.18]} />
-                <meshStandardMaterial color="#854d0e" roughness={0.45} />
-              </mesh>
-              <mesh position={[-2.62, 1.3, zVal]}>
-                <boxGeometry args={[0.04, 2.5, 0.18]} />
-                <meshStandardMaterial color="#854d0e" roughness={0.45} />
-              </mesh>
-            </React.Fragment>
-          )
-        )}
+        {/* East face: left half (z>0) keeps only its two original slat groups;
+            right half (z<-4.5) is cleared for the Pria/Wanita/Musholla doors. */}
+        {[-0.8, -0.4, 0, 0.4, 0.8, 6.0, 6.4, 6.8, 9.2, 9.6, 10].map((zVal, i) => (
+          <mesh key={`wood-slat-e-${i}`} position={[2.62, 1.3, zVal]}>
+            <boxGeometry args={[0.04, 2.5, 0.18]} />
+            <meshStandardMaterial color="#854d0e" roughness={0.45} />
+          </mesh>
+        ))}
+        {/* West face: unchanged */}
+        {[-10, -9.6, -9.2, -6.8, -6.4, -6.0, -0.8, -0.4, 0, 0.4, 0.8, 6.0, 6.4, 6.8, 9.2, 9.6, 10].map((zVal, i) => (
+          <mesh key={`wood-slat-w-${i}`} position={[-2.62, 1.3, zVal]}>
+            <boxGeometry args={[0.04, 2.5, 0.18]} />
+            <meshStandardMaterial color="#854d0e" roughness={0.45} />
+          </mesh>
+        ))}
 
         {/* ------------------------------------------------------------ */}
         {/* ELEVATORS (LIFT) ON EAST CORE FACE (FACING SQUADS CORRIDOR)  */}
@@ -437,8 +555,10 @@ const StaticOfficeComponent: React.FC<StaticOfficeProps> = ({ squadZ }) => {
         {/* ------------------------------------------------------------ */}
         {/* KAMAR MANDI / RESTROOMS (PRIA & WANITA)                       */}
         {/* ------------------------------------------------------------ */}
-        {/* KAMAR MANDI PRIA - At Z = 8.0 on East */}
-        <group position={[2.61, 0, 8.0]}>
+        {/* EAST FACE ORDER (left -> right seen from the squads):
+            (mostly empty) | Lift 1 | Signage | Lift 2 | Pria | Wanita | Musholla */}
+        {/* KAMAR MANDI PRIA - At Z = -5.6 on East, just right of Lift 2 */}
+        <group position={[2.61, 0, DOOR_Z.pria]}>
           <mesh position={[0.02, 1.15, 0]}>
             <boxGeometry args={[0.04, 2.3, 1.4]} />
             <meshStandardMaterial color="#0f172a" roughness={0.4} />
@@ -464,8 +584,8 @@ const StaticOfficeComponent: React.FC<StaticOfficeProps> = ({ squadZ }) => {
           </Html>
         </group>
 
-        {/* KAMAR MANDI WANITA - At Z = -8.0 on East */}
-        <group position={[2.61, 0, -8.0]}>
+        {/* KAMAR MANDI WANITA - At Z = -7.4 on East, right next to Pria */}
+        <group position={[2.61, 0, DOOR_Z.wanita]}>
           <mesh position={[0.02, 1.15, 0]}>
             <boxGeometry args={[0.04, 2.3, 1.4]} />
             <meshStandardMaterial color="#0f172a" roughness={0.4} />
@@ -486,6 +606,22 @@ const StaticOfficeComponent: React.FC<StaticOfficeProps> = ({ squadZ }) => {
                   TOILET WANITA
                 </span>
                 <span className="text-[6.5px] font-mono text-pink-300">LADIES</span>
+              </div>
+            </div>
+          </Html>
+        </group>
+
+        {/* MUSHOLLA / PRAYER ROOM - far-right end of the east face (single merged mesh) */}
+        <group position={[2.61, 0, DOOR_Z.musholla]}>
+          <mesh geometry={geoMusholla} material={matMusholla} castShadow />
+          <Html position={[0.06, 2.0, 0]} rotation={[0, Math.PI / 2, 0]} center distanceFactor={11} zIndexRange={[5, 0]}>
+            <div className="flex items-center gap-1.5 bg-slate-900/95 border border-emerald-500/60 text-emerald-400 px-2 py-1 rounded shadow-lg whitespace-nowrap">
+              <span className="text-xs">🕌</span>
+              <div className="flex flex-col text-left">
+                <span className="text-[8px] font-bold tracking-wider uppercase font-mono text-white">
+                  MUSHOLLA
+                </span>
+                <span className="text-[6.5px] font-mono text-emerald-300">PRAYER ROOM</span>
               </div>
             </div>
           </Html>
@@ -535,9 +671,9 @@ const StaticOfficeComponent: React.FC<StaticOfficeProps> = ({ squadZ }) => {
       {/* Squad pods (hover/select-reactive) live in <SquadPods />, not here. */}
 
       {/* ============================================================== */}
-      {/* 4. SISI KANAN: PANJANG LURUS DINDING KACA PANORAMA (AT X=16.8)  */}
+      {/* 4. SISI KANAN: PANJANG LURUS DINDING KACA PANORAMA (AT X=18.4)  */}
       {/* ============================================================== */}
-      <group position={[16.8, 0, 0]}>
+      <group position={[ROOM_HALF_WIDTH, 0, 0]}>
         {/* Lower Structural Window Sill */}
         <mesh position={[0, 0.22, 0]} castShadow receiveShadow>
           <boxGeometry args={[0.26, 0.44, 39.0]} />
@@ -580,9 +716,9 @@ const StaticOfficeComponent: React.FC<StaticOfficeProps> = ({ squadZ }) => {
       </group>
 
       {/* ============================================================== */}
-      {/* 5. SISI KIRI: PANJANG LURUS DINDING BATIK LOTUS (AT X=-16.8)   */}
+      {/* 5. SISI KIRI: PANJANG LURUS DINDING BATIK LOTUS (AT X=-18.4)   */}
       {/* ============================================================== */}
-      <group position={[-16.8, 0, 0]}>
+      <group position={[-ROOM_HALF_WIDTH, 0, 0]}>
         {/* Full Height Solid Architectural Charcoal Wall */}
         <mesh position={[0, 1.3, 0]} castShadow receiveShadow>
           <boxGeometry args={[0.26, 2.6, 39.0]} />
