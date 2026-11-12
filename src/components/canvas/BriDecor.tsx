@@ -5,29 +5,25 @@ import { addVec, mergeParts, type PartSpec, type Vec3 } from './instancing';
 
 // =============================================================================
 // BRI OFFICE DECOR (inspired by the real 18F office photos)
-//   A. Pantry / coffee bar: bar counter + rattan stools, moss wall, wood slats,
-//      upper oak cabinets, water gallons          (east, rows 9-10 inner pod)
-//   B. Cream metal lockers                        (east, next to the pantry)
-//   C. Lit arch niches on a stone panel           (east core face, z<0)
-//   D. Gold hexagon feature wall + TV             (east core face, z>0)
-//      (Lift 1 & 2 live on the north end face, see OfficeFloor.tsx)
-//   E. Warm cove-light strips on the core cornice
+//   A. Long L-shaped pantry bar with eight rattan stools
+//   B. Light-oak cabinets, refrigerator, microwave, kettle, and water gallons
+//   C. Plant wall + walnut slats at the pantry entrance
+//   D. Gray feature wall with warm illuminated arch and circle niches
+//   E. Gold hexagon feature wall without a TV
+//   F. Warm cove-light strips on the core cornice
 //
-// Everything is static, so it is baked into TWO merged, vertex-colored
-// geometries at module load: one lit (standard) mesh and one glowing (basic)
-// mesh => 2 draw calls total, no extra lights.
+// Everything is static and baked into TWO merged, vertex-colored geometries at
+// module load: one lit (standard) mesh and one glowing (basic) mesh. This keeps
+// all of the decor to two draw calls and adds no dynamic lights.
 //
-// Free-space notes (see OfficeFloor.tsx):
-//   - Rows 7-10 have no inner pod, so x 5.2..8.4 for z < -4 is empty.
-//     Air purifiers sit at x 5.2..5.5, z = cz+1.2 (-13.5, -17.7), so the decor
-//     starts at x 5.6 and the pantry wall spans z -13.9..-17.3 (between them).
-//   - Middle walk path starts at x 8.5: nothing here goes past x 8.0.
-//   - Core: x ±2.6, z ±12, top of cornice y 2.66.
+// Placement (see OfficeFloor.tsx): rows 7-10 have no inner pod, leaving
+// x 5.2..8.4 and z -4..-19 free. The pantry uses x 5.6..8.15 and
+// z -5.15..-18.15, stopping before the middle walk path at x=8.5.
 // =============================================================================
 
 /** Facing +x: a shape built in the XY plane (normal +z) is yawed +90°. */
 const FACE_X: Vec3 = [0, Math.PI / 2, 0];
-/** Cylinder axis Y -> X, so its 6-sided cap faces +x (points along z). */
+/** Cylinder axis Y -> X, so its six-sided cap faces +x. */
 const AXIS_X: Vec3 = [0, 0, Math.PI / 2];
 
 const box = (size: Vec3, position: Vec3, color: string, rotation?: Vec3): PartSpec => ({
@@ -51,215 +47,256 @@ const cyl = (
   color,
 });
 
-/** Round-top arch outline (rectangle + semicircle), base at y=0, centered on x. */
+/** Round-top arch silhouette, base at y=0 and centered on its local x-axis. */
 const roundArch = (width: number, height: number): THREE.Shape => {
-  const r = width / 2;
-  const s = new THREE.Shape();
-  s.moveTo(-r, 0);
-  s.lineTo(r, 0);
-  s.lineTo(r, height);
-  s.absarc(0, height, r, 0, Math.PI, false);
-  s.lineTo(-r, 0);
-  return s;
+  const radius = width / 2;
+  const shape = new THREE.Shape();
+  shape.moveTo(-radius, 0);
+  shape.lineTo(radius, 0);
+  shape.lineTo(radius, height);
+  shape.absarc(0, height, radius, 0, Math.PI, false);
+  shape.lineTo(-radius, 0);
+  return shape;
 };
 
-/** Shift a list of locally-built parts to a world origin. */
+/** Shift locally-built parts to a world origin. */
 const at = (origin: Vec3, parts: PartSpec[]): PartSpec[] =>
-  parts.map((p) => ({ ...p, position: addVec(origin, p.position ?? [0, 0, 0]) }));
+  parts.map((part) => ({ ...part, position: addVec(origin, part.position ?? [0, 0, 0]) }));
 
-// Palette (sampled from the photos)
+// Palette sampled from the three pantry reference photos.
 const C = {
   wallWarm: '#e7e5e4',
-  oak: '#c08a4f',
-  walnut: '#7c4a1e',
-  slat: '#a16207',
+  concrete: '#66635f',
+  oak: '#c99a64',
+  oakLight: '#d8b487',
+  walnut: '#70411d',
+  slat: '#9a5b24',
   marble: '#f5f5f4',
-  rattan: '#c8a26b',
+  rattan: '#c9aa78',
   black: '#111827',
+  steel: '#94a3b8',
+  steelDark: '#475569',
   moss: ['#365314', '#4d7c0f', '#65a30d', '#3f6212'],
   gallon: '#7dd3fc',
   gallonCap: '#1d4ed8',
-  locker: '#e7e2d3',
-  lockerSeam: '#a8a29e',
-  stone: '#57534e',
   gold: ['#ca8a04', '#eab308', '#a16207', '#d4a017'],
   glowWarm: '#fde68a',
-  glowArch: '#fbbf24',
-  screen: '#93c5fd',
+  glowArch: '#ffd27a',
 } as const;
 
 // -----------------------------------------------------------------------------
-// A. PANTRY (local frame: x out of the back wall toward +x, z along the wall)
+// A-D. PANTRY
+// Local frame: x comes out from the back wall toward the squad desks; z runs
+// along the long pantry. The plant wall is at the +z end, followed by wood
+// slats, refrigerator/cabinets, and the long gray niche wall at the -z end.
 // -----------------------------------------------------------------------------
-const PANTRY_ORIGIN: Vec3 = [5.6, 0, -15.6];
-const PANTRY_LEN = 3.4; // z -13.9 .. -17.3 in world
+const PANTRY_ORIGIN: Vec3 = [5.6, 0, -11.65];
+const PANTRY_LEN = 13.0; // world z -5.15 .. -18.15
+const BAR_CENTER_Z = -2.55;
+const BAR_LENGTH = 7.5;
+
+interface ArchNiche {
+  z: number;
+  baseY: number;
+  width: number;
+  height: number;
+}
+
+const ARCH_NICHES: ArchNiche[] = [
+  { z: 0.05, baseY: 1.06, width: 0.5, height: 0.62 },
+  { z: -0.78, baseY: 1.03, width: 0.38, height: 0.46 },
+  { z: -2.15, baseY: 1.22, width: 0.36, height: 0.45 },
+  { z: -2.9, baseY: 1.03, width: 0.42, height: 0.52 },
+  { z: -3.65, baseY: 1.0, width: 0.3, height: 0.36 },
+  { z: -4.25, baseY: 1.03, width: 0.28, height: 0.32 },
+];
 
 const pantrySolid = (): PartSpec[] => {
-  const p: PartSpec[] = [
-    // Back wall
+  const parts: PartSpec[] = [
+    // One continuous warm wall anchors the full pantry run.
     box([0.12, 2.6, PANTRY_LEN], [0.06, 1.3, 0], C.wallWarm),
 
-    // Moss / plant wall (z +0.9 .. +1.7)
-    box([0.06, 2.4, 0.8], [0.15, 1.25, 1.3], C.moss[0]),
+    // Full-height plant wall and adjacent walnut slat transition.
+    box([0.08, 2.5, 2.05], [0.15, 1.25, 5.42], C.moss[0]),
+    box([0.06, 2.5, 0.64], [0.15, 1.25, 4.04], C.walnut),
 
-    // Vertical wood slat panel (z +0.45 .. +0.9)
-    box([0.04, 2.5, 0.45], [0.14, 1.25, 0.675], C.walnut),
+    // Kitchen run: lower cabinets, white top and backsplash.
+    box([0.64, 0.9, 3.25], [0.42, 0.45, 2.05], C.oak),
+    box([0.7, 0.05, 3.3], [0.45, 0.93, 2.05], C.marble),
+    box([0.025, 0.62, 3.25], [0.14, 1.27, 2.05], '#d6d3d1'),
 
-    // Back counter (base cabinet) + marble top (z +0.4 .. -1.7)
-    box([0.6, 0.9, 2.1], [0.42, 0.45, -0.65], C.slat),
-    box([0.64, 0.04, 2.12], [0.44, 0.92, -0.65], C.marble),
-    // Backsplash between counter and upper cabinets
-    box([0.02, 0.66, 2.1], [0.13, 1.27, -0.65], '#d6d3d1'),
-    // Upper oak cabinets
-    box([0.36, 0.7, 2.1], [0.3, 1.95, -0.65], C.oak),
+    // Light-oak upper cabinets. The refrigerator occupies their +z end.
+    box([0.38, 0.72, 2.15], [0.31, 2.0, 1.48], C.oakLight),
 
-    // Bar counter (peninsula) + top
-    box([0.5, 1.0, 2.6], [1.45, 0.5, -0.2], C.walnut),
-    box([0.62, 0.05, 2.7], [1.45, 1.025, -0.2], C.marble),
+    // Tall stainless refrigerator with two doors and a dark water dispenser.
+    box([0.62, 2.18, 0.92], [0.42, 1.09, 3.18], C.steel),
+    box([0.02, 2.08, 0.025], [0.74, 1.1, 3.18], C.steelDark),
+    box([0.025, 0.02, 0.82], [0.745, 1.28, 3.18], C.steelDark),
+    box([0.035, 0.46, 0.3], [0.755, 0.88, 3.18], '#1f2937'),
+
+    // Gray concrete feature wall behind the long bar.
+    box([0.08, 2.5, 5.55], [0.15, 1.25, -2.45], C.concrete),
+    // Horizontal walnut band seen below the illuminated niches.
+    box([0.12, 0.24, 5.35], [0.2, 0.83, -2.45], C.walnut),
+
+    // Long bar counter, plus a short return to make the L shape from the photo.
+    box([0.58, 1.0, BAR_LENGTH], [1.48, 0.5, BAR_CENTER_Z], C.oak),
+    box([0.7, 0.055, BAR_LENGTH + 0.08], [1.48, 1.03, BAR_CENTER_Z], C.marble),
+    box([1.55, 1.0, 0.58], [0.98, 0.5, 1.23], C.oak),
+    box([1.62, 0.055, 0.68], [0.98, 1.03, 1.23], C.marble),
+
+    // Microwave and kettle on the kitchen counter.
+    box([0.38, 0.3, 0.55], [0.72, 1.1, 0.9], C.black),
+    box([0.02, 0.22, 0.36], [0.92, 1.1, 0.9], '#334155'),
+    cyl(0.12, 0.28, 12, [0.54, 1.09, 1.62], C.steelDark),
+    cyl(0.07, 0.05, 12, [0.54, 1.255, 1.62], C.black),
   ];
 
-  // Moss clumps for texture
-  for (let i = 0; i < 4; i++) {
-    for (let j = 0; j < 3; j++) {
-      p.push(
+  // Plant wall clumps create the dense, irregular texture in the reference.
+  for (let row = 0; row < 5; row++) {
+    for (let col = 0; col < 5; col++) {
+      parts.push(
         box(
-          [0.08, 0.28, 0.22],
-          [0.2, 0.35 + i * 0.55 + (j % 2) * 0.2, 1.3 + (j - 1) * 0.24],
-          C.moss[(i + j) % C.moss.length]
+          [0.09, 0.27, 0.3],
+          [0.22, 0.25 + row * 0.49 + (col % 2) * 0.06, 4.78 + col * 0.31],
+          C.moss[(row + col) % C.moss.length]
         )
       );
     }
   }
 
-  // Wood slats on the slat panel
-  for (let k = 0; k < 4; k++) {
-    p.push(box([0.05, 2.45, 0.06], [0.18, 1.25, 0.5 + k * 0.11], C.slat));
+  // Closely-spaced vertical timber slats at the edge of the green wall.
+  for (let index = 0; index < 7; index++) {
+    parts.push(box([0.055, 2.45, 0.055], [0.205, 1.25, 3.76 + index * 0.09], C.slat));
   }
 
-  // Upper cabinet door seams
-  for (const z of [-1.175, -0.65, -0.125]) {
-    p.push(box([0.005, 0.66, 0.01], [0.481, 1.95, z], C.walnut));
+  // Cabinet fronts and slim dark handles.
+  for (const z of [0.96, 1.5, 2.04]) {
+    parts.push(box([0.012, 0.68, 0.018], [0.505, 2.0, z], C.walnut));
+    parts.push(box([0.022, 0.12, 0.025], [0.52, 1.96, z + 0.2], C.black));
+  }
+  for (const z of [0.62, 1.18, 1.74, 2.3]) {
+    parts.push(box([0.012, 0.82, 0.018], [0.745, 0.45, z], C.walnut));
   }
 
-  // Water gallons on the back counter
-  for (let k = 0; k < 3; k++) {
-    const z = -1.45 + k * 0.27;
-    p.push(cyl(0.12, 0.36, 12, [0.4, 1.12, z], C.gallon));
-    p.push(cyl(0.04, 0.05, 8, [0.4, 1.325, z], C.gallonCap));
+  // Three water gallons beside the small appliances.
+  for (let index = 0; index < 3; index++) {
+    const z = 2.2 + index * 0.3;
+    parts.push(cyl(0.13, 0.36, 12, [0.48, 1.13, z], C.gallon));
+    parts.push(cyl(0.045, 0.05, 8, [0.48, 1.335, z], C.gallonCap));
   }
 
-  // Vertical slats on the bar counter front (faces the walk path)
-  for (let k = 0; k < 20; k++) {
-    p.push(box([0.03, 0.95, 0.07], [1.71, 0.5, -1.45 + k * 0.132], C.slat));
+  // Vertical oak slats across the full public-facing bar front.
+  const barStart = BAR_CENTER_Z - BAR_LENGTH / 2 + 0.09;
+  for (let index = 0; index < 48; index++) {
+    parts.push(box([0.035, 0.94, 0.07], [1.79, 0.5, barStart + index * 0.155], C.slat));
+  }
+  // Slats on the short return.
+  for (let index = 0; index < 10; index++) {
+    parts.push(box([0.07, 0.94, 0.035], [0.3 + index * 0.15, 0.5, 1.56], C.slat));
   }
 
-  // Rattan bar stools (sitter faces -x, toward the bar)
-  for (const z of [-1.1, -0.5, 0.1, 0.7]) {
-    const s: Vec3 = [2.15, 0, z];
-    p.push(cyl(0.19, 0.06, 14, addVec(s, [0, 0.74, 0]), C.rattan));
+  // Eight tall black-and-rattan chairs line the long bar.
+  for (const z of [-5.55, -4.72, -3.89, -3.06, -2.23, -1.4, -0.57, 0.26]) {
+    const stool: Vec3 = [2.22, 0, z];
+    // Woven seat.
+    parts.push(box([0.36, 0.065, 0.38], addVec(stool, [0, 0.74, 0]), C.rattan));
+    // Four dark metal legs.
     for (const [dx, dz] of [
-      [0.12, 0.12],
-      [0.12, -0.12],
-      [-0.12, 0.12],
-      [-0.12, -0.12],
+      [0.14, 0.15],
+      [0.14, -0.15],
+      [-0.14, 0.15],
+      [-0.14, -0.15],
     ]) {
-      p.push(box([0.03, 0.74, 0.03], addVec(s, [dx, 0.37, dz]), C.black));
+      parts.push(box([0.035, 0.74, 0.035], addVec(stool, [dx, 0.37, dz]), C.black));
     }
-    p.push(box([0.26, 0.02, 0.02], addVec(s, [0, 0.3, 0.12]), C.black)); // footrest
-    p.push(box([0.03, 0.32, 0.34], addVec(s, [0.17, 1.0, 0]), C.rattan)); // backrest
-    p.push(box([0.03, 0.3, 0.03], addVec(s, [0.17, 0.92, 0.17]), C.black));
-    p.push(box([0.03, 0.3, 0.03], addVec(s, [0.17, 0.92, -0.17]), C.black));
+    // Lower footrest and tall rattan backrest with a dark frame.
+    parts.push(box([0.3, 0.025, 0.025], addVec(stool, [0, 0.31, 0.15]), C.black));
+    parts.push(box([0.045, 0.5, 0.42], addVec(stool, [0.19, 1.02, 0]), C.rattan));
+    parts.push(box([0.035, 0.54, 0.035], addVec(stool, [0.2, 0.98, 0.19]), C.black));
+    parts.push(box([0.035, 0.54, 0.035], addVec(stool, [0.2, 0.98, -0.19]), C.black));
+    parts.push(box([0.035, 0.035, 0.42], addVec(stool, [0.2, 1.24, 0]), C.black));
   }
 
-  return at(PANTRY_ORIGIN, p);
+  // Dark inner silhouettes make the glowing arch shapes read as outlines.
+  for (const niche of ARCH_NICHES) {
+    parts.push({
+      geometry: new THREE.ShapeGeometry(
+        roundArch(Math.max(0.12, niche.width - 0.12), Math.max(0.18, niche.height - 0.08)),
+        12
+      ),
+      position: [0.225, niche.baseY + 0.055, niche.z],
+      rotation: FACE_X,
+      color: C.concrete,
+    });
+  }
+
+  return at(PANTRY_ORIGIN, parts);
 };
 
-const pantryGlow = (): PartSpec[] =>
-  at(PANTRY_ORIGIN, [
-    // Under-cabinet strip and cove strip on top of the pantry wall
-    box([0.3, 0.015, 2.05], [0.3, 1.592, -0.65], C.glowWarm),
-    box([0.05, 0.03, PANTRY_LEN], [0.15, 2.62, 0], C.glowWarm),
-  ]);
-
-// -----------------------------------------------------------------------------
-// B. LOCKERS (world z -18.0 .. -19.0, past the purifier at z -17.7)
-// -----------------------------------------------------------------------------
-const LOCKER_ORIGIN: Vec3 = [5.6, 0, -18.5];
-
-const lockersSolid = (): PartSpec[] => {
-  const p: PartSpec[] = [
-    box([0.43, 0.06, 0.98], [0.225, 0.03, 0], C.stone), // plinth
-    box([0.45, 1.8, 1.0], [0.225, 0.96, 0], C.locker),
-    box([0.005, 1.76, 0.01], [0.452, 0.96, 0], C.lockerSeam),
-    box([0.35, 0.25, 0.3], [0.2, 1.985, 0.2], '#c2a27a'), // carton on top
+const pantryGlow = (): PartSpec[] => {
+  const parts: PartSpec[] = [
+    // Cabinet task light, warm cornice, and the bar's under-counter strip.
+    box([0.32, 0.018, 2.1], [0.31, 1.62, 1.48], C.glowWarm),
+    box([0.05, 0.03, PANTRY_LEN], [0.17, 2.62, 0], C.glowWarm),
+    box([0.035, 0.035, BAR_LENGTH - 0.15], [1.81, 0.85, BAR_CENTER_Z], C.glowWarm),
   ];
-  for (const y of [0.66, 1.26]) {
-    p.push(box([0.005, 0.01, 0.98], [0.452, y, 0], C.lockerSeam));
+
+  for (const niche of ARCH_NICHES) {
+    parts.push({
+      geometry: new THREE.ShapeGeometry(roundArch(niche.width, niche.height), 12),
+      position: [0.215, niche.baseY, niche.z],
+      rotation: FACE_X,
+      color: C.glowArch,
+    });
   }
-  for (const y of [0.45, 1.05, 1.65]) {
-    for (const z of [-0.08, 0.08]) {
-      p.push(box([0.015, 0.08, 0.02], [0.46, y, z], C.black));
-    }
-  }
-  return at(LOCKER_ORIGIN, p);
-};
 
-// -----------------------------------------------------------------------------
-// C. ARCH NICHES on the east core face, between the signage (z -1.6) and the
-//    Pria door (z -4.9), where Lift 2 used to be (lifts moved to the north end).
-// -----------------------------------------------------------------------------
-const NICHE_Z = -3.2;
-
-const nicheSolid = (): PartSpec[] => [
-  box([0.04, 2.3, 2.9], [2.645, 1.15, NICHE_Z], C.stone),
-  box([0.08, 0.03, 2.6], [2.7, 0.95, NICHE_Z], C.slat), // little shelf
-];
-
-const nicheGlow = (): PartSpec[] =>
-  [-2.3, -2.9, -3.5, -4.1].map((z, i) => ({
-    geometry: new THREE.ShapeGeometry(roundArch(0.3, 0.45), 12),
-    position: [2.67, i % 2 === 0 ? 1.1 : 1.35, z] as Vec3,
+  // One circular niche, matching the large round opening in the reference.
+  parts.push({
+    geometry: new THREE.RingGeometry(0.2, 0.27, 24),
+    position: [0.215, 1.9, -1.25],
     rotation: FACE_X,
     color: C.glowArch,
-  }));
+  });
+
+  return at(PANTRY_ORIGIN, parts);
+};
 
 // -----------------------------------------------------------------------------
-// D. GOLD HEXAGON WALL + TV on the east core face (face at x=2.6), screen-left
-//    of the signage, where the lifts used to be. Lifts are now on the north
-//    end face. Everything stays within x <= 2.75, so the Main Walk Path
-//    (x 2.8..5.0) remains clear.
-//    Span: z 1.9..5.7 (signage ends at z 1.6, owner's slats start at z 5.91).
+// E. GOLD HEXAGON FEATURE WALL (TV removed)
+// Remains on the east core face, where it appears in the third reference photo.
+// Lifts stay on the north end face in OfficeFloor.tsx.
 // -----------------------------------------------------------------------------
 const HEX_ORIGIN: Vec3 = [2.6, 0, 3.8];
 
 const hexSolid = (): PartSpec[] => {
-  const p: PartSpec[] = [box([0.03, 2.3, 3.8], [0.02, 1.2, 0], '#292524')];
+  const parts: PartSpec[] = [box([0.03, 2.3, 3.8], [0.02, 1.2, 0], '#292524')];
 
-  // Honeycomb in the wall plane (y, z). Tiles face +x with their points along
-  // z (flat top), so columns step 1.5r in z and sqrt(3)r in y, odd columns
-  // offset by half a row. Spacing r=0.24, tiles r=0.215 => small grout gaps.
-  const r = 0.24;
-  const dz = 1.5 * r;
-  const dy = Math.sqrt(3) * r;
-  for (let col = 0; col < 10; col++) {
-    const z = -1.62 + col * dz;
-    const offset = (col % 2) * (dy / 2);
-    for (let y = 0.3 + offset; y <= 2.15; y += dy) {
-      p.push(cyl(0.215, 0.04, 6, [0.06, y, z], C.gold[(col + Math.round(y * 3)) & 3], AXIS_X));
+  const radius = 0.24;
+  const deltaZ = 1.5 * radius;
+  const deltaY = Math.sqrt(3) * radius;
+  for (let column = 0; column < 10; column++) {
+    const z = -1.62 + column * deltaZ;
+    const offset = (column % 2) * (deltaY / 2);
+    for (let y = 0.3 + offset; y <= 2.15; y += deltaY) {
+      parts.push(
+        cyl(
+          0.215,
+          0.04,
+          6,
+          [0.06, y, z],
+          C.gold[(column + Math.round(y * 3)) & 3],
+          AXIS_X
+        )
+      );
     }
   }
 
-  // Wall-mounted TV frame (in front of the tiles)
-  p.push(box([0.05, 0.86, 1.5], [0.11, 1.35, 0], '#0b0f19'));
-
-  return at(HEX_ORIGIN, p);
+  return at(HEX_ORIGIN, parts);
 };
 
-const hexGlow = (): PartSpec[] =>
-  at(HEX_ORIGIN, [box([0.01, 0.78, 1.4], [0.14, 1.35, 0], C.screen)]);
-
 // -----------------------------------------------------------------------------
-// E. COVE LIGHT strips on top of the core cornice (cornice top y = 2.66)
+// F. COVE LIGHT strips on top of the core cornice (cornice top y = 2.66)
 // -----------------------------------------------------------------------------
 const coveGlow = (): PartSpec[] => [
   box([0.04, 0.03, 24.0], [2.66, 2.675, 0], C.glowWarm),
@@ -268,14 +305,11 @@ const coveGlow = (): PartSpec[] => [
   box([5.3, 0.03, 0.04], [0, 2.675, -12.06], C.glowWarm),
 ];
 
-// -----------------------------------------------------------------------------
-// Bake once at module load.
-// -----------------------------------------------------------------------------
-const geoDecor = mergeParts([...pantrySolid(), ...lockersSolid(), ...nicheSolid(), ...hexSolid()], true);
-const geoGlow = mergeParts([...pantryGlow(), ...nicheGlow(), ...hexGlow(), ...coveGlow()], true);
+// Bake all static parts once at module load.
+const geoDecor = mergeParts([...pantrySolid(), ...hexSolid()], true);
+const geoGlow = mergeParts([...pantryGlow(), ...coveGlow()], true);
 
 const matDecor = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.6 });
-// Basic + no tone mapping keeps the "lit" parts bright without adding lights.
 const matGlow = new THREE.MeshBasicMaterial({ vertexColors: true, toneMapped: false });
 
 const BriDecorComponent: React.FC = () => (
@@ -283,9 +317,8 @@ const BriDecorComponent: React.FC = () => (
     <mesh geometry={geoDecor} material={matDecor} castShadow receiveShadow />
     <mesh geometry={geoGlow} material={matGlow} />
 
-    {/* Pantry label above the back wall, facing the walk path */}
     <Html
-      position={[PANTRY_ORIGIN[0] + 0.2, 2.35, PANTRY_ORIGIN[2]]}
+      position={[PANTRY_ORIGIN[0] + 0.22, 2.36, PANTRY_ORIGIN[2] + 2.0]}
       rotation={[0, Math.PI / 2, 0]}
       center
       distanceFactor={11}
@@ -298,5 +331,5 @@ const BriDecorComponent: React.FC = () => (
   </group>
 );
 
-/** Static decor; props-less + memo => renders once. */
+/** Static decor; props-less + memo means it renders once. */
 export const BriDecor = React.memo(BriDecorComponent);

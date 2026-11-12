@@ -558,9 +558,9 @@ const StaticOfficeComponent: React.FC<StaticOfficeProps> = ({ squadZ }) => {
         {/* KAMAR MANDI / RESTROOMS (PRIA & WANITA)                       */}
         {/* ------------------------------------------------------------ */}
         {/* EAST FACE ORDER (left -> right seen from the squads):
-            Hex TV wall (BriDecor) | Signage | Arch niches (BriDecor) | Pria | Wanita | Musholla
-            Lift 1 & 2 are on the north end face. */}
-        {/* KAMAR MANDI PRIA - At Z = -5.6 on East, just right of Lift 2 */}
+            slats | gold feature wall (BriDecor, no TV) | Signage | Pria | Wanita | Musholla
+            Pantry niches now live on the pantry wall; Lift 1 & 2 are on the north end face. */}
+        {/* KAMAR MANDI PRIA - At Z = -5.6 on East, right of the signage */}
         <group position={[2.61, 0, DOOR_Z.pria]}>
           <mesh position={[0.02, 1.15, 0]}>
             <boxGeometry args={[0.04, 2.3, 1.4]} />
