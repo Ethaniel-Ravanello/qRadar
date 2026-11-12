@@ -1,80 +1,63 @@
 import React, { useMemo, useState } from 'react';
-import { Bug, ChevronDown, ExternalLink, FolderKanban, ListChecks } from 'lucide-react';
-import type { JiraIssue, JiraSprintExport } from '../../types';
+import { Bug, ChevronRight, ListChecks, Search } from 'lucide-react';
+import type { JiraIssue } from '../../types';
 import {
   PHASES,
   STAGES,
-  buildPersonTree,
-  isMine,
   phasesOf,
   stageOf,
   type DefectCounts,
   type DefectPhase,
+  type EpicNode,
   type Stage,
   type StoryNode,
 } from '../../data/sprintBreakdown';
+import { IssueKey, IssueRow, JiraLinkIcon, MeBadge, StatusChip } from './JiraIssueRow';
 
 // =============================================================================
-// Sprint breakdown for one person: sprint picker -> Epic -> Story (one open at a
-// time) -> Sub-tasks (stage filter) + Defects (SIT/UAT filter).
+// "Sprint" tab: search + status filter, then Epic accordions (epics with active
+// work open by default) -> compact Story cards (one open at a time) ->
+// Sub-tasks (status filter) then Defects (SIT/UAT filter).
 // =============================================================================
 
-const STAGE_CLASS: Record<Stage, string> = {
-  'To Do': 'bg-slate-700 text-slate-300',
-  'In Progress': 'bg-blue-500/20 text-blue-300',
-  'Unit Testing': 'bg-cyan-500/20 text-cyan-300',
-  'Ready for Testing': 'bg-amber-500/20 text-amber-300',
-  SIT: 'bg-orange-500/20 text-orange-300',
-  UAT: 'bg-fuchsia-500/20 text-fuchsia-300',
-  Done: 'bg-emerald-500/20 text-emerald-300',
+const isOpenWork = (i: JiraIssue) => stageOf(i) !== 'Done';
+const storyIsActive = (n: StoryNode) => isOpenWork(n.story) || n.subtasks.some(isOpenWork) || n.defects.some(isOpenWork);
+const epicId = (e: EpicNode) => e.key ?? '__no-epic';
+
+const matchesQuery = (node: StoryNode, epic: EpicNode, q: string) => {
+  if (!q) return true;
+  const issues = [node.story, ...node.subtasks, ...node.defects, ...(epic.epic ? [epic.epic] : [])];
+  return issues.some((i) => i.key.toLowerCase().includes(q) || (i.summary ?? '').toLowerCase().includes(q));
 };
 
-const PHASE_CLASS: Record<DefectPhase, string> = {
-  SIT: 'bg-orange-500/15 text-orange-300 border-orange-500/40',
-  UAT: 'bg-fuchsia-500/15 text-fuchsia-300 border-fuchsia-500/40',
-  Unlabeled: 'bg-slate-700/60 text-slate-400 border-slate-600',
-};
-
-const StageChip: React.FC<{ issue: JiraIssue }> = ({ issue }) => {
-  const stage = stageOf(issue);
-  return (
+/** Single-line meta: red bug icon + count, then SIT / UAT badges. */
+const DefectMeta: React.FC<{ counts: DefectCounts }> = ({ counts }) => (
+  <>
     <span
-      className={`shrink-0 text-[10px] font-semibold px-2 py-0.5 rounded-full ${STAGE_CLASS[stage]}`}
-      title={issue.status ?? ''}
+      className={`inline-flex shrink-0 items-center gap-1 ${counts.total ? 'text-slate-300' : ''}`}
+      title={`${counts.total} defect`}
     >
-      {issue.status ?? stage}
+      <Bug className={`h-3.5 w-3.5 ${counts.total ? 'text-red-400' : 'text-slate-600'}`} aria-hidden="true" />
+      {counts.total}
+      <span className="sr-only"> defect</span>
     </span>
-  );
-};
-
-const IssueLink: React.FC<{ issue: JiraIssue; className?: string }> = ({ issue, className = '' }) => (
-  <a
-    href={issue.url}
-    target="_blank"
-    rel="noopener noreferrer"
-    onClick={(e) => e.stopPropagation()}
-    className={`font-mono font-bold text-sky-400 hover:underline inline-flex items-center gap-1 ${className}`}
-  >
-    {issue.key}
-    <ExternalLink className="w-2.5 h-2.5 opacity-60" aria-hidden="true" />
-    <span className="sr-only">(opens Jira in a new tab)</span>
-  </a>
-);
-
-const DefectSummary: React.FC<{ counts: DefectCounts; prefix?: string }> = ({ counts, prefix }) => (
-  <span className="text-[10px] text-slate-400 font-mono">
-    {prefix}
-    <Bug className="inline w-3 h-3 text-red-400 -mt-0.5" aria-hidden="true" /> {counts.total}
-    {counts.total > 0 && (
-      <>
-        {' '}· <span className="text-orange-300">SIT {counts.SIT}</span> · <span className="text-fuchsia-300">UAT {counts.UAT}</span>
-        {counts.Unlabeled > 0 && <> · <span className="text-slate-400">no label {counts.Unlabeled}</span></>}
-      </>
+    {counts.SIT > 0 && (
+      <span className="shrink-0 rounded bg-amber-500/15 px-1.5 py-px text-[11px] font-medium text-amber-300">
+        SIT {counts.SIT}
+      </span>
     )}
-  </span>
+    {counts.UAT > 0 && (
+      <span className="shrink-0 rounded bg-fuchsia-500/15 px-1.5 py-px text-[11px] font-medium text-fuchsia-300">
+        UAT {counts.UAT}
+      </span>
+    )}
+    {counts.total > 0 && counts.Unlabeled > 0 && <span className="shrink-0">{counts.Unlabeled} no label</span>}
+  </>
 );
 
-/** Toggle chips: "All" + each option that occurs, with counts. */
+const META_LINE = 'mt-1 flex items-center gap-x-3 overflow-hidden whitespace-nowrap text-xs text-slate-500';
+
+/** Segmented filter: "All" + each option that occurs, with counts. Hidden if only one bucket. */
 function FilterChips<T extends string>({
   label,
   options,
@@ -89,7 +72,11 @@ function FilterChips<T extends string>({
   onChange: (v: T | 'All') => void;
 }) {
   const total = [...counts.values()].reduce((a, b) => a + b, 0);
-  const chips: Array<[T | 'All', number]> = [['All', total], ...options.filter((o) => counts.get(o)).map((o) => [o, counts.get(o)!] as [T, number])];
+  const chips: Array<[T | 'All', number]> = [
+    ['All', total],
+    ...options.filter((o) => counts.get(o)).map((o) => [o, counts.get(o)!] as [T, number]),
+  ];
+  if (chips.length <= 2) return null;
   return (
     <div className="flex flex-wrap gap-1" role="group" aria-label={label}>
       {chips.map(([opt, n]) => (
@@ -97,55 +84,16 @@ function FilterChips<T extends string>({
           key={opt}
           onClick={() => onChange(opt)}
           aria-pressed={value === opt}
-          className={`text-[10px] px-2 py-0.5 rounded-full border transition cursor-pointer ${
-            value === opt
-              ? 'bg-sky-500/20 border-sky-500/60 text-sky-200'
-              : 'bg-slate-800/60 border-slate-700 text-slate-400 hover:text-slate-200'
+          className={`rounded-md px-2.5 py-1 text-xs transition cursor-pointer ${
+            value === opt ? 'bg-slate-700 text-white' : 'text-slate-400 hover:bg-slate-800 hover:text-slate-200'
           }`}
         >
-          {opt} <span className="font-mono opacity-70">{n}</span>
+          {opt} <span className="tabular-nums opacity-60">{n}</span>
         </button>
       ))}
     </div>
   );
 }
-
-const ChildRow: React.FC<{ issue: JiraIssue; pn: string; showLabels?: boolean }> = ({ issue, pn, showLabels }) => {
-  const mine = isMine(issue, pn);
-  return (
-    <div
-      className={`p-2 rounded-lg border space-y-1 ${
-        mine ? 'bg-indigo-950/40 border-indigo-500/50' : 'bg-slate-900/60 border-slate-700/70'
-      }`}
-    >
-      <div className="flex items-center justify-between gap-2">
-        <IssueLink issue={issue} className="text-[11px]" />
-        <StageChip issue={issue} />
-      </div>
-      <p className="text-[11px] text-slate-200 leading-snug">{issue.summary}</p>
-      <div className="flex items-center gap-1 flex-wrap text-[10px] text-slate-400">
-        {mine && (
-          <span className="px-1.5 py-0.5 rounded bg-indigo-500/20 text-indigo-300 border border-indigo-500/40 font-semibold">
-            Me
-          </span>
-        )}
-        {issue.assignee?.displayName && <span>@{issue.assignee.displayName}</span>}
-        {showLabels &&
-          phasesOf(issue).map((p) => (
-            <span key={p} className={`px-1.5 py-0.5 rounded border font-semibold ${PHASE_CLASS[p]}`}>
-              {p === 'Unlabeled' ? 'No SIT/UAT label' : p}
-            </span>
-          ))}
-        {showLabels &&
-          (issue.labels?.length ? issue.labels : []).map((l) => (
-            <span key={l} className="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 font-mono">
-              {l}
-            </span>
-          ))}
-      </div>
-    </div>
-  );
-};
 
 const countBy = <T extends string>(items: JiraIssue[], keyOf: (i: JiraIssue) => T[]) => {
   const m = new Map<T, number>();
@@ -153,7 +101,34 @@ const countBy = <T extends string>(items: JiraIssue[], keyOf: (i: JiraIssue) => 
   return m;
 };
 
-/** Sub-tasks + defects of the selected story. Mounted per story, so filters reset on switch. */
+const Group: React.FC<{
+  icon: React.ReactNode;
+  title: string;
+  aside: React.ReactNode;
+  filter: React.ReactNode;
+  empty: string;
+  children: React.ReactNode[];
+}> = ({ icon, title, aside, filter, empty, children }) => (
+  <div className="space-y-2">
+    <div className="flex items-center justify-between gap-2">
+      <h5 className="flex items-center gap-1.5 text-xs font-semibold text-slate-300">
+        {icon}
+        {title}
+      </h5>
+      <span className="flex items-center gap-x-3 text-xs text-slate-500">{aside}</span>
+    </div>
+    {filter}
+    {children.length === 0 ? (
+      <p className="text-xs text-slate-500">{empty}</p>
+    ) : (
+      <ul className="overflow-hidden rounded-lg border border-slate-800 bg-slate-900/40 divide-y divide-slate-800">
+        {children}
+      </ul>
+    )}
+  </div>
+);
+
+/** Sub-tasks then defects of the open story. Mounted per story, so filters reset on switch. */
 const StoryDetail: React.FC<{ node: StoryNode; pn: string }> = ({ node, pn }) => {
   const [stage, setStage] = useState<Stage | 'All'>('All');
   const [phase, setPhase] = useState<DefectPhase | 'All'>('All');
@@ -163,150 +138,277 @@ const StoryDetail: React.FC<{ node: StoryNode; pn: string }> = ({ node, pn }) =>
   const done = node.subtasks.filter((s) => stageOf(s) === 'Done').length;
 
   return (
-    <div className="mt-2 pl-2 border-l-2 border-sky-800/60 space-y-3">
-      <section className="space-y-1.5">
-        <div className="flex items-center justify-between">
-          <h5 className="text-[10px] font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1">
-            <ListChecks className="w-3 h-3 text-sky-400" aria-hidden="true" /> Sub-tasks
-          </h5>
-          <span className="text-[10px] font-mono text-slate-400">
-            {done}/{node.subtasks.length} done
-          </span>
-        </div>
-        {node.subtasks.length > 0 && (
-          <FilterChips label="Filter sub-tasks by status" options={STAGES} counts={countBy(node.subtasks, (s) => [stageOf(s)])} value={stage} onChange={setStage} />
-        )}
-        {subtasks.length === 0 ? (
-          <p className="text-[10px] text-slate-500 italic">Tidak ada sub-task.</p>
-        ) : (
-          subtasks.map((s) => <ChildRow key={s.key} issue={s} pn={pn} />)
-        )}
-      </section>
+    <div className="space-y-4 border-t border-slate-800 px-3 py-3">
+      <Group
+        icon={<ListChecks className="h-3.5 w-3.5 text-cyan-400" aria-hidden="true" />}
+        title="Sub-task"
+        aside={`${done}/${node.subtasks.length} done`}
+        filter={
+          <FilterChips
+            label="Filter sub-task per status"
+            options={STAGES}
+            counts={countBy(node.subtasks, (s) => [stageOf(s)])}
+            value={stage}
+            onChange={setStage}
+          />
+        }
+        empty="Tidak ada sub-task."
+      >
+        {subtasks.map((s) => (
+          <IssueRow key={s.key} issue={s} pn={pn} />
+        ))}
+      </Group>
 
-      <section className="space-y-1.5">
-        <div className="flex items-center justify-between">
-          <h5 className="text-[10px] font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1">
-            <Bug className="w-3 h-3 text-red-400" aria-hidden="true" /> Defects
-          </h5>
-          <DefectSummary counts={node.defectCounts} />
-        </div>
-        {node.defects.length > 0 && (
-          <FilterChips label="Filter defects by phase" options={PHASES} counts={countBy(node.defects, phasesOf)} value={phase} onChange={setPhase} />
-        )}
-        {defects.length === 0 ? (
-          <p className="text-[10px] text-slate-500 italic">Tidak ada defect.</p>
-        ) : (
-          defects.map((d) => <ChildRow key={d.key} issue={d} pn={pn} showLabels />)
-        )}
-      </section>
+      <Group
+        icon={<Bug className="h-3.5 w-3.5 text-red-400" aria-hidden="true" />}
+        title="Defect"
+        aside={<DefectMeta counts={node.defectCounts} />}
+        filter={
+          <FilterChips
+            label="Filter defect per fase"
+            options={PHASES}
+            counts={countBy(node.defects, phasesOf)}
+            value={phase}
+            onChange={setPhase}
+          />
+        }
+        empty="Tidak ada defect."
+      >
+        {defects.map((d) => (
+          <IssueRow key={d.key} issue={d} pn={pn} accent="defect">
+            {(d.labels ?? []).map((l) => (
+              <span key={l} className="shrink-0 rounded bg-slate-800 px-1.5 py-px font-mono text-[11px] text-slate-400">
+                {l}
+              </span>
+            ))}
+            {phasesOf(d).includes('Unlabeled') && <span className="shrink-0 text-amber-400/80">tanpa label SIT/UAT</span>}
+          </IssueRow>
+        ))}
+      </Group>
     </div>
   );
 };
 
-// -----------------------------------------------------------------------------
-export const SprintBreakdown: React.FC<{ pn: string; exports: JiraSprintExport[] }> = ({ pn, exports }) => {
-  const defaultId = (exports.find((e) => e.sprint.state?.toLowerCase() === 'active') ?? exports[0]).sprint.id;
-  const [sprintId, setSprintId] = useState(defaultId);
-  // undefined = nothing picked yet (open the first story); null = user collapsed everything.
-  const [openStory, setOpenStory] = useState<string | null | undefined>(undefined);
+const StoryCard: React.FC<{ node: StoryNode; pn: string; open: boolean; onToggle: () => void }> = ({
+  node,
+  pn,
+  open,
+  onToggle,
+}) => {
+  const { story } = node;
+  const done = node.subtasks.filter((s) => stageOf(s) === 'Done').length;
+  return (
+    <li
+      className={`overflow-hidden rounded-lg border transition-colors ${
+        open ? 'border-cyan-500/40 bg-slate-950/70' : 'border-slate-800 bg-slate-950/40'
+      }`}
+    >
+      <div className="flex items-start gap-1 pr-2 hover:bg-slate-800/30">
+        <button
+          onClick={onToggle}
+          aria-expanded={open}
+          className="flex min-w-0 flex-1 items-start gap-2.5 py-2.5 pl-3 text-left cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-sky-500"
+        >
+          <ChevronRight
+            className={`mt-0.5 h-4 w-4 shrink-0 text-slate-500 transition-transform ${open ? 'rotate-90' : ''}`}
+            aria-hidden="true"
+          />
+          <div className="min-w-0 flex-1">
+            <p className="line-clamp-2 text-[13px] font-medium leading-snug text-white" title={story.summary ?? ''}>
+              <IssueKey issueKey={story.key} className="mr-2" />
+              {story.summary}
+            </p>
+            <div className={META_LINE}>
+              {story.assignee?.username === pn && <MeBadge />}
+              {story.storyPoints != null && <span className="shrink-0">{story.storyPoints} SP</span>}
+              <span className="shrink-0">
+                {done}/{node.subtasks.length} sub-task
+              </span>
+              <DefectMeta counts={node.defectCounts} />
+            </div>
+          </div>
+        </button>
+        <div className="flex shrink-0 items-center gap-0.5 pt-2.5">
+          <StatusChip issue={story} />
+          <JiraLinkIcon issue={story} />
+        </div>
+      </div>
+      {open && <StoryDetail key={story.key} node={node} pn={pn} />}
+    </li>
+  );
+};
 
-  const data = exports.find((e) => e.sprint.id === sprintId) ?? exports[0];
-  const tree = useMemo(() => buildPersonTree(data, pn), [data, pn]);
-  // Default to the first story; a stale key (after switching sprint) falls back too.
-  const allStories = tree.flatMap((e) => e.stories);
-  const selectedKey =
-    openStory === null
-      ? null
-      : allStories.some((n) => n.story.key === openStory)
-      ? openStory
-      : allStories[0]?.story.key ?? null;
+// -----------------------------------------------------------------------------
+export const SprintBreakdown: React.FC<{ tree: EpicNode[]; pn: string }> = ({ tree, pn }) => {
+  const [query, setQuery] = useState('');
+  const [stage, setStage] = useState<Stage | 'All'>('All');
+  /** Explicit open/closed per epic; unset epics fall back to the default rule. */
+  const [epicOverrides, setEpicOverrides] = useState<Record<string, boolean>>({});
+  const [openStory, setOpenStory] = useState<string | null>(null);
+
+  const q = query.trim().toLowerCase();
+  const filtering = q !== '' || stage !== 'All';
+
+  const filtered = useMemo(
+    () =>
+      tree
+        .map((e) => ({
+          ...e,
+          stories: e.stories.filter((n) => (stage === 'All' || stageOf(n.story) === stage) && matchesQuery(n, e, q)),
+        }))
+        .filter((e) => e.stories.length > 0),
+    [tree, q, stage]
+  );
+
+  // Default: open epics that still have active work (fallback: the first epic).
+  const activeEpics = useMemo(() => {
+    const ids = new Set(tree.filter((e) => e.stories.some(storyIsActive)).map(epicId));
+    if (ids.size === 0 && tree[0]) ids.add(epicId(tree[0]));
+    return ids;
+  }, [tree]);
+  // While searching/filtering, every matching epic opens so results are visible.
+  const isEpicOpen = (e: EpicNode) => epicOverrides[epicId(e)] ?? (filtering || activeEpics.has(epicId(e)));
+  const allOpen = filtered.length > 0 && filtered.every(isEpicOpen);
+  const setAll = (open: boolean) =>
+    setEpicOverrides((prev) => ({ ...prev, ...Object.fromEntries(filtered.map((e) => [epicId(e), open])) }));
+
+  const stageOptions = STAGES.filter((s) => tree.some((e) => e.stories.some((n) => stageOf(n.story) === s)));
+  const storyCount = filtered.reduce((n, e) => n + e.stories.length, 0);
+
+  if (tree.length === 0) {
+    return <p className="py-6 text-center text-[13px] text-slate-500">Tidak ada story yang melibatkan orang ini di sprint ini.</p>;
+  }
 
   return (
-    <section className="space-y-3">
-      <div className="flex items-center justify-between gap-2">
-        <h3 className="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
-          <FolderKanban className="w-3.5 h-3.5 text-sky-400" aria-hidden="true" />
-          <span>Sprint Breakdown</span>
-        </h3>
-        <label className="sr-only" htmlFor="sprint-picker">
-          Sprint
-        </label>
-        <select
-          id="sprint-picker"
-          value={data.sprint.id}
-          onChange={(e) => setSprintId(Number(e.target.value))}
-          className="max-w-[60%] text-[11px] bg-slate-800 border border-slate-700 rounded-lg px-2 py-1 text-slate-200 cursor-pointer hover:border-slate-500 focus:outline-none focus:ring-2 focus:ring-sky-500"
-        >
-          {exports.map((e) => (
-            <option key={e.sprint.id} value={e.sprint.id}>
-              {e.sprint.name} ({e.sprint.state})
+    <div className="space-y-4">
+      {/* Search + status filter */}
+      <div className="space-y-2">
+        <div className="flex items-center gap-2">
+          <div className="relative flex-1">
+            <Search
+              className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500"
+              aria-hidden="true"
+            />
+            <input
+              type="search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Cari story, epic, atau defect…"
+              aria-label="Cari issue"
+              className="w-full rounded-lg border border-slate-800 bg-slate-900/70 py-2 pl-9 pr-3 text-[13px] text-slate-200 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-sky-500"
+            />
+          </div>
+          <label htmlFor="story-stage-filter" className="sr-only">
+            Filter status story
+          </label>
+          <select
+            id="story-stage-filter"
+            value={stage}
+            onChange={(e) => setStage(e.target.value as Stage | 'All')}
+            className="rounded-lg border border-slate-800 bg-slate-900/70 px-3 py-2 text-[13px] text-slate-200 cursor-pointer hover:border-slate-600 focus:outline-none focus:ring-2 focus:ring-sky-500"
+          >
+            <option value="All" className="bg-slate-900">
+              Semua status
             </option>
-          ))}
-        </select>
+            {stageOptions.map((s) => (
+              <option key={s} value={s} className="bg-slate-900">
+                {s}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="flex items-center justify-between text-xs text-slate-500">
+          <span>
+            {filtered.length} epic · {storyCount} story
+          </span>
+          <div className="flex items-center gap-3">
+            {filtering && (
+              <button
+                onClick={() => {
+                  setQuery('');
+                  setStage('All');
+                }}
+                className="text-sky-400 hover:text-sky-300 cursor-pointer"
+              >
+                Reset filter
+              </button>
+            )}
+            {filtered.length > 1 && (
+              <button onClick={() => setAll(!allOpen)} className="text-slate-400 hover:text-slate-200 cursor-pointer">
+                {allOpen ? 'Tutup semua' : 'Buka semua'}
+              </button>
+            )}
+          </div>
+        </div>
       </div>
 
-      {tree.length === 0 ? (
-        <p className="text-[11px] text-slate-500 italic">Tidak ada story yang melibatkan orang ini di sprint ini.</p>
+      {filtered.length === 0 ? (
+        <p className="py-6 text-center text-[13px] text-slate-500">Tidak ada yang cocok dengan filter.</p>
       ) : (
-        tree.map((epicNode) => (
-          <div key={epicNode.key ?? 'no-epic'} className="rounded-2xl bg-slate-800/50 border border-slate-700/70 p-3 space-y-2">
-            <div className="space-y-1">
-              <div className="flex items-center justify-between gap-2">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-purple-300">Epic</span>
-                {epicNode.epic && <StageChip issue={epicNode.epic} />}
-              </div>
-              {epicNode.epic ? (
-                <p className="text-xs text-slate-100 font-semibold leading-snug">
-                  <IssueLink issue={epicNode.epic} className="text-[11px] mr-1" /> {epicNode.epic.summary}
-                </p>
-              ) : (
-                <p className="text-xs text-slate-300 font-semibold">{epicNode.key ?? 'Tanpa Epic'}</p>
-              )}
-              <DefectSummary counts={epicNode.sprintDefectCounts} prefix={`${epicNode.sprintStoryCount} story di sprint · `} />
-            </div>
-
-            <ul className="space-y-1.5">
-              {epicNode.stories.map((node) => {
-                const open = node.story.key === selectedKey;
-                return (
-                  <li
-                    key={node.story.key}
-                    className={`rounded-xl border p-2 transition-colors ${
-                      open ? 'bg-slate-900/70 border-sky-700/70' : 'bg-slate-900/40 border-slate-700/60 hover:border-slate-500 hover:bg-slate-900/70'
-                    }`}
+        <div className="space-y-3">
+          {filtered.map((epicNode) => {
+            const id = epicId(epicNode);
+            const open = isEpicOpen(epicNode);
+            const panelId = `epic-panel-${id}`;
+            return (
+              <section key={id} className="overflow-hidden rounded-xl border border-slate-800 bg-slate-900/40">
+                <div className="flex items-start gap-1 pr-3 hover:bg-slate-800/30">
+                  <button
+                    onClick={() => setEpicOverrides((prev) => ({ ...prev, [id]: !open }))}
+                    aria-expanded={open}
+                    aria-controls={panelId}
+                    className="flex min-w-0 flex-1 items-start gap-3 py-3 pl-4 text-left cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-sky-500"
                   >
-                    <button
-                      onClick={() => setOpenStory(open ? null : node.story.key)}
-                      aria-expanded={open}
-                      className="w-full text-left space-y-1 cursor-pointer rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
-                    >
-                      <div className="flex items-center justify-between gap-2">
-                        <span className="flex items-center gap-1.5 min-w-0">
-                          <ChevronDown className={`w-3 h-3 shrink-0 text-slate-400 transition-transform ${open ? '' : '-rotate-90'}`} aria-hidden="true" />
-                          <IssueLink issue={node.story} className="text-[11px]" />
-                          {node.story.assignee?.username === pn && (
-                            <span className="text-[9px] px-1 rounded bg-indigo-500/20 text-indigo-300 border border-indigo-500/40">Me</span>
-                          )}
-                        </span>
-                        <StageChip issue={node.story} />
+                    <ChevronRight
+                      className={`mt-1 h-4 w-4 shrink-0 text-slate-500 transition-transform ${open ? 'rotate-90' : ''}`}
+                      aria-hidden="true"
+                    />
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-2">
+                        <span className="text-[11px] font-semibold uppercase tracking-wider text-purple-300/70">Epic</span>
+                        {epicNode.key && <IssueKey issueKey={epicNode.key} tone="epic" />}
                       </div>
-                      <p className="text-[11px] text-slate-200 leading-snug">{node.story.summary}</p>
-                      <div className="flex items-center justify-between text-[10px] text-slate-400">
-                        <span>
-                          {node.subtasks.length} sub-task
-                          {node.story.storyPoints != null && <> · {node.story.storyPoints} SP</>}
+                      <h4 className="mt-0.5 line-clamp-2 text-sm font-semibold leading-snug text-white">
+                        {epicNode.epic?.summary ?? epicNode.key ?? 'Tanpa Epic'}
+                      </h4>
+                      <div className={META_LINE}>
+                        <span className="shrink-0">
+                          {epicNode.stories.length} story
+                          {epicNode.sprintStoryCount !== epicNode.stories.length && ` dari ${epicNode.sprintStoryCount}`}
                         </span>
-                        <DefectSummary counts={node.defectCounts} />
+                        <DefectMeta counts={epicNode.sprintDefectCounts} />
                       </div>
-                    </button>
-                    {open && <StoryDetail key={node.story.key} node={node} pn={pn} />}
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-        ))
+                    </div>
+                  </button>
+                  {epicNode.epic && (
+                    <div className="flex shrink-0 items-center gap-0.5 pt-3">
+                      <StatusChip issue={epicNode.epic} />
+                      <JiraLinkIcon issue={epicNode.epic} />
+                    </div>
+                  )}
+                </div>
+
+                {open && (
+                  <ul id={panelId} className="space-y-2 border-t border-slate-800 p-3">
+                    {epicNode.stories.map((node) => {
+                      const storyOpen = node.story.key === openStory;
+                      return (
+                        <StoryCard
+                          key={node.story.key}
+                          node={node}
+                          pn={pn}
+                          open={storyOpen}
+                          onToggle={() => setOpenStory(storyOpen ? null : node.story.key)}
+                        />
+                      );
+                    })}
+                  </ul>
+                )}
+              </section>
+            );
+          })}
+        </div>
       )}
-    </section>
+    </div>
   );
 };
