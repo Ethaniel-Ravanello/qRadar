@@ -4,6 +4,7 @@ import { OrbitControls, AdaptiveDpr, AdaptiveEvents } from '@react-three/drei';
 import * as THREE from 'three';
 import type { Squad, Employee, GraphicMode } from '../../types';
 import { OfficeFloor } from './OfficeFloor';
+import { BriDecor } from './BriDecor';
 import { DeskInstances } from './DeskInstances';
 import { AvatarInstances } from './AvatarInstances';
 import { CameraKeyboardControls } from './CameraKeyboardControls';
@@ -149,6 +150,7 @@ export const OfficeScene: React.FC<OfficeSceneProps> = ({
           onSelectSquad={onSelectSquad}
           selectedSquadId={selectedSquad?.id || null}
         />
+        <BriDecor />
 
         {/* Desks for every visible squad; avatars only for the focused squad. */}
         <DeskInstances members={visibleMembers} capacity={capacity} />
