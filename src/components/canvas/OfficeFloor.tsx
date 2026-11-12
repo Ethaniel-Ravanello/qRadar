@@ -459,10 +459,12 @@ const StaticOfficeComponent: React.FC<StaticOfficeProps> = ({ squadZ }) => {
         ))}
 
         {/* ------------------------------------------------------------ */}
-        {/* ELEVATORS (LIFT) ON EAST CORE FACE (FACING SQUADS CORRIDOR)  */}
+        {/* ELEVATORS (LIFT 1 & 2) ON THE NORTH END FACE OF THE CORE     */}
+        {/* (face z=12.1). Yaw -90° turns the east-facing lift model to   */}
+        {/* face +z; Lift 1 x -2.35..-0.25, Lift 2 x 0.25..2.35.          */}
         {/* ------------------------------------------------------------ */}
-        {[3.4, -3.4].map((zPos, liftIdx) => (
-          <group key={`lift-east-${liftIdx}`} position={[2.61, 0, zPos]}>
+        {[-1.3, 1.3].map((xPos, liftIdx) => (
+          <group key={`lift-east-${liftIdx}`} position={[xPos, 0, 12.11]} rotation={[0, -Math.PI / 2, 0]}>
             <mesh position={[0.02, 1.15, 0]}>
               <boxGeometry args={[0.04, 2.3, 2.1]} />
               <meshStandardMaterial color="#475569" metalness={0.7} roughness={0.25} />
@@ -556,8 +558,9 @@ const StaticOfficeComponent: React.FC<StaticOfficeProps> = ({ squadZ }) => {
         {/* KAMAR MANDI / RESTROOMS (PRIA & WANITA)                       */}
         {/* ------------------------------------------------------------ */}
         {/* EAST FACE ORDER (left -> right seen from the squads):
-            (mostly empty) | Lift 1 | Signage | Lift 2 | Pria | Wanita | Musholla */}
-        {/* KAMAR MANDI PRIA - At Z = -5.6 on East, just right of Lift 2 */}
+            slats | gold feature wall (BriDecor, no TV) | Signage | Pria | Wanita | Musholla
+            Pantry niches now live on the pantry wall; Lift 1 & 2 are on the north end face. */}
+        {/* KAMAR MANDI PRIA - At Z = -5.6 on East, right of the signage */}
         <group position={[2.61, 0, DOOR_Z.pria]}>
           <mesh position={[0.02, 1.15, 0]}>
             <boxGeometry args={[0.04, 2.3, 1.4]} />
