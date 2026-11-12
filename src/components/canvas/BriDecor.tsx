@@ -9,7 +9,8 @@ import { addVec, mergeParts, type PartSpec, type Vec3 } from './instancing';
 //      upper oak cabinets, water gallons          (east, rows 9-10 inner pod)
 //   B. Cream metal lockers                        (east, next to the pantry)
 //   C. Lit arch niches on a stone panel           (east core face, z<0)
-//   D. Gold hexagon feature wall + TV + green sofa (north end of the core)
+//   D. Gold hexagon feature wall + TV             (east core face, z>0)
+//      (Lift 1 & 2 live on the north end face, see OfficeFloor.tsx)
 //   E. Warm cove-light strips on the core cornice
 //
 // Everything is static, so it is baked into TWO merged, vertex-colored
@@ -26,8 +27,8 @@ import { addVec, mergeParts, type PartSpec, type Vec3 } from './instancing';
 
 /** Facing +x: a shape built in the XY plane (normal +z) is yawed +90°. */
 const FACE_X: Vec3 = [0, Math.PI / 2, 0];
-/** Cylinder axis Y -> Z, so its 6-sided cap faces +z (pointy-top hexagon). */
-const AXIS_Z: Vec3 = [Math.PI / 2, 0, 0];
+/** Cylinder axis Y -> X, so its 6-sided cap faces +x (points along z). */
+const AXIS_X: Vec3 = [0, 0, Math.PI / 2];
 
 const box = (size: Vec3, position: Vec3, color: string, rotation?: Vec3): PartSpec => ({
   geometry: new THREE.BoxGeometry(size[0], size[1], size[2]),
@@ -82,8 +83,6 @@ const C = {
   lockerSeam: '#a8a29e',
   stone: '#57534e',
   gold: ['#ca8a04', '#eab308', '#a16207', '#d4a017'],
-  sofa: '#4d7c0f',
-  sofaDark: '#3f6212',
   glowWarm: '#fde68a',
   glowArch: '#fbbf24',
   screen: '#93c5fd',
@@ -207,7 +206,7 @@ const lockersSolid = (): PartSpec[] => {
 
 // -----------------------------------------------------------------------------
 // C. ARCH NICHES on the east core face, between the signage (z -1.6) and the
-//    Pria door (z -4.9), where Lift 2 used to be.
+//    Pria door (z -4.9), where Lift 2 used to be (lifts moved to the north end).
 // -----------------------------------------------------------------------------
 const NICHE_Z = -3.2;
 
@@ -225,47 +224,39 @@ const nicheGlow = (): PartSpec[] =>
   }));
 
 // -----------------------------------------------------------------------------
-// D. GOLD HEXAGON WALL + TV on the north end of the core (face at z=12.1),
-//    plus a green sofa facing it.
+// D. GOLD HEXAGON WALL + TV on the east core face (face at x=2.6), screen-left
+//    of the signage, where the lifts used to be. Lifts are now on the north
+//    end face. Everything stays within x <= 2.75, so the Main Walk Path
+//    (x 2.8..5.0) remains clear.
+//    Span: z 1.9..5.7 (signage ends at z 1.6, owner's slats start at z 5.91).
 // -----------------------------------------------------------------------------
-const HEX_ORIGIN: Vec3 = [0, 0, 12.1];
+const HEX_ORIGIN: Vec3 = [2.6, 0, 3.8];
 
 const hexSolid = (): PartSpec[] => {
-  const p: PartSpec[] = [box([3.6, 2.3, 0.03], [0, 1.2, 0.015], '#292524')];
+  const p: PartSpec[] = [box([0.03, 2.3, 3.8], [0.02, 1.2, 0], '#292524')];
 
-  // Honeycomb: spacing for r=0.24, tiles r=0.215 => small grout gaps.
+  // Honeycomb in the wall plane (y, z). Tiles face +x with their points along
+  // z (flat top), so columns step 1.5r in z and sqrt(3)r in y, odd columns
+  // offset by half a row. Spacing r=0.24, tiles r=0.215 => small grout gaps.
   const r = 0.24;
-  const dx = Math.sqrt(3) * r;
-  const dy = 1.5 * r;
-  for (let row = 0; row < 6; row++) {
-    const y = 0.3 + row * dy;
-    const offset = (row % 2) * (dx / 2);
-    for (let x = -1.6 + offset; x <= 1.6; x += dx) {
-      p.push(cyl(0.215, 0.04, 6, [x, y, 0.05], C.gold[(row + Math.round(x * 3)) & 3], AXIS_Z));
+  const dz = 1.5 * r;
+  const dy = Math.sqrt(3) * r;
+  for (let col = 0; col < 10; col++) {
+    const z = -1.62 + col * dz;
+    const offset = (col % 2) * (dy / 2);
+    for (let y = 0.3 + offset; y <= 2.15; y += dy) {
+      p.push(cyl(0.215, 0.04, 6, [0.06, y, z], C.gold[(col + Math.round(y * 3)) & 3], AXIS_X));
     }
   }
 
-  // Wood slats flanking the hex panel
-  for (let k = 0; k < 5; k++) {
-    const x = 1.95 + k * 0.13;
-    p.push(box([0.06, 2.3, 0.04], [x, 1.15, 0.05], C.walnut));
-    p.push(box([0.06, 2.3, 0.04], [-x, 1.15, 0.05], C.walnut));
-  }
-
   // Wall-mounted TV frame (in front of the tiles)
-  p.push(box([1.5, 0.86, 0.05], [0, 1.35, 0.1], '#0b0f19'));
-
-  // Green sofa facing the TV (seat, backrest on the far side, arms)
-  p.push(box([2.0, 0.4, 0.7], [0, 0.2, 1.8], C.sofa));
-  p.push(box([2.0, 0.45, 0.18], [0, 0.62, 2.1], C.sofaDark));
-  p.push(box([0.15, 0.55, 0.7], [1.0, 0.28, 1.8], C.sofaDark));
-  p.push(box([0.15, 0.55, 0.7], [-1.0, 0.28, 1.8], C.sofaDark));
+  p.push(box([0.05, 0.86, 1.5], [0.11, 1.35, 0], '#0b0f19'));
 
   return at(HEX_ORIGIN, p);
 };
 
 const hexGlow = (): PartSpec[] =>
-  at(HEX_ORIGIN, [box([1.4, 0.78, 0.01], [0, 1.35, 0.13], C.screen)]);
+  at(HEX_ORIGIN, [box([0.01, 0.78, 1.4], [0.14, 1.35, 0], C.screen)]);
 
 // -----------------------------------------------------------------------------
 // E. COVE LIGHT strips on top of the core cornice (cornice top y = 2.66)

@@ -158,8 +158,8 @@ const matPodWall = new THREE.MeshStandardMaterial({ color: '#475569', roughness:
 const matPodWallCap = new THREE.MeshStandardMaterial({ color: '#1e293b', roughness: 0.4 });
 
 // Doors on the east core face (z). Seen from the squads, screen-right = -z.
-// Both lifts are on the left half (z>0). Right of the signage and the arch
-// niches (z -1.75..-4.65): Pria -> Wanita -> Musholla (core ends at z=-12).
+// Left half (z>0) stays mostly empty; right of Lift 2 (z -4.45..-2.2):
+// Pria -> Wanita -> Musholla at the far-right end (core ends at z=-12).
 const DOOR_Z = { pria: -5.6, wanita: -7.4, musholla: -10.5 } as const;
 
 // -----------------------------------------------------------------------------
@@ -442,10 +442,9 @@ const StaticOfficeComponent: React.FC<StaticOfficeProps> = ({ squadZ }) => {
         </mesh>
 
         {/* Vertical Acoustic Walnut Wood Slats lining the Core Faces */}
-        {/* East face: slats behind the signage, plus two groups past the lifts
-            (z 8..11.3, the lifts now take z 2.55..7.48 on the screen-left side);
-            right half (z<-1.6) holds the arch niches (BriDecor) and the doors. */}
-        {[-0.8, -0.4, 0, 0.4, 0.8, 8.0, 8.4, 8.8, 10.4, 10.8, 11.2].map((zVal, i) => (
+        {/* East face: left half (z>0) keeps only its two original slat groups;
+            right half (z<-4.5) is cleared for the Pria/Wanita/Musholla doors. */}
+        {[-0.8, -0.4, 0, 0.4, 0.8, 6.0, 6.4, 6.8, 9.2, 9.6, 10].map((zVal, i) => (
           <mesh key={`wood-slat-e-${i}`} position={[2.62, 1.3, zVal]}>
             <boxGeometry args={[0.04, 2.5, 0.18]} />
             <meshStandardMaterial color="#854d0e" roughness={0.45} />
@@ -460,12 +459,12 @@ const StaticOfficeComponent: React.FC<StaticOfficeProps> = ({ squadZ }) => {
         ))}
 
         {/* ------------------------------------------------------------ */}
-        {/* ELEVATORS (LIFT) ON EAST CORE FACE (FACING SQUADS CORRIDOR)  */}
-        {/* Both lifts sit on the screen-left (+z) side of the signage:   */}
-        {/* Lift 1 z 5.15..7.25, Lift 2 z 2.55..4.65 (call plate at +1.2). */}
+        {/* ELEVATORS (LIFT 1 & 2) ON THE NORTH END FACE OF THE CORE     */}
+        {/* (face z=12.1). Yaw -90° turns the east-facing lift model to   */}
+        {/* face +z; Lift 1 x -2.35..-0.25, Lift 2 x 0.25..2.35.          */}
         {/* ------------------------------------------------------------ */}
-        {[6.2, 3.6].map((zPos, liftIdx) => (
-          <group key={`lift-east-${liftIdx}`} position={[2.61, 0, zPos]}>
+        {[-1.3, 1.3].map((xPos, liftIdx) => (
+          <group key={`lift-east-${liftIdx}`} position={[xPos, 0, 12.11]} rotation={[0, -Math.PI / 2, 0]}>
             <mesh position={[0.02, 1.15, 0]}>
               <boxGeometry args={[0.04, 2.3, 2.1]} />
               <meshStandardMaterial color="#475569" metalness={0.7} roughness={0.25} />
@@ -559,8 +558,9 @@ const StaticOfficeComponent: React.FC<StaticOfficeProps> = ({ squadZ }) => {
         {/* KAMAR MANDI / RESTROOMS (PRIA & WANITA)                       */}
         {/* ------------------------------------------------------------ */}
         {/* EAST FACE ORDER (left -> right seen from the squads):
-            slats | Lift 1 | Lift 2 | Signage | Arch niches | Pria | Wanita | Musholla */}
-        {/* KAMAR MANDI PRIA - At Z = -5.6 on East, just right of the arch niches */}
+            Hex TV wall (BriDecor) | Signage | Arch niches (BriDecor) | Pria | Wanita | Musholla
+            Lift 1 & 2 are on the north end face. */}
+        {/* KAMAR MANDI PRIA - At Z = -5.6 on East, just right of Lift 2 */}
         <group position={[2.61, 0, DOOR_Z.pria]}>
           <mesh position={[0.02, 1.15, 0]}>
             <boxGeometry args={[0.04, 2.3, 1.4]} />
