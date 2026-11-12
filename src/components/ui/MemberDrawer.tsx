@@ -13,6 +13,9 @@ import {
   Send,
 } from 'lucide-react';
 import type { Employee, Squad } from '../../types';
+import { getJiraExport, sprintExports } from '../../data/jiraData';
+import { JiraSections } from './JiraSections';
+import { SprintBreakdown } from './SprintBreakdown';
 
 interface MemberDrawerProps {
   employee: Employee | null;
@@ -36,6 +39,7 @@ export const MemberDrawer: React.FC<MemberDrawerProps> = ({
 
   const isOpen = Boolean(employee);
   const displayEmployee = employee || cachedEmployee;
+  const jiraExport = displayEmployee ? getJiraExport(displayEmployee.pn) : undefined;
 
   const getRoleBadge = (role: string) => {
     switch (role) {
@@ -170,7 +174,15 @@ export const MemberDrawer: React.FC<MemberDrawerProps> = ({
           </div>
         )}
 
-        {/* Jira Tickets Section */}
+        {/* Sprint breakdown (sprint_<id>.json): Epic -> Story -> Sub-task + Defect */}
+        {sprintExports.length > 0 && (
+          <SprintBreakdown key={`${displayEmployee.id}-sprint`} pn={displayEmployee.pn} exports={sprintExports} />
+        )}
+
+        {/* Jira: real export (jira_<pn>.json) when available; mock tickets only without any real data */}
+        {jiraExport ? (
+          <JiraSections key={displayEmployee.id} data={jiraExport} />
+        ) : sprintExports.length === 0 && (
         <div className="space-y-2.5">
           <div className="flex items-center justify-between">
             <h3 className="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
@@ -232,6 +244,7 @@ export const MemberDrawer: React.FC<MemberDrawerProps> = ({
             ))}
           </div>
         </div>
+        )}
 
         {/* Bitbucket & CI/CD Pipeline Section */}
         <div className="space-y-2.5 pt-2">

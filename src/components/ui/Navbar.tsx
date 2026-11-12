@@ -1,11 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { ChevronDown, Check, Zap, Sparkles } from 'lucide-react';
+import { ChevronDown, Check, Zap, Sparkles, RotateCcw, X } from 'lucide-react';
 import type { Squad, GraphicMode } from '../../types';
 
 interface NavbarProps {
   squads: Squad[];
   activeSquad: Squad;
   onSelectSquad: (squad: Squad) => void;
+  /** True when the scene shows only `activeSquad`'s avatars. */
+  isSquadFiltered: boolean;
+  onClearSquadFilter: () => void;
   graphicMode: GraphicMode;
   onGraphicModeChange: (mode: GraphicMode) => void;
 }
@@ -14,6 +17,8 @@ export const Navbar: React.FC<NavbarProps> = ({
   squads,
   activeSquad,
   onSelectSquad,
+  isSquadFiltered,
+  onClearSquadFilter,
   graphicMode,
   onGraphicModeChange,
 }) => {
@@ -51,15 +56,17 @@ export const Navbar: React.FC<NavbarProps> = ({
           <div ref={dropdownRef} className="relative">
             <button
               onClick={() => setIsAllSquadsDropdownOpen((prev) => !prev)}
-              className="flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-mono font-bold tracking-tight text-white bg-slate-900/90 hover:bg-slate-800/80 border border-slate-700 hover:border-slate-600 transition min-w-[180px]"
+              className="flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-mono font-bold tracking-tight text-white bg-slate-900/90 hover:bg-slate-800/80 border border-slate-700 hover:border-slate-600 transition min-w-[180px] cursor-pointer"
               title="Pilih Squad Aktif (10 Squads)"
             >
               <span
                 className="w-2.5 h-2.5 rounded-full shrink-0"
-                style={{ backgroundColor: activeSquad.zoneColor }}
+                style={{ backgroundColor: isSquadFiltered ? activeSquad.zoneColor : '#64748b' }}
               />
-              <span className="truncate">{activeSquad.name}</span>
-              {activeSquad.members.some((m) => m.isBlocker) && (
+              <span className="truncate">
+                {isSquadFiltered ? activeSquad.name : `Semua Squad (${squads.length})`}
+              </span>
+              {isSquadFiltered && activeSquad.members.some((m) => m.isBlocker) && (
                 <span className="w-1.5 h-1.5 rounded-full bg-red-400 animate-ping shrink-0" />
               )}
               <ChevronDown
@@ -74,8 +81,26 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <div className="px-3 py-1.5 text-[9px] font-mono font-bold uppercase tracking-wider text-slate-500 border-b border-slate-800">
                   DAFTAR 10 SQUAD BRI
                 </div>
+                {/* Reset: show every squad again */}
+                <button
+                  onClick={() => {
+                    if (isSquadFiltered) onClearSquadFilter();
+                    setIsAllSquadsDropdownOpen(false);
+                  }}
+                  className={`w-full p-2 rounded-xl flex items-center justify-between text-left transition font-mono text-xs cursor-pointer ${
+                    !isSquadFiltered
+                      ? 'bg-sky-500/20 border border-sky-500/40 text-white'
+                      : 'hover:bg-slate-800/80 text-slate-300 border border-transparent'
+                  }`}
+                >
+                  <div className="flex items-center gap-2 min-w-0">
+                    <RotateCcw className="w-3.5 h-3.5 shrink-0 text-slate-400" aria-hidden="true" />
+                    <span className="truncate">Semua Squad (reset filter)</span>
+                  </div>
+                  {!isSquadFiltered && <Check className="w-3.5 h-3.5 text-sky-400 shrink-0" />}
+                </button>
                 {squads.map((sq, idx) => {
-                  const isSelected = sq.id === activeSquad.id;
+                  const isSelected = isSquadFiltered && sq.id === activeSquad.id;
                   const hasBlocker = sq.members.some((m) => m.isBlocker);
                   return (
                     <button
@@ -84,7 +109,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                         onSelectSquad(sq);
                         setIsAllSquadsDropdownOpen(false);
                       }}
-                      className={`w-full p-2 rounded-xl flex items-center justify-between text-left transition font-mono text-xs ${
+                      className={`w-full p-2 rounded-xl flex items-center justify-between text-left transition font-mono text-xs cursor-pointer ${
                         isSelected
                           ? 'bg-sky-500/20 border border-sky-500/40 text-white'
                           : 'hover:bg-slate-800/80 text-slate-300 border border-transparent'
@@ -111,6 +136,18 @@ export const Navbar: React.FC<NavbarProps> = ({
               </div>
             )}
           </div>
+
+          {/* Quick reset of the squad filter (only while a squad is filtered) */}
+          {isSquadFiltered && (
+            <button
+              onClick={onClearSquadFilter}
+              className="p-1.5 rounded-xl text-slate-400 hover:text-white bg-slate-900/90 hover:bg-slate-800/80 border border-slate-700 hover:border-slate-600 transition cursor-pointer"
+              title="Reset filter squad (tampilkan semua squad)"
+              aria-label="Reset filter squad"
+            >
+              <X className="w-3.5 h-3.5" />
+            </button>
+          )}
 
           <div className="h-4 w-[1px] bg-slate-800 mx-1 hidden sm:block" />
 

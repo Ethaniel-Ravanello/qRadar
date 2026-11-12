@@ -5,7 +5,7 @@ export const INITIAL_SQUADS: Squad[] = [
     "id": "squad-hermes",
     "name": "Row 1: Squad Hermes (Fast Payment & API)",
     "alias": "Hermes",
-    "leadPN": "PN 90185980 (Reza Pratama)",
+    "leadPN": "PN 901010 (Reza Pratama)",
     "sprint": "Sprint 28 (Day 7/10)",
     "sprintGoal": "Fast Checkout QRIS Cross-Border & Settlement Latency <80ms",
     "zoneCenter": [
@@ -388,9 +388,9 @@ export const INITIAL_SQUADS: Squad[] = [
       },
       {
         "id": "squad-hermes-out-7",
-        "pn": "901026",
-        "name": "Budi Santoso",
-        "shortName": "Budi",
+        "pn": "90185980",
+        "name": "Ethaniel Ravanello",
+        "shortName": "Ethaniel",
         "isStanding": false,
         "role": "QA",
         "avatarColor": "#10b981",

@@ -186,6 +186,13 @@ export const App: React.FC = () => {
 
   // Reset View: clear the squad focus so every squad's avatars show again,
   // drop any selection/modal, and recenter the camera.
+  // Clear only the squad filter (show every squad's avatars again). Unlike
+  // Reset View, this keeps the camera, the selected squad and any open drawer.
+  const handleClearSquadFilter = () => {
+    setIsSquadFocused(false);
+    triggerSound('click');
+  };
+
   const handleResetView = () => {
     setSelectedSquad(INITIAL_SQUADS[0]);
     setSelectedEmployee(null);
@@ -205,6 +212,8 @@ export const App: React.FC = () => {
         squads={squads}
         activeSquad={selectedSquad}
         onSelectSquad={handleSelectSquad}
+        isSquadFiltered={isSquadFocused}
+        onClearSquadFilter={handleClearSquadFilter}
         graphicMode={graphicMode}
         onGraphicModeChange={handleGraphicModeChange}
       />

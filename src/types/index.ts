@@ -80,3 +80,71 @@ export interface Playbook {
   status: 'active' | 'ready' | 'running';
   tag: string;
 }
+
+// =============================================================================
+// Real Jira export (scripts/atlassian/fetch_jira_user.py -> output/jira_<pn>.json)
+// =============================================================================
+export interface JiraPerson {
+  username: string | null;
+  displayName: string | null;
+}
+
+export interface JiraIssue {
+  key: string;
+  url: string;
+  summary: string | null;
+  type: string | null;
+  isSubtask: boolean;
+  status: string | null;
+  /** Jira status category key: 'new' | 'indeterminate' | 'done'. */
+  statusCategory: string | null;
+  priority: string | null;
+  assignee: JiraPerson | null;
+  reporter: JiraPerson | null;
+  storyPoints: number | null;
+  sprints: string[];
+  epicLink: string | null;
+  parent: string | null;
+  resolution: string | null;
+  created: string | null;
+  updated: string | null;
+  /** Missing in exports made before labels were fetched. */
+  labels?: string[];
+  /** Only on defectsAndSubtasks: how the user relates to the issue. */
+  roles?: Array<'reporter' | 'assignee'>;
+}
+
+export interface JiraSprint {
+  id: number;
+  name: string | null;
+  state: string | null;
+  goal: string | null;
+  boardId: number | null;
+  startDate: string | null;
+  endDate: string | null;
+}
+
+export interface JiraUserExport {
+  generatedAt: string;
+  jiraUrl: string;
+  user: { username: string; displayName: string | null };
+  activeSprints: JiraSprint[];
+  defectsAndSubtasks: JiraIssue[];
+  assignedWork: JiraIssue[];
+  sprintStoriesAndEpics: JiraIssue[];
+}
+
+/** scripts/atlassian/fetch_jira_sprint.py -> output/sprint_<id>.json (whole sprint, every person). */
+export interface JiraSprintExport {
+  generatedAt: string;
+  jiraUrl: string;
+  boardId: number;
+  sprint: JiraSprint;
+  epics: JiraIssue[];
+  /** Story + Task issues. */
+  stories: JiraIssue[];
+  /** "Sub-task" children of stories (parent = story key). */
+  subtasks: JiraIssue[];
+  /** "Defect Task" children of stories (parent = story key). */
+  defects: JiraIssue[];
+}
