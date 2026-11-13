@@ -28,3 +28,4 @@ dist-ssr
 .venv
 __pycache__/
 scripts/atlassian/output/
+scripts/atlassian/squads.json

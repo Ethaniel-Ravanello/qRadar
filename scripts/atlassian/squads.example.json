@@ -1,0 +1,13 @@
+{
+  "_comment": "Copy to squads.json (git-ignored). Order = floor order, first = front row. 'pn' is optional: testers without one are looked up in Jira by name.",
+  "squads": [
+    {
+      "name": "Example Squad",
+      "boardId": 1234,
+      "testers": [
+        { "name": "Full Name With PN", "pn": "90000000" },
+        { "name": "Full Name Without PN" }
+      ]
+    }
+  ]
+}

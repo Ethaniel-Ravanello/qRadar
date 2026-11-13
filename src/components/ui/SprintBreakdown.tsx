@@ -13,6 +13,7 @@ import {
   type StoryNode,
 } from '../../data/sprintBreakdown';
 import { IssueKey, IssueRow, JiraLinkIcon, MeBadge, StatusChip } from './JiraIssueRow';
+import { Collapse } from './Collapse';
 
 // =============================================================================
 // "Sprint" tab: search + status filter, then Epic accordions (epics with active
@@ -233,7 +234,9 @@ const StoryCard: React.FC<{ node: StoryNode; pn: string; open: boolean; onToggle
           <JiraLinkIcon issue={story} />
         </div>
       </div>
-      {open && <StoryDetail key={story.key} node={node} pn={pn} />}
+      <Collapse open={open}>
+        <StoryDetail key={story.key} node={node} pn={pn} />
+      </Collapse>
     </li>
   );
 };
@@ -388,8 +391,8 @@ export const SprintBreakdown: React.FC<{ tree: EpicNode[]; pn: string }> = ({ tr
                   )}
                 </div>
 
-                {open && (
-                  <ul id={panelId} className="space-y-2 border-t border-slate-800 p-3">
+                <Collapse open={open} id={panelId}>
+                  <ul className="space-y-2 border-t border-slate-800 p-3">
                     {epicNode.stories.map((node) => {
                       const storyOpen = node.story.key === openStory;
                       return (
@@ -403,7 +406,7 @@ export const SprintBreakdown: React.FC<{ tree: EpicNode[]; pn: string }> = ({ tr
                       );
                     })}
                   </ul>
-                )}
+                </Collapse>
               </section>
             );
           })}

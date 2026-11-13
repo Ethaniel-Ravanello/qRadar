@@ -68,6 +68,8 @@ export interface Squad {
   sprintGoal: string;
   zoneCenter: [number, number, number];
   zoneColor: string;
+  /** Jira board of the squad (real squads from squads.json). */
+  boardId?: number;
   metrics: SquadMetrics;
   members: Employee[];
 }

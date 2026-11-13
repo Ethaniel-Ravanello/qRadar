@@ -1,6 +1,9 @@
 import type { Squad, Playbook } from '../types';
+import { buildRealSquads } from './realSquads';
 
-export const INITIAL_SQUADS: Squad[] = [
+// Mock squads: floor layout templates (zones, desk positions) and the fallback
+// data when scripts/atlassian/squads.json is absent. See realSquads.ts.
+const TEMPLATE_SQUADS: Squad[] = [
   {
     "id": "squad-hermes",
     "name": "Row 1: Squad Hermes (Fast Payment & API)",
@@ -4012,6 +4015,9 @@ export const INITIAL_SQUADS: Squad[] = [
     ]
   }
 ];
+
+/** Real QLA squads (testers only) when configured, otherwise the mock squads. */
+export const INITIAL_SQUADS: Squad[] = buildRealSquads(TEMPLATE_SQUADS) ?? TEMPLATE_SQUADS;
 
 export const PLAYBOOK_TEMPLATES: Playbook[] = [
   {
