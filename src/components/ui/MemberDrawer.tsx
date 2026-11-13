@@ -18,9 +18,11 @@ import {
 import type { Employee, Squad } from '../../types';
 import { getJiraExport, sprintExports } from '../../data/jiraData';
 import { buildPersonTree, stageOf, type EpicNode } from '../../data/sprintBreakdown';
+import { UNKNOWN_PN } from '../../data/realSquads';
 import { JiraSections } from './JiraSections';
 import { SprintBreakdown } from './SprintBreakdown';
 import { SprintHeader } from './SprintHeader';
+import { MEMBER_DRAWER_WIDTH } from './layout';
 
 interface MemberDrawerProps {
   employee: Employee | null;
@@ -91,10 +93,19 @@ const DrawerContent: React.FC<Omit<MemberDrawerProps, 'employee'> & { employee: 
   const pn = employee.pn;
   const jiraExport = getJiraExport(pn);
 
-  const defaultSprintId = (sprintExports.find((e) => e.sprint.state?.toLowerCase() === 'active') ?? sprintExports[0])
+  // Only the sprints of this person's squad board (all sprints for mock squads without a board).
+  const boardId = squad?.boardId;
+  const boardSprints = useMemo(
+    () =>
+      boardId === undefined
+        ? sprintExports
+        : sprintExports.filter((e) => e.boardId === boardId || e.sprint.boardId === boardId),
+    [boardId]
+  );
+  const defaultSprintId = (boardSprints.find((e) => e.sprint.state?.toLowerCase() === 'active') ?? boardSprints[0])
     ?.sprint.id;
   const [sprintId, setSprintId] = useState(defaultSprintId);
-  const sprintData = sprintExports.find((e) => e.sprint.id === sprintId) ?? sprintExports[0];
+  const sprintData = boardSprints.find((e) => e.sprint.id === sprintId) ?? boardSprints[0];
   const tree = useMemo(() => (sprintData ? buildPersonTree(sprintData, pn) : []), [sprintData, pn]);
   const stats = useMemo(() => summarize(tree), [tree]);
 
@@ -186,7 +197,7 @@ const DrawerContent: React.FC<Omit<MemberDrawerProps, 'employee'> & { employee: 
               <SprintHeader
                 key={headerSprint.id}
                 sprint={headerSprint}
-                options={sprintExports.map((e) => e.sprint)}
+                options={boardSprints.map((e) => e.sprint)}
                 onSelect={sprintData ? setSprintId : undefined}
               />
             )}
@@ -263,6 +274,11 @@ const DrawerContent: React.FC<Omit<MemberDrawerProps, 'employee'> & { employee: 
           {tab === 'issues' &&
             (jiraExport ? (
               <JiraSections data={jiraExport} />
+            ) : pn === UNKNOWN_PN ? (
+              <p className="py-6 text-center text-[13px] text-slate-500">
+                PN belum diketahui, jadi data Jira belum bisa diambil. Tambahkan PN di squads.json atau jalankan
+                sync_qla.py.
+              </p>
             ) : sprintExports.length > 0 ? (
               <p className="py-6 text-center text-[13px] text-slate-500">
                 Belum ada ekspor Jira untuk PN {pn}.
@@ -390,12 +406,13 @@ export const MemberDrawer: React.FC<MemberDrawerProps> = ({ employee, squad, onC
       aria-label={displayEmployee ? `Detail ${displayEmployee.name}` : 'Detail member'}
       inert={!isOpen}
       style={{
+        width: MEMBER_DRAWER_WIDTH,
         transform: isOpen ? 'translateX(0)' : 'translateX(100%)',
         transition: 'transform 360ms cubic-bezier(0.16, 1, 0.3, 1)',
         willChange: 'transform',
       }}
       // One scroll container for the whole panel; the tab bar inside is sticky.
-      className="fixed inset-y-0 right-0 z-50 w-[640px] max-w-full overflow-y-auto overscroll-contain border-l border-slate-800 bg-[#0b0e17]/[0.97] shadow-2xl shadow-black/60 backdrop-blur-2xl"
+      className="fixed inset-y-0 right-0 z-50 max-w-full overflow-y-auto overscroll-contain border-l border-slate-800 bg-[#0b0e17]/[0.97] shadow-2xl shadow-black/60 backdrop-blur-2xl"
     >
       {displayEmployee && (
         <DrawerContent

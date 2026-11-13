@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, AdaptiveDpr, AdaptiveEvents } from '@react-three/drei';
 import * as THREE from 'three';
@@ -8,6 +8,8 @@ import { BriDecor } from './BriDecor';
 import { DeskInstances } from './DeskInstances';
 import { AvatarInstances } from './AvatarInstances';
 import { CameraKeyboardControls } from './CameraKeyboardControls';
+import { CameraFocus, type Vec3 } from './CameraFocus';
+import { MEMBER_DRAWER_WIDTH } from '../ui/layout';
 // Dev-only perf monitor; the import.meta.env.DEV guards below let the
 // production build tree-shake it out entirely.
 import { PerfProbe, PerfPanel } from './PerfMonitor';
@@ -38,18 +40,25 @@ export const OfficeScene: React.FC<OfficeSceneProps> = ({
   isAsleep = false,
   graphicMode = 'quality',
 }) => {
-  const controlsRef = useRef<any>(null);
+  // Initial orbit pivot only. Later moves are animated by <CameraFocus>, so this
+  // must stay constant (a changing `target` prop would snap the camera).
+  const [initialTarget] = useState<Vec3>(() =>
+    selectedSquad ? [selectedSquad.zoneCenter[0], 0.8, selectedSquad.zoneCenter[2]] : [6, 0.8, 0]
+  );
 
-  // Focus camera target smoothly when an employee or squad is selected
-  useEffect(() => {
-    if (selectedEmployee && controlsRef.current) {
-      const [x, y, z] = selectedEmployee.deskPosition;
-      controlsRef.current.target.set(x, y + 0.8, z);
-    } else if (selectedSquad && controlsRef.current) {
-      const [x, y, z] = selectedSquad.zoneCenter;
-      controlsRef.current.target.set(x, y + 0.8, z);
-    }
-  }, [selectedEmployee, selectedSquad]);
+  // Head height of the selected person's avatar (seated: chair is 0.52 in front
+  // of the desk, same as AvatarInstances' avatarRoot).
+  const personPoint = useMemo<Vec3 | null>(() => {
+    if (!selectedEmployee) return null;
+    const [x, , z] = selectedEmployee.deskPosition;
+    const r = selectedEmployee.rotationY;
+    const chair = selectedEmployee.isStanding ? 0 : 0.52;
+    return [x + Math.sin(r) * chair, 1.0, z + Math.cos(r) * chair];
+  }, [selectedEmployee]);
+  const squadPoint = useMemo<Vec3 | null>(
+    () => (selectedSquad ? [selectedSquad.zoneCenter[0], 0.8, selectedSquad.zoneCenter[2]] : null),
+    [selectedSquad]
+  );
 
   const isPerformance = graphicMode === 'performance';
 
@@ -131,8 +140,7 @@ export const OfficeScene: React.FC<OfficeSceneProps> = ({
 
         {/* Orbit Controls with bounded angles */}
         <OrbitControls
-          ref={controlsRef}
-          target={[selectedSquad ? selectedSquad.zoneCenter[0] : 6.0, 0.8, selectedSquad ? selectedSquad.zoneCenter[2] : 0]}
+          target={initialTarget}
           makeDefault
           enableDamping
           dampingFactor={0.08}
@@ -143,6 +151,15 @@ export const OfficeScene: React.FC<OfficeSceneProps> = ({
 
         {/* WASD = move, Space = up, Shift = down (moves camera + orbit pivot) */}
         <CameraKeyboardControls enabled={!isAsleep} />
+
+        {/* Smooth fly-to on person / squad selection; keeps the person clear of the drawer */}
+        <CameraFocus
+          personKey={selectedEmployee?.id ?? null}
+          personPoint={personPoint}
+          squadKey={selectedSquad?.id ?? null}
+          squadPoint={squadPoint}
+          coveredRightPx={selectedEmployee ? MEMBER_DRAWER_WIDTH : 0}
+        />
 
         {/* Oval Headquarters Room with Walls on All Sides */}
         <OfficeFloor
